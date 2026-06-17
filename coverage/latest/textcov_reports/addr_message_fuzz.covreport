@@ -1,1 +1,1838 @@
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+_RNCNvNvCsHkN6wBQcL2_17addr_message_fuzz1__19___libfuzzer_sys_run0B5_:
+  104|    926|        let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  105|       |            // Reading `len()` cannot panic; we hold the assertion shape
+  106|       |            // for symmetry with later invariants.
+  107|    926|            assert!(
+  108|    926|                batch_len <= 1_000_000,
+  109|      0|                "A-0 violated: addr batch length {} unexpectedly huge",
+  110|       |                batch_len
+  111|       |            );
+  112|    926|        }));
+_RNCNvNvCsHkN6wBQcL2_17addr_message_fuzz1__19___libfuzzer_sys_runs6_0B5_:
+  229|    926|        let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  230|    926|            for addr in addrs.iter().cloned() {
+  231|      0|                let _changed: Option<_> = addr.new_gossiped_change();
+  232|      0|                // No `.expect(...)` here on purpose — the production
+  233|      0|                // call site has the unwrap; we only want to know if
+  234|      0|                // the inner conversion itself panics for any input.
+  235|      0|            }
+  236|    926|        }));
+_RNCNvNvCsHkN6wBQcL2_17addr_message_fuzz1__19___libfuzzer_sys_runs7_0B5_:
+  247|    926|        let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  248|    926|            for addr in addrs.iter() {
+  249|      0|                let _m = addr.sanitize(&Network::Mainnet);
+  250|      0|                let _t = addr.sanitize(&Network::new_default_testnet());
+  251|      0|            }
+  252|    926|        }));
+_RNCNvNvCsHkN6wBQcL2_17addr_message_fuzz1__19___libfuzzer_sys_runs8_0B5_:
+  262|    926|        let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  263|    926|            let mut codec_e = Codec::builder().for_network(&Network::Mainnet).finish();
+  264|    926|            let mut out = BytesMut::new();
+  265|    926|            if codec_e.encode(Message::Addr(addrs.clone()), &mut out).is_err() {
+  266|      0|                return;
+  267|    926|            }
+  268|    926|            let mut codec_d = Codec::builder().for_network(&Network::Mainnet).finish();
+  269|    926|            if let Ok(Some(Message::Addr(re))) = codec_d.decode(&mut out) {
+  270|    926|                assert_eq!(
+  271|    926|                    addrs.len(),
+  272|    926|                    re.len(),
+  273|      0|                    "A-10 violated: Addr re-encode lost entries ({} -> {})",
+  274|      0|                    addrs.len(),
+  275|      0|                    re.len(),
+  276|       |                );
+  277|      0|            }
+  278|    926|        }));
+_RNCNvNvCsHkN6wBQcL2_17addr_message_fuzz1__19___libfuzzer_sys_runs9_0B5_:
+  287|    926|        let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  288|    926|            for addr in addrs.iter() {
+  289|      0|                let psa = addr.addr();
+  290|      0|                let _ = format!("{}", psa);
+  291|      0|                let _ = format!("{:?}", psa);
+  292|      0|            }
+  293|    926|        }));
+
+_RNvXs_NtNtCsc4HhLwrPL7g_11zebra_chain5block6headerNtB4_13CountedHeaderNtNtNtB8_13serialization17zcash_deserialize18TrustedPreallocate14max_allocation:
+  167|     67|    fn max_allocation() -> u64 {
+  168|       |        // Cast safe: MAX_HEADERS_PER_MESSAGE is the constant 160, which fits
+  169|       |        // trivially in u64 on every platform.
+  170|     67|        MAX_HEADERS_PER_MESSAGE as u64
+  171|     67|    }
+
+_RINvXs3_NtNtCsc4HhLwrPL7g_11zebra_chain5block9serializeNtB8_5BlockNtNtNtBa_13serialization17zcash_deserialize16ZcashDeserialize17zcash_deserializeQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEECs9luMEzl4jni_13zebra_network:
+  150|      3|    fn zcash_deserialize<R: io::Read>(reader: R) -> Result<Self, SerializationError> {
+  151|       |        // # Consensus
+  152|       |        //
+  153|       |        // > The size of a block MUST be less than or equal to 2000000 bytes.
+  154|       |        //
+  155|       |        // https://zips.z.cash/protocol/protocol.pdf#blockheader
+  156|       |        //
+  157|       |        // If the limit is reached, we'll get an UnexpectedEof error
+  158|      3|        let limited_reader = &mut reader.take(MAX_BLOCK_BYTES);
+  159|       |        Ok(Block {
+  160|      3|            header: limited_reader.zcash_deserialize_into()?,
+  161|      0|            transactions: limited_reader.zcash_deserialize_into()?,
+  162|       |        })
+  163|      3|    }
+_RINvXs1_NtNtCsc4HhLwrPL7g_11zebra_chain5block9serializeNtNtB8_6header13CountedHeaderNtNtNtBa_13serialization17zcash_deserialize16ZcashDeserialize17zcash_deserializeQQQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEECs9luMEzl4jni_13zebra_network:
+  125|      1|    fn zcash_deserialize<R: io::Read>(mut reader: R) -> Result<Self, SerializationError> {
+  126|      0|        let header = CountedHeader {
+  127|      1|            header: (&mut reader).zcash_deserialize_into()?,
+  128|       |        };
+  129|       |
+  130|       |        // We ignore the number of transactions in a header-only message,
+  131|       |        // it should always be zero.
+  132|      0|        let _transaction_count: CompactSizeMessage = (&mut reader).zcash_deserialize_into()?;
+  133|       |
+  134|      0|        Ok(header)
+  135|      1|    }
+_RINvXs_NtNtCsc4HhLwrPL7g_11zebra_chain5block9serializeNtNtB7_6header6HeaderNtNtNtB9_13serialization17zcash_deserialize16ZcashDeserialize17zcash_deserializeQINtNtCsjS9ICikYiHq_3std2io4TakeQINtNtB2x_6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEECs9luMEzl4jni_13zebra_network:
+   87|      3|    fn zcash_deserialize<R: io::Read>(mut reader: R) -> Result<Self, SerializationError> {
+   88|      3|        let version = reader.read_u32::<LittleEndian>()?;
+   89|      0|        check_version(version).map_err(SerializationError::Parse)?;
+   90|       |
+   91|       |        Ok(Header {
+   92|      0|            version,
+   93|      0|            previous_block_hash: Hash::zcash_deserialize(&mut reader)?,
+   94|      0|            merkle_root: merkle::Root(reader.read_32_bytes()?),
+   95|      0|            commitment_bytes: reader.read_32_bytes()?.into(),
+   96|       |            // This can't panic, because all u32 values are valid `Utc.timestamp`s
+   97|      0|            time: Utc
+   98|      0|                .timestamp_opt(reader.read_u32::<LittleEndian>()?.into(), 0)
+   99|      0|                .single()
+  100|      0|                .ok_or(SerializationError::Parse(
+  101|      0|                    "out-of-range number of seconds and/or invalid nanosecond",
+  102|      0|                ))?,
+  103|      0|            difficulty_threshold: CompactDifficulty(reader.read_u32::<LittleEndian>()?),
+  104|      0|            nonce: reader.read_32_bytes()?.into(),
+  105|      0|            solution: equihash::Solution::zcash_deserialize(reader)?,
+  106|       |        })
+  107|      3|    }
+_RINvXs_NtNtCsc4HhLwrPL7g_11zebra_chain5block9serializeNtNtB7_6header6HeaderNtNtNtB9_13serialization17zcash_deserialize16ZcashDeserialize17zcash_deserializeQQQQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEECs9luMEzl4jni_13zebra_network:
+   87|      1|    fn zcash_deserialize<R: io::Read>(mut reader: R) -> Result<Self, SerializationError> {
+   88|      1|        let version = reader.read_u32::<LittleEndian>()?;
+   89|      0|        check_version(version).map_err(SerializationError::Parse)?;
+   90|       |
+   91|       |        Ok(Header {
+   92|      0|            version,
+   93|      0|            previous_block_hash: Hash::zcash_deserialize(&mut reader)?,
+   94|      0|            merkle_root: merkle::Root(reader.read_32_bytes()?),
+   95|      0|            commitment_bytes: reader.read_32_bytes()?.into(),
+   96|       |            // This can't panic, because all u32 values are valid `Utc.timestamp`s
+   97|      0|            time: Utc
+   98|      0|                .timestamp_opt(reader.read_u32::<LittleEndian>()?.into(), 0)
+   99|      0|                .single()
+  100|      0|                .ok_or(SerializationError::Parse(
+  101|      0|                    "out-of-range number of seconds and/or invalid nanosecond",
+  102|      0|                ))?,
+  103|      0|            difficulty_threshold: CompactDifficulty(reader.read_u32::<LittleEndian>()?),
+  104|      0|            nonce: reader.read_32_bytes()?.into(),
+  105|      0|            solution: equihash::Solution::zcash_deserialize(reader)?,
+  106|       |        })
+  107|      1|    }
+
+_RNvMs_NtNtNtCsc4HhLwrPL7g_11zebra_chain10parameters7network5magicNtB6_7Network5magic:
+   23|  10.0k|    pub fn magic(&self) -> Magic {
+   24|  10.0k|        match self {
+   25|  10.0k|            Network::Mainnet => magics::MAINNET,
+   26|      0|            Network::Testnet(params) => params.network_magic(),
+   27|       |        }
+   28|  10.0k|    }
+
+_RINvXs2_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization12compact_sizeNtB6_18CompactSizeMessageNtNtB8_15zcash_serialize14ZcashSerialize15zcash_serializeQQQINtNtNtCs1BtjAVEWbxG_5bytes3buf6writer6WriterQNtNtB2y_9bytes_mut8BytesMutEECs9luMEzl4jni_13zebra_network:
+  287|    926|    fn zcash_serialize<W: std::io::Write>(&self, writer: W) -> Result<(), std::io::Error> {
+  288|       |        // # Security
+  289|       |        // Defence-in-depth for memory DoS via preallocation.
+  290|       |        //
+  291|       |        // This is validated data inside Zebra, so we panic.
+  292|    926|        assert!(
+  293|    926|            self.0
+  294|    926|                <= MAX_PROTOCOL_MESSAGE_LEN
+  295|    926|                    .try_into()
+  296|    926|                    .expect("usize fits in u64"),
+  297|      0|            "CompactSize larger than protocol message limit"
+  298|       |        );
+  299|       |
+  300|       |        // Use the same serialization format as CompactSize64.
+  301|    926|        let size: u64 = self.0.into();
+  302|    926|        CompactSize64(size).zcash_serialize(writer)
+  303|    926|    }
+_RINvXs3_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization12compact_sizeNtB6_18CompactSizeMessageNtNtB8_17zcash_deserialize16ZcashDeserialize17zcash_deserializeQQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEECs9luMEzl4jni_13zebra_network:
+  308|  2.08k|    fn zcash_deserialize<R: std::io::Read>(reader: R) -> Result<Self, SerializationError> {
+  309|       |        // Use the same deserialization format as CompactSize64.
+  310|  2.08k|        let size: CompactSize64 = reader.zcash_deserialize_into()?;
+  311|       |
+  312|  2.07k|        let size: usize = size.0.try_into()?;
+  313|  2.07k|        size.try_into()
+  314|  2.08k|    }
+_RINvXs4_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization12compact_sizeNtB6_13CompactSize64NtNtB8_15zcash_serialize14ZcashSerialize15zcash_serializeQQQINtNtNtCs1BtjAVEWbxG_5bytes3buf6writer6WriterQNtNtB2t_9bytes_mut8BytesMutEECs9luMEzl4jni_13zebra_network:
+  319|    926|    fn zcash_serialize<W: std::io::Write>(&self, mut writer: W) -> Result<(), std::io::Error> {
+  320|    926|        let n = self.0;
+  321|    926|        match n {
+  322|    926|            0x00..=0xfc => writer.write_u8(n as u8),
+  323|      0|            0x00fd..=0xffff => {
+  324|      0|                writer.write_u8(0xfd)?;
+  325|      0|                writer.write_u16::<LittleEndian>(n as u16)
+  326|       |            }
+  327|      0|            0x0001_0000..=0xffff_ffff => {
+  328|      0|                writer.write_u8(0xfe)?;
+  329|      0|                writer.write_u32::<LittleEndian>(n as u32)
+  330|       |            }
+  331|       |            _ => {
+  332|      0|                writer.write_u8(0xff)?;
+  333|      0|                writer.write_u64::<LittleEndian>(n)
+  334|       |            }
+  335|       |        }
+  336|    926|    }
+_RINvXs5_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization12compact_sizeNtB6_13CompactSize64NtNtB8_17zcash_deserialize16ZcashDeserialize17zcash_deserializeQQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEECs9luMEzl4jni_13zebra_network:
+  341|  2.08k|    fn zcash_deserialize<R: std::io::Read>(mut reader: R) -> Result<Self, SerializationError> {
+  342|       |        use SerializationError::Parse;
+  343|       |
+  344|  2.08k|        let flag_byte = reader.read_u8()?;
+  345|  2.08k|        let size = match flag_byte {
+  346|  2.08k|            n @ 0x00..=0xfc => Ok(n as u64),
+  347|      0|            0xfd => match reader.read_u16::<LittleEndian>()? {
+  348|      0|                n @ 0x00fd..=u16::MAX => Ok(n as u64),
+  349|      0|                _ => Err(Parse("non-canonical CompactSize")),
+  350|       |            },
+  351|      0|            0xfe => match reader.read_u32::<LittleEndian>()? {
+  352|      0|                n @ 0x0001_0000..=u32::MAX => Ok(n as u64),
+  353|      0|                _ => Err(Parse("non-canonical CompactSize")),
+  354|       |            },
+  355|      3|            0xff => match reader.read_u64::<LittleEndian>()? {
+  356|      1|                n @ 0x0000_0001_0000_0000..=u64::MAX => Ok(n),
+  357|      0|                _ => Err(Parse("non-canonical CompactSize")),
+  358|       |            },
+  359|      0|        }?;
+  360|       |
+  361|  2.07k|        Ok(CompactSize64(size))
+  362|  2.08k|    }
+_RNvXNtNtCsc4HhLwrPL7g_11zebra_chain13serialization12compact_sizeNtB2_18CompactSizeMessageINtNtCs6SNw0SRvItZ_4core7convert7TryFromjE8try_fromB6_:
+  238|  3.93k|    fn try_from(size: usize) -> Result<Self, Self::Error> {
+  239|       |        use SerializationError::Parse;
+  240|       |
+  241|  3.93k|        let size: u32 = size.try_into()?;
+  242|       |
+  243|       |        // # Security
+  244|       |        // Defense-in-depth for memory DoS via preallocation.
+  245|  3.92k|        if size
+  246|  3.92k|            > MAX_PROTOCOL_MESSAGE_LEN
+  247|  3.92k|                .try_into()
+  248|  3.92k|                .expect("MAX_PROTOCOL_MESSAGE_LEN fits in u32")
+  249|       |        {
+  250|       |            // This could be invalid data from peers, so we return a parse error.
+  251|      0|            Err(Parse("CompactSize larger than protocol message limit"))?;
+  252|  3.92k|        }
+  253|       |
+  254|  3.92k|        Ok(CompactSizeMessage(size))
+  255|  3.93k|    }
+_RNvXs_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization12compact_sizejINtNtCs6SNw0SRvItZ_4core7convert4FromNtB4_18CompactSizeMessageE4fromB8_:
+  260|  2.07k|    fn from(size: CompactSizeMessage) -> Self {
+  261|  2.07k|        size.0.try_into().expect("u32 fits in usize")
+  262|  2.07k|    }
+_RINvXs2_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization12compact_sizeNtB6_18CompactSizeMessageNtNtB8_15zcash_serialize14ZcashSerialize15zcash_serializeQQQNtB1v_10FakeWriterEBa_:
+  287|    926|    fn zcash_serialize<W: std::io::Write>(&self, writer: W) -> Result<(), std::io::Error> {
+  288|       |        // # Security
+  289|       |        // Defence-in-depth for memory DoS via preallocation.
+  290|       |        //
+  291|       |        // This is validated data inside Zebra, so we panic.
+  292|    926|        assert!(
+  293|    926|            self.0
+  294|    926|                <= MAX_PROTOCOL_MESSAGE_LEN
+  295|    926|                    .try_into()
+  296|    926|                    .expect("usize fits in u64"),
+  297|      0|            "CompactSize larger than protocol message limit"
+  298|       |        );
+  299|       |
+  300|       |        // Use the same serialization format as CompactSize64.
+  301|    926|        let size: u64 = self.0.into();
+  302|    926|        CompactSize64(size).zcash_serialize(writer)
+  303|    926|    }
+_RINvXs4_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization12compact_sizeNtB6_13CompactSize64NtNtB8_15zcash_serialize14ZcashSerialize15zcash_serializeQQQNtB1q_10FakeWriterEBa_:
+  319|    926|    fn zcash_serialize<W: std::io::Write>(&self, mut writer: W) -> Result<(), std::io::Error> {
+  320|    926|        let n = self.0;
+  321|    926|        match n {
+  322|    926|            0x00..=0xfc => writer.write_u8(n as u8),
+  323|      0|            0x00fd..=0xffff => {
+  324|      0|                writer.write_u8(0xfd)?;
+  325|      0|                writer.write_u16::<LittleEndian>(n as u16)
+  326|       |            }
+  327|      0|            0x0001_0000..=0xffff_ffff => {
+  328|      0|                writer.write_u8(0xfe)?;
+  329|      0|                writer.write_u32::<LittleEndian>(n as u32)
+  330|       |            }
+  331|       |            _ => {
+  332|      0|                writer.write_u8(0xff)?;
+  333|      0|                writer.write_u64::<LittleEndian>(n)
+  334|       |            }
+  335|       |        }
+  336|    926|    }
+
+_RINvXsl_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization9date_timeNtB6_10DateTime32NtNtB8_17zcash_deserialize16ZcashDeserialize17zcash_deserializeQQQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEECs9luMEzl4jni_13zebra_network:
+  381|      2|    fn zcash_deserialize<R: std::io::Read>(mut reader: R) -> Result<Self, SerializationError> {
+  382|       |        Ok(DateTime32 {
+  383|      2|            timestamp: reader.read_u32::<LittleEndian>()?,
+  384|       |        })
+  385|      2|    }
+
+_RNvXs0_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization5errorNtB5_18SerializationErrorINtNtCs6SNw0SRvItZ_4core7convert4FromNtNtNtCsjS9ICikYiHq_3std2io5error5ErrorE4from:
+  112|    493|    fn from(value: io::Error) -> Self {
+  113|    493|        Arc::new(value).into()
+  114|    493|    }
+
+_RNvYINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutENtNtNtCsc4HhLwrPL7g_11zebra_chain13serialization10read_zcash12ReadZcashExt12read_4_bytesCs9luMEzl4jni_13zebra_network:
+    9|  18.3k|    fn read_4_bytes(&mut self) -> io::Result<[u8; 4]> {
+   10|  18.3k|        let mut bytes = [0; 4];
+   11|  18.3k|        self.read_exact(&mut bytes)?;
+   12|  18.3k|        Ok(bytes)
+   13|  18.3k|    }
+_RNvYINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutENtNtNtCsc4HhLwrPL7g_11zebra_chain13serialization10read_zcash12ReadZcashExt13read_12_bytesCs9luMEzl4jni_13zebra_network:
+   17|  9.16k|    fn read_12_bytes(&mut self) -> io::Result<[u8; 12]> {
+   18|  9.16k|        let mut bytes = [0; 12];
+   19|  9.16k|        self.read_exact(&mut bytes)?;
+   20|  9.16k|        Ok(bytes)
+   21|  9.16k|    }
+
+_RNvXs0_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization7sha256dNtB5_8ChecksumINtNtCs6SNw0SRvItZ_4core7convert4FromRShE4from:
+   40|  9.75k|    fn from(bytes: &'a [u8]) -> Self {
+   41|  9.75k|        let hash1 = Sha256::digest(bytes);
+   42|  9.75k|        let hash2 = Sha256::digest(hash1);
+   43|  9.75k|        let mut checksum = [0u8; 4];
+   44|  9.75k|        checksum[0..4].copy_from_slice(&hash2[0..4]);
+   45|  9.75k|        Self(checksum)
+   46|  9.75k|    }
+
+_RINvXNtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserializeINtNtCshDtJu3Ru83O_5alloc3vec3VecNtNtNtNtCs9luMEzl4jni_13zebra_network8protocol8external3inv13InventoryHashENtB3_16ZcashDeserialize17zcash_deserializeQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEB1L_:
+   35|    155|    fn zcash_deserialize<R: io::Read>(mut reader: R) -> Result<Self, SerializationError> {
+   36|    155|        let len: CompactSizeMessage = (&mut reader).zcash_deserialize_into()?;
+   37|    151|        zcash_deserialize_external_count(len.into(), reader)
+   38|    155|    }
+_RINvXNtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserializeINtNtCshDtJu3Ru83O_5alloc3vec3VecNtNtNtNtNtCs9luMEzl4jni_13zebra_network8protocol8external4addr2v16AddrV1ENtB3_16ZcashDeserialize17zcash_deserializeQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEB1N_:
+   35|  1.79k|    fn zcash_deserialize<R: io::Read>(mut reader: R) -> Result<Self, SerializationError> {
+   36|  1.79k|        let len: CompactSizeMessage = (&mut reader).zcash_deserialize_into()?;
+   37|  1.78k|        zcash_deserialize_external_count(len.into(), reader)
+   38|  1.79k|    }
+_RINvXNtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserializeINtNtCshDtJu3Ru83O_5alloc3vec3VecNtNtNtNtNtCs9luMEzl4jni_13zebra_network8protocol8external4addr2v26AddrV2ENtB3_16ZcashDeserialize17zcash_deserializeQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEB1N_:
+   35|     69|    fn zcash_deserialize<R: io::Read>(mut reader: R) -> Result<Self, SerializationError> {
+   36|     69|        let len: CompactSizeMessage = (&mut reader).zcash_deserialize_into()?;
+   37|     68|        zcash_deserialize_external_count(len.into(), reader)
+   38|     69|    }
+_RINvXs3_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserializeQINtNtCsjS9ICikYiHq_3std2io4TakeQINtNtB1d_6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEENtB6_20ZcashDeserializeInto22zcash_deserialize_intoINtNtCshDtJu3Ru83O_5alloc4sync3ArcNtNtNtBa_5block6header6HeaderEECs9luMEzl4jni_13zebra_network:
+  181|      3|    fn zcash_deserialize_into<T>(self) -> Result<T, SerializationError>
+  182|      3|    where
+  183|      3|        T: ZcashDeserialize,
+  184|       |    {
+  185|      3|        T::zcash_deserialize(self)
+  186|      3|    }
+_RINvNtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserialize32zcash_deserialize_external_countQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutENtNtNtNtCs9luMEzl4jni_13zebra_network8protocol8external3inv13InventoryHashEB3b_:
+   86|    151|pub fn zcash_deserialize_external_count<R: io::Read, T: ZcashDeserialize + TrustedPreallocate>(
+   87|    151|    external_count: usize,
+   88|    151|    mut reader: R,
+   89|    151|) -> Result<Vec<T>, SerializationError> {
+   90|    151|    match u64::try_from(external_count) {
+   91|    151|        Ok(external_count) if external_count > T::max_allocation() => {
+   92|      0|            return Err(SerializationError::Parse(
+   93|      0|                "Vector longer than max_allocation",
+   94|      0|            ))
+   95|       |        }
+   96|    151|        Ok(_) => {}
+   97|       |        // As of 2021, usize is less than or equal to 64 bits on all (or almost all?) supported Rust platforms.
+   98|       |        // So in practice this error is impossible. (But the check is required, because Rust is future-proof
+   99|       |        // for 128 bit memory spaces.)
+  100|      0|        Err(_) => return Err(SerializationError::Parse("Vector longer than u64::MAX")),
+  101|       |    }
+  102|       |    // Cap the upfront reservation. The Vec grows via push() as elements
+  103|       |    // arrive, so a peer-supplied `external_count` can't force a large
+  104|       |    // allocation before any data is read. Fixes the deserializer-level
+  105|       |    // case of GHSA-xr93-pcq3-pxf8.
+  106|    151|    let mut vec = Vec::with_capacity(external_count.min(MAX_INITIAL_ALLOCATION));
+  107|    151|    for _ in 0..external_count {
+  108|      1|        vec.push(T::zcash_deserialize(&mut reader)?);
+  109|       |    }
+  110|    150|    Ok(vec)
+  111|    151|}
+_RINvNtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserialize32zcash_deserialize_external_countQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutENtNtNtNtNtCs9luMEzl4jni_13zebra_network8protocol8external4addr2v16AddrV1EB3d_:
+   86|  1.78k|pub fn zcash_deserialize_external_count<R: io::Read, T: ZcashDeserialize + TrustedPreallocate>(
+   87|  1.78k|    external_count: usize,
+   88|  1.78k|    mut reader: R,
+   89|  1.78k|) -> Result<Vec<T>, SerializationError> {
+   90|  1.78k|    match u64::try_from(external_count) {
+   91|  1.78k|        Ok(external_count) if external_count > T::max_allocation() => {
+   92|      0|            return Err(SerializationError::Parse(
+   93|      0|                "Vector longer than max_allocation",
+   94|      0|            ))
+   95|       |        }
+   96|  1.78k|        Ok(_) => {}
+   97|       |        // As of 2021, usize is less than or equal to 64 bits on all (or almost all?) supported Rust platforms.
+   98|       |        // So in practice this error is impossible. (But the check is required, because Rust is future-proof
+   99|       |        // for 128 bit memory spaces.)
+  100|      0|        Err(_) => return Err(SerializationError::Parse("Vector longer than u64::MAX")),
+  101|       |    }
+  102|       |    // Cap the upfront reservation. The Vec grows via push() as elements
+  103|       |    // arrive, so a peer-supplied `external_count` can't force a large
+  104|       |    // allocation before any data is read. Fixes the deserializer-level
+  105|       |    // case of GHSA-xr93-pcq3-pxf8.
+  106|  1.78k|    let mut vec = Vec::with_capacity(external_count.min(MAX_INITIAL_ALLOCATION));
+  107|  1.78k|    for _ in 0..external_count {
+  108|      1|        vec.push(T::zcash_deserialize(&mut reader)?);
+  109|       |    }
+  110|  1.78k|    Ok(vec)
+  111|  1.78k|}
+_RINvNtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserialize32zcash_deserialize_external_countQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutENtNtNtNtNtCs9luMEzl4jni_13zebra_network8protocol8external4addr2v26AddrV2EB3d_:
+   86|     68|pub fn zcash_deserialize_external_count<R: io::Read, T: ZcashDeserialize + TrustedPreallocate>(
+   87|     68|    external_count: usize,
+   88|     68|    mut reader: R,
+   89|     68|) -> Result<Vec<T>, SerializationError> {
+   90|     68|    match u64::try_from(external_count) {
+   91|     68|        Ok(external_count) if external_count > T::max_allocation() => {
+   92|      0|            return Err(SerializationError::Parse(
+   93|      0|                "Vector longer than max_allocation",
+   94|      0|            ))
+   95|       |        }
+   96|     68|        Ok(_) => {}
+   97|       |        // As of 2021, usize is less than or equal to 64 bits on all (or almost all?) supported Rust platforms.
+   98|       |        // So in practice this error is impossible. (But the check is required, because Rust is future-proof
+   99|       |        // for 128 bit memory spaces.)
+  100|      0|        Err(_) => return Err(SerializationError::Parse("Vector longer than u64::MAX")),
+  101|       |    }
+  102|       |    // Cap the upfront reservation. The Vec grows via push() as elements
+  103|       |    // arrive, so a peer-supplied `external_count` can't force a large
+  104|       |    // allocation before any data is read. Fixes the deserializer-level
+  105|       |    // case of GHSA-xr93-pcq3-pxf8.
+  106|     68|    let mut vec = Vec::with_capacity(external_count.min(MAX_INITIAL_ALLOCATION));
+  107|     68|    for _ in 0..external_count {
+  108|      1|        vec.push(T::zcash_deserialize(&mut reader)?);
+  109|       |    }
+  110|     67|    Ok(vec)
+  111|     68|}
+_RINvNtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserialize32zcash_deserialize_external_countQQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutENtNtNtB6_5block6header13CountedHeaderECs9luMEzl4jni_13zebra_network:
+   86|     67|pub fn zcash_deserialize_external_count<R: io::Read, T: ZcashDeserialize + TrustedPreallocate>(
+   87|     67|    external_count: usize,
+   88|     67|    mut reader: R,
+   89|     67|) -> Result<Vec<T>, SerializationError> {
+   90|     67|    match u64::try_from(external_count) {
+   91|     67|        Ok(external_count) if external_count > T::max_allocation() => {
+   92|      0|            return Err(SerializationError::Parse(
+   93|      0|                "Vector longer than max_allocation",
+   94|      0|            ))
+   95|       |        }
+   96|     67|        Ok(_) => {}
+   97|       |        // As of 2021, usize is less than or equal to 64 bits on all (or almost all?) supported Rust platforms.
+   98|       |        // So in practice this error is impossible. (But the check is required, because Rust is future-proof
+   99|       |        // for 128 bit memory spaces.)
+  100|      0|        Err(_) => return Err(SerializationError::Parse("Vector longer than u64::MAX")),
+  101|       |    }
+  102|       |    // Cap the upfront reservation. The Vec grows via push() as elements
+  103|       |    // arrive, so a peer-supplied `external_count` can't force a large
+  104|       |    // allocation before any data is read. Fixes the deserializer-level
+  105|       |    // case of GHSA-xr93-pcq3-pxf8.
+  106|     67|    let mut vec = Vec::with_capacity(external_count.min(MAX_INITIAL_ALLOCATION));
+  107|     67|    for _ in 0..external_count {
+  108|      1|        vec.push(T::zcash_deserialize(&mut reader)?);
+  109|       |    }
+  110|     66|    Ok(vec)
+  111|     67|}
+_RINvNtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserialize38zcash_deserialize_bytes_external_countQQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEECs9luMEzl4jni_13zebra_network:
+  120|    182|pub fn zcash_deserialize_bytes_external_count<R: io::Read>(
+  121|    182|    external_count: usize,
+  122|    182|    mut reader: R,
+  123|    182|) -> Result<Vec<u8>, SerializationError> {
+  124|    182|    if external_count > MAX_U8_ALLOCATION {
+  125|      0|        return Err(SerializationError::Parse(
+  126|      0|            "Byte vector longer than MAX_U8_ALLOCATION",
+  127|      0|        ));
+  128|    182|    }
+  129|    182|    let mut vec = vec![0u8; external_count];
+  130|    182|    reader.read_exact(&mut vec)?;
+  131|    181|    Ok(vec)
+  132|    182|}
+_RINvNtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserialize39zcash_deserialize_string_external_countQQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEECs9luMEzl4jni_13zebra_network:
+  142|      3|pub fn zcash_deserialize_string_external_count<R: io::Read>(
+  143|      3|    external_byte_count: usize,
+  144|      3|    reader: R,
+  145|      3|) -> Result<String, SerializationError> {
+  146|      3|    let bytes = zcash_deserialize_bytes_external_count(external_byte_count, reader)?;
+  147|       |
+  148|      2|    String::from_utf8(bytes).map_err(|_| SerializationError::Parse("invalid utf-8"))
+  149|      3|}
+_RINvXs3_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserializeQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutENtB6_20ZcashDeserializeInto22zcash_deserialize_intoINtNtCshDtJu3Ru83O_5alloc3vec3VecNtNtNtNtNtCs9luMEzl4jni_13zebra_network8protocol8external4addr2v16AddrV1EEB45_:
+  181|  1.79k|    fn zcash_deserialize_into<T>(self) -> Result<T, SerializationError>
+  182|  1.79k|    where
+  183|  1.79k|        T: ZcashDeserialize,
+  184|       |    {
+  185|  1.79k|        T::zcash_deserialize(self)
+  186|  1.79k|    }
+_RINvXs3_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserializeQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutENtB6_20ZcashDeserializeInto22zcash_deserialize_intoINtNtCshDtJu3Ru83O_5alloc3vec3VecNtNtNtNtNtCs9luMEzl4jni_13zebra_network8protocol8external4addr2v26AddrV2EEB45_:
+  181|     69|    fn zcash_deserialize_into<T>(self) -> Result<T, SerializationError>
+  182|     69|    where
+  183|     69|        T: ZcashDeserialize,
+  184|       |    {
+  185|     69|        T::zcash_deserialize(self)
+  186|     69|    }
+_RINvXs3_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserializeQQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutENtB6_20ZcashDeserializeInto22zcash_deserialize_intoNtNtB8_12compact_size13CompactSize64ECs9luMEzl4jni_13zebra_network:
+  181|  2.08k|    fn zcash_deserialize_into<T>(self) -> Result<T, SerializationError>
+  182|  2.08k|    where
+  183|  2.08k|        T: ZcashDeserialize,
+  184|       |    {
+  185|  2.08k|        T::zcash_deserialize(self)
+  186|  2.08k|    }
+_RINvXs3_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserializeQQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutENtB6_20ZcashDeserializeInto22zcash_deserialize_intoNtNtB8_12compact_size18CompactSizeMessageECs9luMEzl4jni_13zebra_network:
+  181|  2.08k|    fn zcash_deserialize_into<T>(self) -> Result<T, SerializationError>
+  182|  2.08k|    where
+  183|  2.08k|        T: ZcashDeserialize,
+  184|       |    {
+  185|  2.08k|        T::zcash_deserialize(self)
+  186|  2.08k|    }
+_RINvXs3_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserializeQQQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutENtB6_20ZcashDeserializeInto22zcash_deserialize_intoNtNtB8_9date_time10DateTime32ECs9luMEzl4jni_13zebra_network:
+  181|      2|    fn zcash_deserialize_into<T>(self) -> Result<T, SerializationError>
+  182|      2|    where
+  183|      2|        T: ZcashDeserialize,
+  184|       |    {
+  185|      2|        T::zcash_deserialize(self)
+  186|      2|    }
+_RINvXs3_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserializeQQQQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutENtB6_20ZcashDeserializeInto22zcash_deserialize_intoINtNtCshDtJu3Ru83O_5alloc4sync3ArcNtNtNtBa_5block6header6HeaderEECs9luMEzl4jni_13zebra_network:
+  181|      1|    fn zcash_deserialize_into<T>(self) -> Result<T, SerializationError>
+  182|      1|    where
+  183|      1|        T: ZcashDeserialize,
+  184|       |    {
+  185|      1|        T::zcash_deserialize(self)
+  186|      1|    }
+
+_RINvXs0_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization15zcash_serializeINtNtCshDtJu3Ru83O_5alloc3vec3VecNtNtNtNtNtCs9luMEzl4jni_13zebra_network8protocol8external4addr2v16AddrV1ENtB6_14ZcashSerialize15zcash_serializeQQINtNtNtCs1BtjAVEWbxG_5bytes3buf6writer6WriterQNtNtB3A_9bytes_mut8BytesMutEEB1O_:
+   81|    926|    fn zcash_serialize<W: io::Write>(&self, mut writer: W) -> Result<(), io::Error> {
+   82|    926|        let len: CompactSizeMessage = self
+   83|    926|            .len()
+   84|    926|            .try_into()
+   85|    926|            .expect("len fits in MAX_PROTOCOL_MESSAGE_LEN");
+   86|    926|        len.zcash_serialize(&mut writer)?;
+   87|       |
+   88|    926|        zcash_serialize_external_count(self, writer)
+   89|    926|    }
+_RINvXs0_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization15zcash_serializeINtNtCshDtJu3Ru83O_5alloc3vec3VecNtNtNtNtNtCs9luMEzl4jni_13zebra_network8protocol8external4addr2v16AddrV1ENtB6_14ZcashSerialize15zcash_serializeQQNtB6_10FakeWriterEB1O_:
+   81|    926|    fn zcash_serialize<W: io::Write>(&self, mut writer: W) -> Result<(), io::Error> {
+   82|    926|        let len: CompactSizeMessage = self
+   83|    926|            .len()
+   84|    926|            .try_into()
+   85|    926|            .expect("len fits in MAX_PROTOCOL_MESSAGE_LEN");
+   86|    926|        len.zcash_serialize(&mut writer)?;
+   87|       |
+   88|    926|        zcash_serialize_external_count(self, writer)
+   89|    926|    }
+_RINvNtNtCsc4HhLwrPL7g_11zebra_chain13serialization15zcash_serialize30zcash_serialize_external_countQQINtNtNtCs1BtjAVEWbxG_5bytes3buf6writer6WriterQNtNtB1I_9bytes_mut8BytesMutENtNtNtNtNtCs9luMEzl4jni_13zebra_network8protocol8external4addr2v16AddrV1EB2X_:
+  150|    926|pub fn zcash_serialize_external_count<W: io::Write, T: ZcashSerialize>(
+  151|    926|    vec: &Vec<T>,
+  152|    926|    mut writer: W,
+  153|    926|) -> Result<(), io::Error> {
+  154|    926|    for x in vec {
+  155|      0|        x.zcash_serialize(&mut writer)?;
+  156|       |    }
+  157|    926|    Ok(())
+  158|    926|}
+_RINvNtNtCsc4HhLwrPL7g_11zebra_chain13serialization15zcash_serialize30zcash_serialize_external_countQQNtB2_10FakeWriterNtNtNtNtNtCs9luMEzl4jni_13zebra_network8protocol8external4addr2v16AddrV1EB22_:
+  150|    926|pub fn zcash_serialize_external_count<W: io::Write, T: ZcashSerialize>(
+  151|    926|    vec: &Vec<T>,
+  152|    926|    mut writer: W,
+  153|    926|) -> Result<(), io::Error> {
+  154|    926|    for x in vec {
+  155|      0|        x.zcash_serialize(&mut writer)?;
+  156|       |    }
+  157|    926|    Ok(())
+  158|    926|}
+_RNvXs_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization15zcash_serializeNtB4_10FakeWriterNtNtCsjS9ICikYiHq_3std2io5Write5write:
+   64|    926|    fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
+   65|    926|        self.0 += buf.len();
+   66|       |
+   67|    926|        Ok(buf.len())
+   68|    926|    }
+
+_RINvXsc_NtNtCsc4HhLwrPL7g_11zebra_chain11transaction9serializeNtB8_11TransactionNtNtNtBa_13serialization17zcash_deserialize16ZcashDeserialize17zcash_deserializeQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEECs9luMEzl4jni_13zebra_network:
+  770|    470|    fn zcash_deserialize<R: io::Read>(reader: R) -> Result<Self, SerializationError> {
+  771|       |        // # Consensus
+  772|       |        //
+  773|       |        // > [Pre-Sapling] The encoded size of the transaction MUST be less than or
+  774|       |        // > equal to 100000 bytes.
+  775|       |        //
+  776|       |        // https://zips.z.cash/protocol/protocol.pdf#txnconsensus
+  777|       |        //
+  778|       |        // Zebra does not verify this rule because we checkpoint up to Canopy blocks, but:
+  779|       |        // Since transactions must get mined into a block to be useful,
+  780|       |        // we reject transactions that are larger than blocks.
+  781|       |        //
+  782|       |        // If the limit is reached, we'll get an UnexpectedEof error.
+  783|    470|        let mut limited_reader = reader.take(MAX_BLOCK_BYTES);
+  784|       |
+  785|      1|        let (version, overwintered) = {
+  786|       |            const LOW_31_BITS: u32 = (1 << 31) - 1;
+  787|       |            // Denoted as `header` in the spec, contains the `fOverwintered` flag and the `version` field.
+  788|    470|            let header = limited_reader.read_u32::<LittleEndian>()?;
+  789|      1|            (header & LOW_31_BITS, header >> 31 != 0)
+  790|       |        };
+  791|       |
+  792|       |        // # Consensus
+  793|       |        //
+  794|       |        // The next rules apply for different transaction versions as follows:
+  795|       |        //
+  796|       |        // [Pre-Overwinter]: Transactions version 1 and 2.
+  797|       |        // [Overwinter onward]: Transactions version 3 and above.
+  798|       |        // [Overwinter only, pre-Sapling]: Transactions version 3.
+  799|       |        // [Sapling to Canopy inclusive, pre-NU5]: Transactions version 4.
+  800|       |        // [NU5 onward]: Transactions version 4 and above.
+  801|       |        //
+  802|       |        // > The transaction version number MUST be greater than or equal to 1.
+  803|       |        //
+  804|       |        // > [Pre-Overwinter] The fOverwintered fag MUST NOT be set.
+  805|       |        //
+  806|       |        // > [Overwinter onward] The version group ID MUST be recognized.
+  807|       |        //
+  808|       |        // > [Overwinter onward] The fOverwintered flag MUST be set.
+  809|       |        //
+  810|       |        // > [Overwinter only, pre-Sapling] The transaction version number MUST be 3,
+  811|       |        // > and the version group ID MUST be 0x03C48270.
+  812|       |        //
+  813|       |        // > [Sapling to Canopy inclusive, pre-NU5] The transaction version number MUST be 4,
+  814|       |        // > and the version group ID MUST be 0x892F2085.
+  815|       |        //
+  816|       |        // > [NU5 onward] The transaction version number MUST be 4 or 5.
+  817|       |        // > If the transaction version number is 4 then the version group ID MUST be 0x892F2085.
+  818|       |        // > If the transaction version number is 5 then the version group ID MUST be 0x26A7270A.
+  819|       |        //
+  820|       |        // Note: Zebra checkpoints until Canopy blocks, this means only transactions versions
+  821|       |        // 4 and 5 get fully verified. This satisfies "The transaction version number MUST be 4"
+  822|       |        // and "The transaction version number MUST be 4 or 5" from the last two rules above.
+  823|       |        // This is done in the zebra-consensus crate, in the transactions checks.
+  824|       |        //
+  825|       |        // https://zips.z.cash/protocol/protocol.pdf#txnconsensus
+  826|      1|        match (version, overwintered) {
+  827|       |            (1, false) => Ok(Transaction::V1 {
+  828|       |                // Denoted as `tx_in_count` and `tx_in` in the spec.
+  829|      0|                inputs: Vec::zcash_deserialize(&mut limited_reader)?,
+  830|       |                // Denoted as `tx_out_count` and `tx_out` in the spec.
+  831|      0|                outputs: Vec::zcash_deserialize(&mut limited_reader)?,
+  832|       |                // Denoted as `lock_time` in the spec.
+  833|      0|                lock_time: LockTime::zcash_deserialize(&mut limited_reader)?,
+  834|       |            }),
+  835|       |            (2, false) => {
+  836|       |                // Version 2 transactions use Sprout-on-BCTV14.
+  837|       |                type OptV2Jsd = Option<JoinSplitData<Bctv14Proof>>;
+  838|       |                Ok(Transaction::V2 {
+  839|       |                    // Denoted as `tx_in_count` and `tx_in` in the spec.
+  840|      0|                    inputs: Vec::zcash_deserialize(&mut limited_reader)?,
+  841|       |                    // Denoted as `tx_out_count` and `tx_out` in the spec.
+  842|      0|                    outputs: Vec::zcash_deserialize(&mut limited_reader)?,
+  843|       |                    // Denoted as `lock_time` in the spec.
+  844|      0|                    lock_time: LockTime::zcash_deserialize(&mut limited_reader)?,
+  845|       |                    // A bundle of fields denoted in the spec as `nJoinSplit`, `vJoinSplit`,
+  846|       |                    // `joinSplitPubKey` and `joinSplitSig`.
+  847|      0|                    joinsplit_data: OptV2Jsd::zcash_deserialize(&mut limited_reader)?,
+  848|       |                })
+  849|       |            }
+  850|       |            (3, true) => {
+  851|       |                // Denoted as `nVersionGroupId` in the spec.
+  852|      0|                let id = limited_reader.read_u32::<LittleEndian>()?;
+  853|      0|                if id != OVERWINTER_VERSION_GROUP_ID {
+  854|      0|                    return Err(SerializationError::Parse(
+  855|      0|                        "expected OVERWINTER_VERSION_GROUP_ID",
+  856|      0|                    ));
+  857|      0|                }
+  858|       |                // Version 3 transactions use Sprout-on-BCTV14.
+  859|       |                type OptV3Jsd = Option<JoinSplitData<Bctv14Proof>>;
+  860|       |                Ok(Transaction::V3 {
+  861|       |                    // Denoted as `tx_in_count` and `tx_in` in the spec.
+  862|      0|                    inputs: Vec::zcash_deserialize(&mut limited_reader)?,
+  863|       |                    // Denoted as `tx_out_count` and `tx_out` in the spec.
+  864|      0|                    outputs: Vec::zcash_deserialize(&mut limited_reader)?,
+  865|       |                    // Denoted as `lock_time` in the spec.
+  866|      0|                    lock_time: LockTime::zcash_deserialize(&mut limited_reader)?,
+  867|       |                    // Denoted as `nExpiryHeight` in the spec.
+  868|      0|                    expiry_height: block::Height(limited_reader.read_u32::<LittleEndian>()?),
+  869|       |                    // A bundle of fields denoted in the spec as `nJoinSplit`, `vJoinSplit`,
+  870|       |                    // `joinSplitPubKey` and `joinSplitSig`.
+  871|      0|                    joinsplit_data: OptV3Jsd::zcash_deserialize(&mut limited_reader)?,
+  872|       |                })
+  873|       |            }
+  874|       |            (4, true) => {
+  875|       |                // Transaction V4 spec:
+  876|       |                // https://zips.z.cash/protocol/protocol.pdf#txnencoding
+  877|       |
+  878|       |                // Denoted as `nVersionGroupId` in the spec.
+  879|      0|                let id = limited_reader.read_u32::<LittleEndian>()?;
+  880|      0|                if id != SAPLING_VERSION_GROUP_ID {
+  881|      0|                    return Err(SerializationError::Parse(
+  882|      0|                        "expected SAPLING_VERSION_GROUP_ID",
+  883|      0|                    ));
+  884|      0|                }
+  885|       |                // Version 4 transactions use Sprout-on-Groth16.
+  886|       |                type OptV4Jsd = Option<JoinSplitData<Groth16Proof>>;
+  887|       |
+  888|       |                // The previous match arms deserialize in one go, because the
+  889|       |                // internal structure happens to nicely line up with the
+  890|       |                // serialized structure. However, this is not possible for
+  891|       |                // version 4 transactions, as the binding_sig for the
+  892|       |                // ShieldedData is placed at the end of the transaction. So
+  893|       |                // instead we have to pull the component parts out manually and
+  894|       |                // then assemble them.
+  895|       |
+  896|       |                // Denoted as `tx_in_count` and `tx_in` in the spec.
+  897|      0|                let inputs: Vec<transparent::Input> = Vec::zcash_deserialize(&mut limited_reader)?;
+  898|       |
+  899|       |                // Denoted as `tx_out_count` and `tx_out` in the spec.
+  900|      0|                let outputs = Vec::zcash_deserialize(&mut limited_reader)?;
+  901|       |
+  902|      0|                let is_coinbase = inputs.len() == 1
+  903|      0|                    && matches!(inputs.first(), Some(transparent::Input::Coinbase { .. }));
+  904|       |
+  905|       |                // Denoted as `lock_time` in the spec.
+  906|      0|                let lock_time = LockTime::zcash_deserialize(&mut limited_reader)?;
+  907|       |
+  908|       |                // Denoted as `nExpiryHeight` in the spec.
+  909|      0|                let expiry_height = block::Height(limited_reader.read_u32::<LittleEndian>()?);
+  910|       |
+  911|       |                // Denoted as `valueBalanceSapling` in the spec.
+  912|      0|                let value_balance = (&mut limited_reader).zcash_deserialize_into()?;
+  913|       |
+  914|       |                // Denoted as `nSpendsSapling` — read count before allocating.
+  915|      0|                let spend_count: CompactSizeMessage =
+  916|      0|                    (&mut limited_reader).zcash_deserialize_into()?;
+  917|      0|                let spend_count: usize = spend_count.into();
+  918|       |
+  919|       |                // # Consensus
+  920|       |                //
+  921|       |                // > A coinbase transaction MUST NOT have any Spend descriptions.
+  922|       |                //
+  923|       |                // <https://zips.z.cash/protocol/protocol.pdf#txnconsensus>
+  924|      0|                if is_coinbase && spend_count > 0 {
+  925|      0|                    return Err(SerializationError::Parse(
+  926|      0|                        "coinbase transaction must not have Sapling spends",
+  927|      0|                    ));
+  928|      0|                }
+  929|       |
+  930|       |                // Denoted as `vSpendsSapling` in the spec.
+  931|      0|                let shielded_spends: Vec<sapling::Spend<sapling::PerSpendAnchor>> =
+  932|      0|                    zcash_deserialize_external_count(spend_count, &mut limited_reader)?;
+  933|       |
+  934|       |                // Denoted as `nOutputsSapling` and `vOutputsSapling` in the spec.
+  935|      0|                let shielded_outputs =
+  936|      0|                    Vec::<sapling::OutputInTransactionV4>::zcash_deserialize(&mut limited_reader)?
+  937|      0|                        .into_iter()
+  938|      0|                        .map(sapling::Output::from_v4)
+  939|      0|                        .collect();
+  940|       |
+  941|       |                // A bundle of fields denoted in the spec as `nJoinSplit`, `vJoinSplit`,
+  942|       |                // `joinSplitPubKey` and `joinSplitSig`.
+  943|      0|                let joinsplit_data = OptV4Jsd::zcash_deserialize(&mut limited_reader)?;
+  944|       |
+  945|      0|                let sapling_transfers = if !shielded_spends.is_empty() {
+  946|      0|                    Some(sapling::TransferData::SpendsAndMaybeOutputs {
+  947|      0|                        shared_anchor: FieldNotPresent,
+  948|      0|                        spends: shielded_spends.try_into().expect("checked for spends"),
+  949|      0|                        maybe_outputs: shielded_outputs,
+  950|      0|                    })
+  951|      0|                } else if !shielded_outputs.is_empty() {
+  952|      0|                    Some(sapling::TransferData::JustOutputs {
+  953|      0|                        outputs: shielded_outputs.try_into().expect("checked for outputs"),
+  954|      0|                    })
+  955|       |                } else {
+  956|       |                    // # Consensus
+  957|       |                    //
+  958|       |                    // > [Sapling onward] If effectiveVersion = 4 and there are no Spend
+  959|       |                    // > descriptions or Output descriptions, then valueBalanceSapling MUST be 0.
+  960|       |                    //
+  961|       |                    // https://zips.z.cash/protocol/protocol.pdf#txnconsensus
+  962|      0|                    if value_balance != 0 {
+  963|      0|                        return Err(SerializationError::BadTransactionBalance);
+  964|      0|                    }
+  965|      0|                    None
+  966|       |                };
+  967|       |
+  968|      0|                let sapling_shielded_data = match sapling_transfers {
+  969|      0|                    Some(transfers) => Some(sapling::ShieldedData {
+  970|      0|                        value_balance,
+  971|      0|                        transfers,
+  972|       |                        // Denoted as `bindingSigSapling` in the spec.
+  973|      0|                        binding_sig: limited_reader.read_64_bytes()?.into(),
+  974|       |                    }),
+  975|      0|                    None => None,
+  976|       |                };
+  977|       |
+  978|      0|                Ok(Transaction::V4 {
+  979|      0|                    inputs,
+  980|      0|                    outputs,
+  981|      0|                    lock_time,
+  982|      0|                    expiry_height,
+  983|      0|                    sapling_shielded_data,
+  984|      0|                    joinsplit_data,
+  985|      0|                })
+  986|       |            }
+  987|       |            (5, true) => {
+  988|       |                // Transaction V5 spec:
+  989|       |                // https://zips.z.cash/protocol/protocol.pdf#txnencoding
+  990|       |
+  991|       |                // Denoted as `nVersionGroupId` in the spec.
+  992|      0|                let id = limited_reader.read_u32::<LittleEndian>()?;
+  993|      0|                if id != TX_V5_VERSION_GROUP_ID {
+  994|      0|                    return Err(SerializationError::Parse("expected TX_V5_VERSION_GROUP_ID"));
+  995|      0|                }
+  996|       |                // Denoted as `nConsensusBranchId` in the spec.
+  997|       |                // Convert it to a NetworkUpgrade
+  998|      0|                let network_upgrade =
+  999|      0|                    NetworkUpgrade::try_from(limited_reader.read_u32::<LittleEndian>()?)?;
+ 1000|       |
+ 1001|       |                // # Consensus
+ 1002|       |                //
+ 1003|       |                // > [NU5 onward] The transaction version number MUST be 4 or 5.
+ 1004|       |                //
+ 1005|       |                // V5 transactions are only valid from NU5 onward, so reject
+ 1006|       |                // transactions with pre-NU5 consensus branch IDs.
+ 1007|      0|                if network_upgrade < NetworkUpgrade::Nu5 {
+ 1008|      0|                    return Err(SerializationError::Parse(
+ 1009|      0|                        "v5 transaction must have NU5 or later consensus branch ID",
+ 1010|      0|                    ));
+ 1011|      0|                }
+ 1012|       |
+ 1013|       |                // Denoted as `lock_time` in the spec.
+ 1014|      0|                let lock_time = LockTime::zcash_deserialize(&mut limited_reader)?;
+ 1015|       |
+ 1016|       |                // Denoted as `nExpiryHeight` in the spec.
+ 1017|      0|                let expiry_height = block::Height(limited_reader.read_u32::<LittleEndian>()?);
+ 1018|       |
+ 1019|       |                // Denoted as `tx_in_count` and `tx_in` in the spec.
+ 1020|      0|                let inputs: Vec<transparent::Input> = Vec::zcash_deserialize(&mut limited_reader)?;
+ 1021|       |
+ 1022|       |                // Denoted as `tx_out_count` and `tx_out` in the spec.
+ 1023|      0|                let outputs = Vec::zcash_deserialize(&mut limited_reader)?;
+ 1024|       |
+ 1025|      0|                let is_coinbase = inputs.len() == 1
+ 1026|      0|                    && matches!(inputs.first(), Some(transparent::Input::Coinbase { .. }));
+ 1027|       |
+ 1028|       |                // A bundle of fields denoted in the spec as `nSpendsSapling`, `vSpendsSapling`,
+ 1029|       |                // `nOutputsSapling`,`vOutputsSapling`, `valueBalanceSapling`, `anchorSapling`,
+ 1030|       |                // `vSpendProofsSapling`, `vSpendAuthSigsSapling`, `vOutputProofsSapling` and
+ 1031|       |                // `bindingSigSapling`.
+ 1032|      0|                let sapling_shielded_data =
+ 1033|      0|                    deserialize_v5_sapling_shielded_data(&mut limited_reader, is_coinbase)?;
+ 1034|       |
+ 1035|       |                // A bundle of fields denoted in the spec as `nActionsOrchard`, `vActionsOrchard`,
+ 1036|       |                // `flagsOrchard`,`valueBalanceOrchard`, `anchorOrchard`, `sizeProofsOrchard`,
+ 1037|       |                // `proofsOrchard`, `vSpendAuthSigsOrchard`, and `bindingSigOrchard`.
+ 1038|      0|                let orchard_shielded_data = (&mut limited_reader).zcash_deserialize_into()?;
+ 1039|       |
+ 1040|      0|                let tx = Transaction::V5 {
+ 1041|      0|                    network_upgrade,
+ 1042|      0|                    lock_time,
+ 1043|      0|                    expiry_height,
+ 1044|      0|                    inputs,
+ 1045|      0|                    outputs,
+ 1046|      0|                    sapling_shielded_data,
+ 1047|      0|                    orchard_shielded_data,
+ 1048|      0|                };
+ 1049|       |
+ 1050|      0|                tx.to_librustzcash(network_upgrade)?;
+ 1051|       |
+ 1052|      0|                Ok(tx)
+ 1053|       |            }
+ 1054|       |            #[cfg(all(zcash_unstable = "nu7", feature = "tx_v6"))]
+ 1055|       |            (6, true) => {
+ 1056|       |                // Denoted as `nVersionGroupId` in the spec.
+ 1057|       |                let id = limited_reader.read_u32::<LittleEndian>()?;
+ 1058|       |                if id != TX_V6_VERSION_GROUP_ID {
+ 1059|       |                    return Err(SerializationError::Parse("expected TX_V6_VERSION_GROUP_ID"));
+ 1060|       |                }
+ 1061|       |                // Denoted as `nConsensusBranchId` in the spec.
+ 1062|       |                // Convert it to a NetworkUpgrade
+ 1063|       |                let network_upgrade =
+ 1064|       |                    NetworkUpgrade::try_from(limited_reader.read_u32::<LittleEndian>()?)?;
+ 1065|       |                // V6 transactions are only valid from NU5 onward, so reject
+ 1066|       |                // transactions with pre-NU5 consensus branch IDs.
+ 1067|       |                if network_upgrade < NetworkUpgrade::Nu5 {
+ 1068|       |                    return Err(SerializationError::Parse(
+ 1069|       |                        "v6 transaction must have NU5 or later consensus branch ID",
+ 1070|       |                    ));
+ 1071|       |                }
+ 1072|       |                // Denoted as `lock_time` in the spec.
+ 1073|       |                let lock_time = LockTime::zcash_deserialize(&mut limited_reader)?;
+ 1074|       |
+ 1075|       |                // Denoted as `nExpiryHeight` in the spec.
+ 1076|       |                let expiry_height = block::Height(limited_reader.read_u32::<LittleEndian>()?);
+ 1077|       |
+ 1078|       |                // Denoted as `zip233_amount` in the spec.
+ 1079|       |                let zip233_amount = (&mut limited_reader).zcash_deserialize_into()?;
+ 1080|       |
+ 1081|       |                // Denoted as `tx_in_count` and `tx_in` in the spec.
+ 1082|       |                let inputs: Vec<transparent::Input> = Vec::zcash_deserialize(&mut limited_reader)?;
+ 1083|       |
+ 1084|       |                // Denoted as `tx_out_count` and `tx_out` in the spec.
+ 1085|       |                let outputs = Vec::zcash_deserialize(&mut limited_reader)?;
+ 1086|       |
+ 1087|       |                let is_coinbase = inputs.len() == 1
+ 1088|       |                    && matches!(inputs.first(), Some(transparent::Input::Coinbase { .. }));
+ 1089|       |
+ 1090|       |                // A bundle of fields denoted in the spec as `nSpendsSapling`, `vSpendsSapling`,
+ 1091|       |                // `nOutputsSapling`,`vOutputsSapling`, `valueBalanceSapling`, `anchorSapling`,
+ 1092|       |                // `vSpendProofsSapling`, `vSpendAuthSigsSapling`, `vOutputProofsSapling` and
+ 1093|       |                // `bindingSigSapling`.
+ 1094|       |                let sapling_shielded_data =
+ 1095|       |                    deserialize_v5_sapling_shielded_data(&mut limited_reader, is_coinbase)?;
+ 1096|       |
+ 1097|       |                // A bundle of fields denoted in the spec as `nActionsOrchard`, `vActionsOrchard`,
+ 1098|       |                // `flagsOrchard`,`valueBalanceOrchard`, `anchorOrchard`, `sizeProofsOrchard`,
+ 1099|       |                // `proofsOrchard`, `vSpendAuthSigsOrchard`, and `bindingSigOrchard`.
+ 1100|       |                let orchard_shielded_data = (&mut limited_reader).zcash_deserialize_into()?;
+ 1101|       |
+ 1102|       |                Ok(Transaction::V6 {
+ 1103|       |                    network_upgrade,
+ 1104|       |                    lock_time,
+ 1105|       |                    expiry_height,
+ 1106|       |                    zip233_amount,
+ 1107|       |                    inputs,
+ 1108|       |                    outputs,
+ 1109|       |                    sapling_shielded_data,
+ 1110|       |                    orchard_shielded_data,
+ 1111|       |                })
+ 1112|       |            }
+ 1113|      1|            (_, _) => Err(SerializationError::Parse("bad tx header")),
+ 1114|       |        }
+ 1115|    470|    }
+_RINvXsd_NtNtCsc4HhLwrPL7g_11zebra_chain11transaction9serializeINtNtCshDtJu3Ru83O_5alloc4sync3ArcNtNtNtBa_5block6header6HeaderENtNtNtBa_13serialization17zcash_deserialize16ZcashDeserialize17zcash_deserializeQINtNtCsjS9ICikYiHq_3std2io4TakeQINtNtB3m_6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEECs9luMEzl4jni_13zebra_network:
+ 1122|      3|    fn zcash_deserialize<R: io::Read>(reader: R) -> Result<Self, SerializationError> {
+ 1123|      3|        Ok(Arc::new(T::zcash_deserialize(reader)?))
+ 1124|      3|    }
+_RINvXsd_NtNtCsc4HhLwrPL7g_11zebra_chain11transaction9serializeINtNtCshDtJu3Ru83O_5alloc4sync3ArcNtNtNtBa_5block6header6HeaderENtNtNtBa_13serialization17zcash_deserialize16ZcashDeserialize17zcash_deserializeQQQQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEECs9luMEzl4jni_13zebra_network:
+ 1122|      1|    fn zcash_deserialize<R: io::Read>(reader: R) -> Result<Self, SerializationError> {
+ 1123|      1|        Ok(Arc::new(T::zcash_deserialize(reader)?))
+ 1124|      1|    }
+
+_RNvXs2_NtNtNtNtCs9luMEzl4jni_13zebra_network8protocol8external4addr2v1NtB5_6AddrV1NtNtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserialize18TrustedPreallocate14max_allocation:
+  131|  1.78k|    fn max_allocation() -> u64 {
+  132|       |        // The protocol caps addr messages at 1,000 entries.
+  133|       |        // <https://zips.z.cash/zip-0155#specification>
+  134|       |        //
+  135|       |        // Previously this was derived from MAX_PROTOCOL_MESSAGE_LEN / ADDR_V1_SIZE = 69,904,
+  136|       |        // which allowed a remote peer to force a multi-megabyte allocation before the cap
+  137|       |        // was checked. See GHSA-xr93-pcq3-pxf8.
+  138|  1.78k|        crate::constants::MAX_ADDRS_IN_MESSAGE as u64
+  139|  1.78k|    }
+_RINvXs1_NtNtNtNtCs9luMEzl4jni_13zebra_network8protocol8external4addr2v1NtB6_6AddrV1NtNtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserialize16ZcashDeserialize17zcash_deserializeQQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEBe_:
+  111|      1|    fn zcash_deserialize<R: Read>(mut reader: R) -> Result<Self, SerializationError> {
+  112|      1|        let untrusted_last_seen = (&mut reader).zcash_deserialize_into()?;
+  113|      0|        let untrusted_services =
+  114|      0|            PeerServices::from_bits_truncate(reader.read_u64::<LittleEndian>()?);
+  115|       |
+  116|      0|        let ipv6_addr = (&mut reader).zcash_deserialize_into()?;
+  117|      0|        let port = reader.read_u16::<BigEndian>()?;
+  118|       |
+  119|       |        // `0` is the default unspecified value for these fields.
+  120|      0|        let ipv6_addr = SocketAddrV6::new(ipv6_addr, port, 0, 0);
+  121|       |
+  122|      0|        Ok(AddrV1 {
+  123|      0|            addr: canonical_peer_addr(ipv6_addr),
+  124|      0|            untrusted_services,
+  125|      0|            untrusted_last_seen,
+  126|      0|        })
+  127|      1|    }
+
+_RNvXs1_NtNtNtNtCs9luMEzl4jni_13zebra_network8protocol8external4addr2v2NtB5_6AddrV2NtNtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserialize18TrustedPreallocate14max_allocation:
+  316|     68|    fn max_allocation() -> u64 {
+  317|       |        // The protocol caps addrv2 messages at 1,000 entries.
+  318|       |        // <https://zips.z.cash/zip-0155#specification>
+  319|       |        //
+  320|       |        // Previously this was derived from MAX_PROTOCOL_MESSAGE_LEN / ADDR_V2_MIN_SIZE = 233,016,
+  321|       |        // which allowed a remote peer to force a ~10.7 MiB heap allocation before the cap
+  322|       |        // was checked. See GHSA-xr93-pcq3-pxf8.
+  323|     68|        crate::constants::MAX_ADDRS_IN_MESSAGE as u64
+  324|     68|    }
+_RINvXs0_NtNtNtNtCs9luMEzl4jni_13zebra_network8protocol8external4addr2v2NtB6_6AddrV2NtNtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserialize16ZcashDeserialize17zcash_deserializeQQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEBe_:
+  265|      1|    fn zcash_deserialize<R: Read>(mut reader: R) -> Result<Self, SerializationError> {
+  266|       |        // > uint32  Time that this node was last seen as connected to the network.
+  267|      1|        let untrusted_last_seen = (&mut reader).zcash_deserialize_into()?;
+  268|       |
+  269|       |        // > Service bits. A CompactSize-encoded bit field that is 64 bits wide.
+  270|      0|        let untrusted_services: CompactSize64 = (&mut reader).zcash_deserialize_into()?;
+  271|      0|        let untrusted_services = PeerServices::from_bits_truncate(untrusted_services.into());
+  272|       |
+  273|       |        // > Network identifier. An 8-bit value that specifies which network is addressed.
+  274|       |        //
+  275|       |        // See the list of reserved network IDs in ZIP 155.
+  276|      0|        let network_id = reader.read_u8()?;
+  277|       |
+  278|       |        // > CompactSize  The length in bytes of addr.
+  279|      0|        let addr_len: CompactSizeMessage = (&mut reader).zcash_deserialize_into()?;
+  280|      0|        let addr_len: usize = addr_len.into();
+  281|      0|        if addr_len > MAX_ADDR_V2_ADDR_SIZE {
+  282|      0|            return Err(SerializationError::Parse(
+  283|      0|                "addr field longer than MAX_ADDR_V2_ADDR_SIZE in addrv2 message",
+  284|      0|            ));
+  285|      0|        }
+  286|       |
+  287|       |        // > uint8[sizeAddr]  Network address. The interpretation depends on networkID.
+  288|      0|        let addr: Vec<u8> = zcash_deserialize_bytes_external_count(addr_len, &mut reader)?;
+  289|       |
+  290|       |        // > uint16  Network port. If not relevant for the network this MUST be 0.
+  291|      0|        let port = reader.read_u16::<BigEndian>()?;
+  292|       |
+  293|      0|        let ip = if network_id == ADDR_V2_IPV4_NETWORK_ID {
+  294|      0|            AddrV2::ip_addr_from_bytes::<ADDR_V2_IPV4_ADDR_SIZE>(addr)?
+  295|      0|        } else if network_id == ADDR_V2_IPV6_NETWORK_ID {
+  296|      0|            AddrV2::ip_addr_from_bytes::<ADDR_V2_IPV6_ADDR_SIZE>(addr)?
+  297|       |        } else {
+  298|       |            // unimplemented or unrecognised network ID, just consume the bytes
+  299|       |            //
+  300|       |            // > Clients MUST NOT gossip addresses from unknown networks,
+  301|       |            // > because they have no means to validate those addresses
+  302|       |            // > and so can be tricked to gossip invalid addresses.
+  303|       |
+  304|      0|            return Ok(AddrV2::Unsupported);
+  305|       |        };
+  306|       |
+  307|      0|        Ok(AddrV2::IpAddr {
+  308|      0|            untrusted_last_seen,
+  309|      0|            untrusted_services,
+  310|      0|            addr: canonical_peer_addr(SocketAddr::new(ip, port)),
+  311|      0|        })
+  312|      1|    }
+
+_RNvMNtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB2_5Codec7builder:
+   69|  3.85k|    pub fn builder() -> Builder {
+   70|  3.85k|        Builder {
+   71|  3.85k|            network: Network::Mainnet,
+   72|  3.85k|            version: constants::CURRENT_NETWORK_PROTOCOL_VERSION,
+   73|  3.85k|            max_len: MAX_HANDSHAKE_BODY_LEN,
+   74|  3.85k|            metrics_addr_label: None,
+   75|  3.85k|        }
+   76|  3.85k|    }
+_RNvMs1_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB5_5Codec11body_length:
+  206|    926|    fn body_length(&self, msg: &Message) -> usize {
+  207|    926|        let mut writer = FakeWriter(0);
+  208|       |
+  209|    926|        self.write_body(msg, &mut writer)
+  210|    926|            .expect("writer should never fail");
+  211|    926|        writer.0
+  212|    926|    }
+_RNvMs_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB4_7Builder11for_network:
+  102|  1.85k|    pub fn for_network(mut self, network: &Network) -> Self {
+  103|  1.85k|        self.network = network.clone();
+  104|  1.85k|        self
+  105|  1.85k|    }
+_RNvMs_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB4_7Builder6finish:
+   94|  3.85k|    pub fn finish(self) -> Codec {
+   95|  3.85k|        Codec {
+   96|  3.85k|            builder: self,
+   97|  3.85k|            state: DecodeState::Head,
+   98|  3.85k|        }
+   99|  3.85k|    }
+_RNvXs0_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB5_5CodecINtNtNtCsctVTX4T4XeJ_10tokio_util5codec7encoder7EncoderNtNtB7_7message7MessageE6encode:
+  133|    926|    fn encode(&mut self, item: Message, dst: &mut BytesMut) -> Result<(), Self::Error> {
+  134|       |        use Error::Parse;
+  135|       |
+  136|    926|        let body_length = self.body_length(&item);
+  137|       |
+  138|    926|        if body_length > self.builder.max_len {
+  139|      0|            return Err(Parse("body length exceeded maximum size"));
+  140|    926|        }
+  141|       |
+  142|    926|        if let Some(addr_label) = self.builder.metrics_addr_label.clone() {
+  143|      0|            metrics::counter!("zcash.net.out.bytes.total",
+  144|      0|                              "addr" => addr_label)
+  145|      0|            .increment((body_length + HEADER_LEN) as u64);
+  146|    926|        }
+  147|       |
+  148|       |        use Message::*;
+  149|       |        // Note: because all match arms must have
+  150|       |        // the same type, and the array length is
+  151|       |        // part of the type, having at least one
+  152|       |        // of length 12 checks that they are all
+  153|       |        // of length 12, as they must be &[u8; 12].
+  154|    926|        let command = match item {
+  155|      0|            Version { .. } => b"version\0\0\0\0\0",
+  156|      0|            Verack => b"verack\0\0\0\0\0\0",
+  157|      0|            Ping { .. } => b"ping\0\0\0\0\0\0\0\0",
+  158|      0|            Pong { .. } => b"pong\0\0\0\0\0\0\0\0",
+  159|      0|            Reject { .. } => b"reject\0\0\0\0\0\0",
+  160|    926|            Addr { .. } => b"addr\0\0\0\0\0\0\0\0",
+  161|      0|            GetAddr => b"getaddr\0\0\0\0\0",
+  162|      0|            Block { .. } => b"block\0\0\0\0\0\0\0",
+  163|      0|            GetBlocks { .. } => b"getblocks\0\0\0",
+  164|      0|            Headers { .. } => b"headers\0\0\0\0\0",
+  165|      0|            GetHeaders { .. } => b"getheaders\0\0",
+  166|      0|            Inv { .. } => b"inv\0\0\0\0\0\0\0\0\0",
+  167|      0|            GetData { .. } => b"getdata\0\0\0\0\0",
+  168|      0|            NotFound { .. } => b"notfound\0\0\0\0",
+  169|      0|            Tx { .. } => b"tx\0\0\0\0\0\0\0\0\0\0",
+  170|      0|            Mempool => b"mempool\0\0\0\0\0",
+  171|      0|            FilterLoad { .. } => b"filterload\0\0",
+  172|      0|            FilterAdd { .. } => b"filteradd\0\0\0",
+  173|      0|            FilterClear => b"filterclear\0",
+  174|       |        };
+  175|    926|        trace!(?item, len = body_length);
+  176|       |
+  177|    926|        dst.reserve(HEADER_LEN + body_length);
+  178|    926|        let start_len = dst.len();
+  179|       |        {
+  180|    926|            let dst = &mut dst.writer();
+  181|    926|            dst.write_all(&self.builder.network.magic().0[..])?;
+  182|    926|            dst.write_all(command)?;
+  183|    926|            dst.write_u32::<LittleEndian>(body_length as u32)?;
+  184|       |
+  185|       |            // We zero the checksum at first, and compute it later
+  186|       |            // after the body has been written.
+  187|    926|            dst.write_u32::<LittleEndian>(0)?;
+  188|       |
+  189|    926|            self.write_body(&item, dst)?;
+  190|       |        }
+  191|    926|        let checksum = sha256d::Checksum::from(&dst[start_len + HEADER_LEN..]);
+  192|    926|        dst[start_len + 20..][..4].copy_from_slice(&checksum.0);
+  193|       |
+  194|    926|        Ok(())
+  195|    926|    }
+_RNvXs3_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB5_5CodecNtNtNtCsctVTX4T4XeJ_10tokio_util5codec7decoder7Decoder6decode:
+  373|  18.6k|    fn decode(&mut self, src: &mut BytesMut) -> Result<Option<Self::Item>, Self::Error> {
+  374|       |        use Error::Parse;
+  375|  18.6k|        match self.state {
+  376|       |            DecodeState::Head => {
+  377|       |                // First check that the src buffer contains an entire header.
+  378|  9.82k|                if src.len() < HEADER_LEN {
+  379|    661|                    trace!(?self.state, "src buffer does not have an entire header, waiting");
+  380|       |                    // Signal that decoding requires more data.
+  381|    661|                    return Ok(None);
+  382|  9.16k|                }
+  383|       |
+  384|       |                // Now that we know that src contains a header, split off the header section.
+  385|  9.16k|                let header = src.split_to(HEADER_LEN);
+  386|       |
+  387|       |                // Create a cursor over the header and parse its fields.
+  388|  9.16k|                let mut header_reader = Cursor::new(&header);
+  389|  9.16k|                let magic = Magic(header_reader.read_4_bytes()?);
+  390|  9.16k|                let command = header_reader.read_12_bytes()?;
+  391|  9.16k|                let body_len = header_reader.read_u32::<LittleEndian>()? as usize;
+  392|  9.16k|                let checksum = sha256d::Checksum(header_reader.read_4_bytes()?);
+  393|  9.16k|                trace!(
+  394|       |                    ?self.state,
+  395|       |                    ?magic,
+  396|      0|                    command = %String::from_utf8(
+  397|      0|                        command.iter()
+  398|      0|                            .cloned()
+  399|      0|                            .flat_map(std::ascii::escape_default)
+  400|      0|                            .collect()
+  401|      0|                    ).unwrap(),
+  402|       |                    body_len,
+  403|       |                    ?checksum,
+  404|      0|                    "read header from src buffer"
+  405|       |                );
+  406|       |
+  407|  9.16k|                if magic != self.builder.network.magic() {
+  408|    166|                    return Err(Parse("supplied magic did not meet expectations"));
+  409|  8.99k|                }
+  410|  8.99k|                if body_len > self.builder.max_len {
+  411|    166|                    return Err(Parse("body length exceeded maximum size"));
+  412|  8.83k|                }
+  413|       |
+  414|  8.83k|                if let Some(label) = self.builder.metrics_addr_label.clone() {
+  415|      0|                    metrics::counter!("zcash.net.in.bytes.total", "addr" =>  label)
+  416|      0|                        .increment((body_len + HEADER_LEN) as u64);
+  417|  8.83k|                }
+  418|       |
+  419|       |                // Reserve buffer space for the expected body and the following header.
+  420|  8.83k|                src.reserve(body_len + HEADER_LEN);
+  421|       |
+  422|  8.83k|                self.state = DecodeState::Body {
+  423|  8.83k|                    body_len,
+  424|  8.83k|                    command,
+  425|  8.83k|                    checksum,
+  426|  8.83k|                };
+  427|       |
+  428|       |                // Now that the state is updated, recurse to attempt body decoding.
+  429|  8.83k|                self.decode(src)
+  430|       |            }
+  431|       |            DecodeState::Body {
+  432|  8.83k|                body_len,
+  433|  8.83k|                command,
+  434|  8.83k|                checksum,
+  435|       |            } => {
+  436|  8.83k|                if src.len() < body_len {
+  437|       |                    // Need to wait for the full body
+  438|      6|                    trace!(?self.state, len = src.len(), "src buffer does not have an entire body, waiting");
+  439|      6|                    return Ok(None);
+  440|  8.82k|                }
+  441|       |
+  442|       |                // Now that we know we have the full body, split off the body,
+  443|       |                // and reset the decoder state for the next message. Otherwise
+  444|       |                // we will attempt to read the next header as the current body.
+  445|  8.82k|                let body = src.split_to(body_len);
+  446|  8.82k|                self.state = DecodeState::Head;
+  447|       |
+  448|  8.82k|                if checksum != sha256d::Checksum::from(&body[..]) {
+  449|    178|                    return Err(Parse(
+  450|    178|                        "supplied message checksum does not match computed checksum",
+  451|    178|                    ));
+  452|  8.64k|                }
+  453|       |
+  454|  8.64k|                let mut body_reader = Cursor::new(&body);
+  455|  8.64k|                match &command {
+  456|      0|                    b"version\0\0\0\0\0" => self.read_version(&mut body_reader),
+  457|     34|                    b"verack\0\0\0\0\0\0" => self.read_verack(&mut body_reader),
+  458|      1|                    b"ping\0\0\0\0\0\0\0\0" => self.read_ping(&mut body_reader),
+  459|      1|                    b"pong\0\0\0\0\0\0\0\0" => self.read_pong(&mut body_reader),
+  460|      5|                    b"reject\0\0\0\0\0\0" => self.read_reject(&mut body_reader),
+  461|  1.79k|                    b"addr\0\0\0\0\0\0\0\0" => self.read_addr(&mut body_reader),
+  462|     69|                    b"addrv2\0\0\0\0\0\0" => self.read_addrv2(&mut body_reader),
+  463|  5.52k|                    b"getaddr\0\0\0\0\0" => self.read_getaddr(&mut body_reader),
+  464|      3|                    b"block\0\0\0\0\0\0\0" => self.read_block(&mut body_reader),
+  465|      1|                    b"getblocks\0\0\0" => self.read_getblocks(&mut body_reader),
+  466|     69|                    b"headers\0\0\0\0\0" => self.read_headers(&mut body_reader),
+  467|      1|                    b"getheaders\0\0" => self.read_getheaders(&mut body_reader),
+  468|     68|                    b"inv\0\0\0\0\0\0\0\0\0" => self.read_inv(&mut body_reader),
+  469|     68|                    b"getdata\0\0\0\0\0" => self.read_getdata(&mut body_reader),
+  470|     19|                    b"notfound\0\0\0\0" => self.read_notfound(&mut body_reader),
+  471|    470|                    b"tx\0\0\0\0\0\0\0\0\0\0" => self.read_tx(&mut body_reader),
+  472|      0|                    b"mempool\0\0\0\0\0" => self.read_mempool(&mut body_reader),
+  473|      1|                    b"filterload\0\0" => self.read_filterload(&mut body_reader, body_len),
+  474|    179|                    b"filteradd\0\0\0" => self.read_filteradd(&mut body_reader, body_len),
+  475|     18|                    b"filterclear\0" => self.read_filterclear(&mut body_reader),
+  476|       |                    _ => {
+  477|    323|                        let command_string = String::from_utf8_lossy(&command);
+  478|       |
+  479|       |                        // # Security
+  480|       |                        //
+  481|       |                        // Zcash connections are not authenticated, so malicious nodes can
+  482|       |                        // send fake messages, with connected peers' IP addresses in the IP header.
+  483|       |                        //
+  484|       |                        // Since we can't verify their source, Zebra needs to ignore unexpected messages,
+  485|       |                        // because closing the connection could cause a denial of service or eclipse attack.
+  486|    323|                        debug!(?command, %command_string, "unknown message command from peer");
+  487|    323|                        return Ok(None);
+  488|       |                    }
+  489|       |                }
+  490|       |                // We need Ok(Some(msg)) to signal that we're done decoding.
+  491|       |                // This is also convenient for tracing the parse result.
+  492|  8.32k|                .map(|msg| {
+  493|       |                    // bitcoin allows extra data at the end of most messages,
+  494|       |                    // so that old nodes can still read newer message formats,
+  495|       |                    // and ignore any extra fields
+  496|       |                    let extra_bytes = body.len() as u64 - body_reader.position();
+  497|       |                    if extra_bytes == 0 {
+  498|       |                        trace!(?extra_bytes, %msg, "finished message decoding");
+  499|       |                    } else {
+  500|       |                        // log when there are extra bytes, so we know when we need to
+  501|       |                        // upgrade message formats
+  502|       |                        debug!(?extra_bytes, %msg, "extra data after decoding message");
+  503|       |                    }
+  504|       |                    Some(msg)
+  505|       |                })
+  506|       |            }
+  507|       |        }
+  508|  18.6k|    }
+_RINvMs1_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB6_5Codec10write_bodyQINtNtNtCs1BtjAVEWbxG_5bytes3buf6writer6WriterQNtNtB1y_9bytes_mut8BytesMutEEBc_:
+  217|    926|    fn write_body<W: Write>(&self, msg: &Message, mut writer: W) -> Result<(), Error> {
+  218|    926|        match msg {
+  219|       |            Message::Version(VersionMessage {
+  220|      0|                version,
+  221|      0|                services,
+  222|      0|                timestamp,
+  223|      0|                address_recv,
+  224|      0|                address_from,
+  225|      0|                nonce,
+  226|      0|                user_agent,
+  227|      0|                start_height,
+  228|      0|                relay,
+  229|       |            }) => {
+  230|      0|                writer.write_u32::<LittleEndian>(version.0)?;
+  231|      0|                writer.write_u64::<LittleEndian>(services.bits())?;
+  232|       |                // # Security
+  233|       |                // DateTime<Utc>::timestamp has a smaller range than i64, so
+  234|       |                // serialization can not error.
+  235|      0|                writer.write_i64::<LittleEndian>(timestamp.timestamp())?;
+  236|       |
+  237|      0|                address_recv.zcash_serialize(&mut writer)?;
+  238|      0|                address_from.zcash_serialize(&mut writer)?;
+  239|       |
+  240|      0|                writer.write_u64::<LittleEndian>(nonce.0)?;
+  241|       |
+  242|      0|                if user_agent.len() > MAX_USER_AGENT_LENGTH {
+  243|       |                    // zcashd won't accept this version message
+  244|      0|                    return Err(Error::Parse(
+  245|      0|                        "user agent too long: must be 256 bytes or less",
+  246|      0|                    ));
+  247|      0|                }
+  248|       |
+  249|      0|                user_agent.zcash_serialize(&mut writer)?;
+  250|      0|                writer.write_u32::<LittleEndian>(start_height.0)?;
+  251|      0|                writer.write_u8(*relay as u8)?;
+  252|       |            }
+  253|      0|            Message::Verack => { /* Empty payload -- no-op */ }
+  254|      0|            Message::Ping(nonce) => {
+  255|      0|                writer.write_u64::<LittleEndian>(nonce.0)?;
+  256|       |            }
+  257|      0|            Message::Pong(nonce) => {
+  258|      0|                writer.write_u64::<LittleEndian>(nonce.0)?;
+  259|       |            }
+  260|       |            Message::Reject {
+  261|      0|                message,
+  262|      0|                ccode,
+  263|      0|                reason,
+  264|      0|                data,
+  265|       |            } => {
+  266|      0|                if message.len() > MAX_REJECT_MESSAGE_LENGTH {
+  267|       |                    // zcashd won't accept this reject message
+  268|      0|                    return Err(Error::Parse(
+  269|      0|                        "reject message too long: must be 12 bytes or less",
+  270|      0|                    ));
+  271|      0|                }
+  272|       |
+  273|      0|                message.zcash_serialize(&mut writer)?;
+  274|       |
+  275|      0|                writer.write_u8(*ccode as u8)?;
+  276|       |
+  277|      0|                if reason.len() > MAX_REJECT_REASON_LENGTH {
+  278|      0|                    return Err(Error::Parse(
+  279|      0|                        "reject reason too long: must be 111 bytes or less",
+  280|      0|                    ));
+  281|      0|                }
+  282|       |
+  283|      0|                reason.zcash_serialize(&mut writer)?;
+  284|      0|                if let Some(data) = data {
+  285|      0|                    writer.write_all(data)?;
+  286|      0|                }
+  287|       |            }
+  288|    926|            Message::Addr(addrs) => {
+  289|    926|                assert!(
+  290|    926|                    addrs.len() <= constants::MAX_ADDRS_IN_MESSAGE,
+  291|      0|                    "unexpectedly large Addr message: greater than MAX_ADDRS_IN_MESSAGE addresses"
+  292|       |                );
+  293|       |
+  294|       |                // Regardless of the way we received the address,
+  295|       |                // Zebra always sends `addr` messages
+  296|    926|                let v1_addrs: Vec<AddrV1> = addrs.iter().map(|addr| AddrV1::from(*addr)).collect();
+  297|    926|                v1_addrs.zcash_serialize(&mut writer)?
+  298|       |            }
+  299|      0|            Message::GetAddr => { /* Empty payload -- no-op */ }
+  300|      0|            Message::Block(block) => block.zcash_serialize(&mut writer)?,
+  301|      0|            Message::GetBlocks { known_blocks, stop } => {
+  302|      0|                writer.write_u32::<LittleEndian>(self.builder.version.0)?;
+  303|      0|                known_blocks.zcash_serialize(&mut writer)?;
+  304|      0|                stop.unwrap_or(block::Hash([0; 32]))
+  305|      0|                    .zcash_serialize(&mut writer)?;
+  306|       |            }
+  307|      0|            Message::GetHeaders { known_blocks, stop } => {
+  308|      0|                writer.write_u32::<LittleEndian>(self.builder.version.0)?;
+  309|      0|                known_blocks.zcash_serialize(&mut writer)?;
+  310|      0|                stop.unwrap_or(block::Hash([0; 32]))
+  311|      0|                    .zcash_serialize(&mut writer)?;
+  312|       |            }
+  313|      0|            Message::Headers(headers) => headers.zcash_serialize(&mut writer)?,
+  314|      0|            Message::Inv(hashes) => hashes.zcash_serialize(&mut writer)?,
+  315|      0|            Message::GetData(hashes) => hashes.zcash_serialize(&mut writer)?,
+  316|      0|            Message::NotFound(hashes) => hashes.zcash_serialize(&mut writer)?,
+  317|      0|            Message::Tx(transaction) => transaction.transaction.zcash_serialize(&mut writer)?,
+  318|      0|            Message::Mempool => { /* Empty payload -- no-op */ }
+  319|       |            Message::FilterLoad {
+  320|      0|                filter,
+  321|      0|                hash_functions_count,
+  322|      0|                tweak,
+  323|      0|                flags,
+  324|       |            } => {
+  325|      0|                writer.write_all(&filter.0)?;
+  326|      0|                writer.write_u32::<LittleEndian>(*hash_functions_count)?;
+  327|      0|                writer.write_u32::<LittleEndian>(tweak.0)?;
+  328|      0|                writer.write_u8(*flags)?;
+  329|       |            }
+  330|      0|            Message::FilterAdd { data } => {
+  331|      0|                writer.write_all(data)?;
+  332|       |            }
+  333|      0|            Message::FilterClear => { /* Empty payload -- no-op */ }
+  334|       |        }
+  335|    926|        Ok(())
+  336|    926|    }
+_RINvMs1_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB6_5Codec10write_bodyQNtNtNtCsc4HhLwrPL7g_11zebra_chain13serialization15zcash_serialize10FakeWriterEBc_:
+  217|    926|    fn write_body<W: Write>(&self, msg: &Message, mut writer: W) -> Result<(), Error> {
+  218|    926|        match msg {
+  219|       |            Message::Version(VersionMessage {
+  220|      0|                version,
+  221|      0|                services,
+  222|      0|                timestamp,
+  223|      0|                address_recv,
+  224|      0|                address_from,
+  225|      0|                nonce,
+  226|      0|                user_agent,
+  227|      0|                start_height,
+  228|      0|                relay,
+  229|       |            }) => {
+  230|      0|                writer.write_u32::<LittleEndian>(version.0)?;
+  231|      0|                writer.write_u64::<LittleEndian>(services.bits())?;
+  232|       |                // # Security
+  233|       |                // DateTime<Utc>::timestamp has a smaller range than i64, so
+  234|       |                // serialization can not error.
+  235|      0|                writer.write_i64::<LittleEndian>(timestamp.timestamp())?;
+  236|       |
+  237|      0|                address_recv.zcash_serialize(&mut writer)?;
+  238|      0|                address_from.zcash_serialize(&mut writer)?;
+  239|       |
+  240|      0|                writer.write_u64::<LittleEndian>(nonce.0)?;
+  241|       |
+  242|      0|                if user_agent.len() > MAX_USER_AGENT_LENGTH {
+  243|       |                    // zcashd won't accept this version message
+  244|      0|                    return Err(Error::Parse(
+  245|      0|                        "user agent too long: must be 256 bytes or less",
+  246|      0|                    ));
+  247|      0|                }
+  248|       |
+  249|      0|                user_agent.zcash_serialize(&mut writer)?;
+  250|      0|                writer.write_u32::<LittleEndian>(start_height.0)?;
+  251|      0|                writer.write_u8(*relay as u8)?;
+  252|       |            }
+  253|      0|            Message::Verack => { /* Empty payload -- no-op */ }
+  254|      0|            Message::Ping(nonce) => {
+  255|      0|                writer.write_u64::<LittleEndian>(nonce.0)?;
+  256|       |            }
+  257|      0|            Message::Pong(nonce) => {
+  258|      0|                writer.write_u64::<LittleEndian>(nonce.0)?;
+  259|       |            }
+  260|       |            Message::Reject {
+  261|      0|                message,
+  262|      0|                ccode,
+  263|      0|                reason,
+  264|      0|                data,
+  265|       |            } => {
+  266|      0|                if message.len() > MAX_REJECT_MESSAGE_LENGTH {
+  267|       |                    // zcashd won't accept this reject message
+  268|      0|                    return Err(Error::Parse(
+  269|      0|                        "reject message too long: must be 12 bytes or less",
+  270|      0|                    ));
+  271|      0|                }
+  272|       |
+  273|      0|                message.zcash_serialize(&mut writer)?;
+  274|       |
+  275|      0|                writer.write_u8(*ccode as u8)?;
+  276|       |
+  277|      0|                if reason.len() > MAX_REJECT_REASON_LENGTH {
+  278|      0|                    return Err(Error::Parse(
+  279|      0|                        "reject reason too long: must be 111 bytes or less",
+  280|      0|                    ));
+  281|      0|                }
+  282|       |
+  283|      0|                reason.zcash_serialize(&mut writer)?;
+  284|      0|                if let Some(data) = data {
+  285|      0|                    writer.write_all(data)?;
+  286|      0|                }
+  287|       |            }
+  288|    926|            Message::Addr(addrs) => {
+  289|    926|                assert!(
+  290|    926|                    addrs.len() <= constants::MAX_ADDRS_IN_MESSAGE,
+  291|      0|                    "unexpectedly large Addr message: greater than MAX_ADDRS_IN_MESSAGE addresses"
+  292|       |                );
+  293|       |
+  294|       |                // Regardless of the way we received the address,
+  295|       |                // Zebra always sends `addr` messages
+  296|    926|                let v1_addrs: Vec<AddrV1> = addrs.iter().map(|addr| AddrV1::from(*addr)).collect();
+  297|    926|                v1_addrs.zcash_serialize(&mut writer)?
+  298|       |            }
+  299|      0|            Message::GetAddr => { /* Empty payload -- no-op */ }
+  300|      0|            Message::Block(block) => block.zcash_serialize(&mut writer)?,
+  301|      0|            Message::GetBlocks { known_blocks, stop } => {
+  302|      0|                writer.write_u32::<LittleEndian>(self.builder.version.0)?;
+  303|      0|                known_blocks.zcash_serialize(&mut writer)?;
+  304|      0|                stop.unwrap_or(block::Hash([0; 32]))
+  305|      0|                    .zcash_serialize(&mut writer)?;
+  306|       |            }
+  307|      0|            Message::GetHeaders { known_blocks, stop } => {
+  308|      0|                writer.write_u32::<LittleEndian>(self.builder.version.0)?;
+  309|      0|                known_blocks.zcash_serialize(&mut writer)?;
+  310|      0|                stop.unwrap_or(block::Hash([0; 32]))
+  311|      0|                    .zcash_serialize(&mut writer)?;
+  312|       |            }
+  313|      0|            Message::Headers(headers) => headers.zcash_serialize(&mut writer)?,
+  314|      0|            Message::Inv(hashes) => hashes.zcash_serialize(&mut writer)?,
+  315|      0|            Message::GetData(hashes) => hashes.zcash_serialize(&mut writer)?,
+  316|      0|            Message::NotFound(hashes) => hashes.zcash_serialize(&mut writer)?,
+  317|      0|            Message::Tx(transaction) => transaction.transaction.zcash_serialize(&mut writer)?,
+  318|      0|            Message::Mempool => { /* Empty payload -- no-op */ }
+  319|       |            Message::FilterLoad {
+  320|      0|                filter,
+  321|      0|                hash_functions_count,
+  322|      0|                tweak,
+  323|      0|                flags,
+  324|       |            } => {
+  325|      0|                writer.write_all(&filter.0)?;
+  326|      0|                writer.write_u32::<LittleEndian>(*hash_functions_count)?;
+  327|      0|                writer.write_u32::<LittleEndian>(tweak.0)?;
+  328|      0|                writer.write_u8(*flags)?;
+  329|       |            }
+  330|      0|            Message::FilterAdd { data } => {
+  331|      0|                writer.write_all(data)?;
+  332|       |            }
+  333|      0|            Message::FilterClear => { /* Empty payload -- no-op */ }
+  334|       |        }
+  335|    926|        Ok(())
+  336|    926|    }
+_RINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB6_5Codec10read_blockQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEBc_:
+  670|      3|    fn read_block<R: Read + std::marker::Send>(&self, reader: R) -> Result<Message, Error> {
+  671|      3|        let result = Self::deserialize_block_spawning(reader);
+  672|      3|        Ok(Message::Block(result?.into()))
+  673|      3|    }
+_RINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB6_5Codec11read_addrv2QINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEBc_:
+  648|     69|    pub(super) fn read_addrv2<R: Read>(&self, reader: R) -> Result<Message, Error> {
+  649|     69|        let addrs: Vec<AddrV2> = reader.zcash_deserialize_into()?;
+  650|       |
+  651|     67|        if addrs.len() > constants::MAX_ADDRS_IN_MESSAGE {
+  652|      0|            return Err(Error::Parse(
+  653|      0|                "more than MAX_ADDRS_IN_MESSAGE in addrv2 message",
+  654|      0|            ));
+  655|     67|        }
+  656|       |
+  657|       |        // Convert the received address format to Zebra's internal `MetaAddr`,
+  658|       |        // ignoring unsupported network IDs.
+  659|     67|        let addrs = addrs
+  660|     67|            .into_iter()
+  661|     67|            .filter_map(|addr| addr.try_into().ok())
+  662|     67|            .collect();
+  663|     67|        Ok(Message::Addr(addrs))
+  664|     69|    }
+_RINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB6_5Codec11read_rejectQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEBc_:
+  573|      5|    fn read_reject<R: Read>(&self, mut reader: R) -> Result<Message, Error> {
+  574|       |        Ok(Message::Reject {
+  575|       |            message: {
+  576|      5|                let byte_count: CompactSizeMessage = (&mut reader).zcash_deserialize_into()?;
+  577|      4|                let byte_count: usize = byte_count.into();
+  578|       |
+  579|       |                // # Security
+  580|       |                //
+  581|       |                // Limit log size on disk, Zebra might print large reject messages to disk.
+  582|      4|                if byte_count > MAX_REJECT_MESSAGE_LENGTH {
+  583|      1|                    return Err(Error::Parse(
+  584|      1|                        "reject message too long: must be 12 bytes or less",
+  585|      1|                    ));
+  586|      3|                }
+  587|       |
+  588|      3|                zcash_deserialize_string_external_count(byte_count, &mut reader)?
+  589|       |            },
+  590|      2|            ccode: match reader.read_u8()? {
+  591|      0|                0x01 => RejectReason::Malformed,
+  592|      0|                0x10 => RejectReason::Invalid,
+  593|      0|                0x11 => RejectReason::Obsolete,
+  594|      0|                0x12 => RejectReason::Duplicate,
+  595|      0|                0x40 => RejectReason::Nonstandard,
+  596|      0|                0x41 => RejectReason::Dust,
+  597|      0|                0x42 => RejectReason::InsufficientFee,
+  598|      0|                0x43 => RejectReason::Checkpoint,
+  599|      0|                0x50 => RejectReason::Other,
+  600|      0|                _ => return Err(Error::Parse("invalid RejectReason value in ccode field")),
+  601|       |            },
+  602|       |            reason: {
+  603|      0|                let byte_count: CompactSizeMessage = (&mut reader).zcash_deserialize_into()?;
+  604|      0|                let byte_count: usize = byte_count.into();
+  605|       |
+  606|       |                // # Security
+  607|       |                //
+  608|       |                // Limit log size on disk, Zebra might print large reject messages to disk.
+  609|      0|                if byte_count > MAX_REJECT_REASON_LENGTH {
+  610|      0|                    return Err(Error::Parse(
+  611|      0|                        "reject reason too long: must be 111 bytes or less",
+  612|      0|                    ));
+  613|      0|                }
+  614|       |
+  615|      0|                zcash_deserialize_string_external_count(byte_count, &mut reader)?
+  616|       |            },
+  617|       |            // Sometimes there's data, sometimes there isn't. There's no length
+  618|       |            // field, this is just implicitly encoded by the body_len.
+  619|       |            // Apparently all existing implementations only supply 32 bytes of
+  620|       |            // data (hash identifying the rejected object) or none (and we model
+  621|       |            // the Reject message that way), so instead of passing in the
+  622|       |            // body_len separately and calculating remaining bytes, just try to
+  623|       |            // read 32 bytes and ignore any failures. (The caller will log and
+  624|       |            // ignore any trailing bytes.)
+  625|      0|            data: reader.read_32_bytes().ok(),
+  626|       |        })
+  627|      5|    }
+_RINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB6_5Codec11read_verackQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEBc_:
+  561|     34|    fn read_verack<R: Read>(&self, mut _reader: R) -> Result<Message, Error> {
+  562|     34|        Ok(Message::Verack)
+  563|     34|    }
+_RINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB6_5Codec12read_getaddrQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEBc_:
+  666|  5.52k|    fn read_getaddr<R: Read>(&self, mut _reader: R) -> Result<Message, Error> {
+  667|  5.52k|        Ok(Message::GetAddr)
+  668|  5.52k|    }
+_RINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB6_5Codec12read_getdataQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEBc_:
+  730|     68|    fn read_getdata<R: Read>(&self, reader: R) -> Result<Message, Error> {
+  731|     68|        Ok(Message::GetData(Vec::zcash_deserialize(reader)?))
+  732|     68|    }
+_RINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB6_5Codec12read_headersQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEBc_:
+  695|     69|    fn read_headers<R: Read>(&self, mut reader: R) -> Result<Message, Error> {
+  696|       |        // CompactSizeMessage is bounded to MAX_PROTOCOL_MESSAGE_LEN on deserialization.
+  697|     69|        let count: CompactSizeMessage = (&mut reader).zcash_deserialize_into()?;
+  698|       |        // Infallible: CompactSizeMessage wraps u32, which always fits in usize.
+  699|     68|        let count: usize = count.into();
+  700|     68|        if count > MAX_HEADERS_PER_MESSAGE {
+  701|      1|            return Err(Error::Parse(
+  702|      1|                "headers message exceeds the protocol limit of 160 entries",
+  703|      1|            ));
+  704|     67|        }
+  705|     67|        Ok(Message::Headers(zcash_deserialize_external_count(
+  706|     67|            count,
+  707|     67|            &mut reader,
+  708|      1|        )?))
+  709|     69|    }
+_RINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB6_5Codec13read_notfoundQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEBc_:
+  734|     19|    fn read_notfound<R: Read>(&self, reader: R) -> Result<Message, Error> {
+  735|     19|        Ok(Message::NotFound(Vec::zcash_deserialize(reader)?))
+  736|     19|    }
+_RINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB6_5Codec14read_filteraddQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEBc_:
+  775|    179|    fn read_filteradd<R: Read>(&self, mut reader: R, body_len: usize) -> Result<Message, Error> {
+  776|       |        const MAX_FILTERADD_LENGTH: usize = 520;
+  777|       |
+  778|       |        // Memory Denial of Service: limit the untrusted parsed length
+  779|    179|        let filter_length: usize = min(body_len, MAX_FILTERADD_LENGTH);
+  780|    179|        let filter_bytes = zcash_deserialize_bytes_external_count(filter_length, &mut reader)?;
+  781|       |
+  782|    179|        Ok(Message::FilterAdd { data: filter_bytes })
+  783|    179|    }
+_RINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB6_5Codec14read_getblocksQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEBc_:
+  675|      1|    fn read_getblocks<R: Read>(&self, mut reader: R) -> Result<Message, Error> {
+  676|      1|        if self.builder.version == Version(reader.read_u32::<LittleEndian>()?) {
+  677|      0|            let known_blocks = Vec::zcash_deserialize(&mut reader)?;
+  678|      0|            let stop_hash = block::Hash::zcash_deserialize(&mut reader)?;
+  679|      0|            let stop = if stop_hash != block::Hash([0; 32]) {
+  680|      0|                Some(stop_hash)
+  681|       |            } else {
+  682|      0|                None
+  683|       |            };
+  684|      0|            Ok(Message::GetBlocks { known_blocks, stop })
+  685|       |        } else {
+  686|      0|            Err(Error::Parse("getblocks version did not match negotiation"))
+  687|       |        }
+  688|      1|    }
+_RINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB6_5Codec15read_filterloadQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEBc_:
+  747|      1|    fn read_filterload<R: Read>(&self, mut reader: R, body_len: usize) -> Result<Message, Error> {
+  748|       |        // The maximum length of a filter.
+  749|       |        const MAX_FILTERLOAD_FILTER_LENGTH: usize = 36000;
+  750|       |
+  751|       |        // The data length of the fields:
+  752|       |        // hash_functions_count + tweak + flags.
+  753|       |        const FILTERLOAD_FIELDS_LENGTH: usize = 4 + 4 + 1;
+  754|       |
+  755|       |        // The maximum length of a filter message's data.
+  756|       |        const MAX_FILTERLOAD_MESSAGE_LENGTH: usize =
+  757|       |            MAX_FILTERLOAD_FILTER_LENGTH + FILTERLOAD_FIELDS_LENGTH;
+  758|       |
+  759|      1|        if !(FILTERLOAD_FIELDS_LENGTH..=MAX_FILTERLOAD_MESSAGE_LENGTH).contains(&body_len) {
+  760|      1|            return Err(Error::Parse("Invalid filterload message body length."));
+  761|      0|        }
+  762|       |
+  763|       |        // Memory Denial of Service: we just checked the untrusted parsed length
+  764|      0|        let filter_length: usize = body_len - FILTERLOAD_FIELDS_LENGTH;
+  765|      0|        let filter_bytes = zcash_deserialize_bytes_external_count(filter_length, &mut reader)?;
+  766|       |
+  767|       |        Ok(Message::FilterLoad {
+  768|      0|            filter: Filter(filter_bytes),
+  769|      0|            hash_functions_count: reader.read_u32::<LittleEndian>()?,
+  770|      0|            tweak: Tweak(reader.read_u32::<LittleEndian>()?),
+  771|      0|            flags: reader.read_u8()?,
+  772|       |        })
+  773|      1|    }
+_RINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB6_5Codec15read_getheadersQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEBc_:
+  711|      1|    fn read_getheaders<R: Read>(&self, mut reader: R) -> Result<Message, Error> {
+  712|      1|        if self.builder.version == Version(reader.read_u32::<LittleEndian>()?) {
+  713|      0|            let known_blocks = Vec::zcash_deserialize(&mut reader)?;
+  714|      0|            let stop_hash = block::Hash::zcash_deserialize(&mut reader)?;
+  715|      0|            let stop = if stop_hash != block::Hash([0; 32]) {
+  716|      0|                Some(stop_hash)
+  717|       |            } else {
+  718|      0|                None
+  719|       |            };
+  720|      0|            Ok(Message::GetHeaders { known_blocks, stop })
+  721|       |        } else {
+  722|      0|            Err(Error::Parse("getblocks version did not match negotiation"))
+  723|       |        }
+  724|      1|    }
+_RINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB6_5Codec16read_filterclearQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEBc_:
+  785|     18|    fn read_filterclear<R: Read>(&self, mut _reader: R) -> Result<Message, Error> {
+  786|     18|        Ok(Message::FilterClear)
+  787|     18|    }
+_RINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB6_5Codec26deserialize_block_spawningQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEBc_:
+  815|      3|    fn deserialize_block_spawning<R: Read + std::marker::Send>(reader: R) -> Result<Block, Error> {
+  816|      3|        let mut result = None;
+  817|       |
+  818|       |        // Correctness: Do CPU-intensive work on a dedicated thread, to avoid blocking other futures.
+  819|       |        //
+  820|       |        // Since we use `block_in_place()`, other futures running on the connection task will be blocked:
+  821|       |        // https://docs.rs/tokio/latest/tokio/task/fn.block_in_place.html
+  822|       |        //
+  823|       |        // We can't use `spawn_blocking()` because:
+  824|       |        // - The `reader` has a lifetime (but we could replace it with a `Vec` of message data)
+  825|       |        // - There is no way to check the blocking task's future for panics
+  826|      3|        tokio::task::block_in_place(|| {
+  827|       |            rayon::in_place_scope_fifo(|s| {
+  828|       |                s.spawn_fifo(|_s| result = Some(Block::zcash_deserialize(reader)))
+  829|       |            })
+  830|       |        });
+  831|       |
+  832|      3|        result.expect("scope has already finished")
+  833|      3|    }
+_RINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB6_5Codec32deserialize_transaction_spawningQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEBc_:
+  791|    470|    fn deserialize_transaction_spawning<R: Read + std::marker::Send>(
+  792|    470|        reader: R,
+  793|    470|    ) -> Result<Transaction, Error> {
+  794|    470|        let mut result = None;
+  795|       |
+  796|       |        // Correctness: Do CPU-intensive work on a dedicated thread, to avoid blocking other futures.
+  797|       |        //
+  798|       |        // Since we use `block_in_place()`, other futures running on the connection task will be blocked:
+  799|       |        // https://docs.rs/tokio/latest/tokio/task/fn.block_in_place.html
+  800|       |        //
+  801|       |        // We can't use `spawn_blocking()` because:
+  802|       |        // - The `reader` has a lifetime (but we could replace it with a `Vec` of message data)
+  803|       |        // - There is no way to check the blocking task's future for panics
+  804|    470|        tokio::task::block_in_place(|| {
+  805|       |            rayon::in_place_scope_fifo(|s| {
+  806|       |                s.spawn_fifo(|_s| result = Some(Transaction::zcash_deserialize(reader)))
+  807|       |            })
+  808|       |        });
+  809|       |
+  810|    470|        result.expect("scope has already finished")
+  811|    470|    }
+_RINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB6_5Codec7read_txQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEBc_:
+  738|    470|    fn read_tx<R: Read + std::marker::Send>(&self, reader: R) -> Result<Message, Error> {
+  739|    470|        let result = Self::deserialize_transaction_spawning(reader);
+  740|    470|        Ok(Message::Tx(result?.into()))
+  741|    470|    }
+_RINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB6_5Codec8read_invQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEBc_:
+  726|     68|    fn read_inv<R: Read>(&self, reader: R) -> Result<Message, Error> {
+  727|     68|        Ok(Message::Inv(Vec::zcash_deserialize(reader)?))
+  728|     68|    }
+_RINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB6_5Codec9read_addrQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEBc_:
+  630|  1.79k|    pub(super) fn read_addr<R: Read>(&self, reader: R) -> Result<Message, Error> {
+  631|  1.79k|        let addrs: Vec<AddrV1> = reader.zcash_deserialize_into()?;
+  632|       |
+  633|  1.78k|        if addrs.len() > constants::MAX_ADDRS_IN_MESSAGE {
+  634|      0|            return Err(Error::Parse(
+  635|      0|                "more than MAX_ADDRS_IN_MESSAGE in addr message",
+  636|      0|            ));
+  637|  1.78k|        }
+  638|       |
+  639|       |        // Convert the received address format to Zebra's internal `MetaAddr`.
+  640|  1.78k|        let addrs = addrs.into_iter().map(Into::into).collect();
+  641|  1.78k|        Ok(Message::Addr(addrs))
+  642|  1.79k|    }
+_RINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB6_5Codec9read_pingQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEBc_:
+  565|      1|    fn read_ping<R: Read>(&self, mut reader: R) -> Result<Message, Error> {
+  566|      1|        Ok(Message::Ping(Nonce(reader.read_u64::<LittleEndian>()?)))
+  567|      1|    }
+_RINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB6_5Codec9read_pongQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEBc_:
+  569|      1|    fn read_pong<R: Read>(&self, mut reader: R) -> Result<Message, Error> {
+  570|      1|        Ok(Message::Pong(Nonce(reader.read_u64::<LittleEndian>()?)))
+  571|      1|    }
+_RNCINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB8_5Codec26deserialize_block_spawningQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEE0Be_:
+  826|      3|        tokio::task::block_in_place(|| {
+  827|      3|            rayon::in_place_scope_fifo(|s| {
+  828|       |                s.spawn_fifo(|_s| result = Some(Block::zcash_deserialize(reader)))
+  829|       |            })
+  830|      3|        });
+_RNCINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB8_5Codec32deserialize_transaction_spawningQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEE0Be_:
+  804|    470|        tokio::task::block_in_place(|| {
+  805|    470|            rayon::in_place_scope_fifo(|s| {
+  806|       |                s.spawn_fifo(|_s| result = Some(Transaction::zcash_deserialize(reader)))
+  807|       |            })
+  808|    470|        });
+_RNCNCINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtBa_5Codec26deserialize_block_spawningQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEE00Bg_:
+  827|      3|            rayon::in_place_scope_fifo(|s| {
+  828|      3|                s.spawn_fifo(|_s| result = Some(Block::zcash_deserialize(reader)))
+  829|      3|            })
+_RNCNCINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtBa_5Codec32deserialize_transaction_spawningQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEE00Bg_:
+  805|    470|            rayon::in_place_scope_fifo(|s| {
+  806|    470|                s.spawn_fifo(|_s| result = Some(Transaction::zcash_deserialize(reader)))
+  807|    470|            })
+_RNCNCNCINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtBc_5Codec26deserialize_block_spawningQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEE000Bi_:
+  828|      3|                s.spawn_fifo(|_s| result = Some(Block::zcash_deserialize(reader)))
+_RNCNCNCINvMs4_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtBc_5Codec32deserialize_transaction_spawningQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEE000Bi_:
+  806|    470|                s.spawn_fifo(|_s| result = Some(Transaction::zcash_deserialize(reader)))
+_RNCNvXs3_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external5codecNtB7_5CodecNtNtNtCsctVTX4T4XeJ_10tokio_util5codec7decoder7Decoder6decode0Bd_:
+  492|  7.82k|                .map(|msg| {
+  493|       |                    // bitcoin allows extra data at the end of most messages,
+  494|       |                    // so that old nodes can still read newer message formats,
+  495|       |                    // and ignore any extra fields
+  496|  7.82k|                    let extra_bytes = body.len() as u64 - body_reader.position();
+  497|  7.82k|                    if extra_bytes == 0 {
+  498|  7.82k|                        trace!(?extra_bytes, %msg, "finished message decoding");
+  499|       |                    } else {
+  500|       |                        // log when there are extra bytes, so we know when we need to
+  501|       |                        // upgrade message formats
+  502|      0|                        debug!(?extra_bytes, %msg, "extra data after decoding message");
+  503|       |                    }
+  504|  7.82k|                    Some(msg)
+  505|  7.82k|                })
+
+_RINvXs5_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external3invNtB6_13InventoryHashNtNtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserialize16ZcashDeserialize17zcash_deserializeQQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRNtNtCs1BtjAVEWbxG_5bytes9bytes_mut8BytesMutEEBc_:
+  158|      1|    fn zcash_deserialize<R: Read>(mut reader: R) -> Result<Self, SerializationError> {
+  159|      1|        let code = reader.read_u32::<LittleEndian>()?;
+  160|      0|        match code {
+  161|       |            0 => {
+  162|       |                // ignore the standard 32-byte error code
+  163|      0|                let _bytes = reader.read_32_bytes()?;
+  164|      0|                Ok(InventoryHash::Error)
+  165|       |            }
+  166|       |
+  167|      0|            1 => Ok(InventoryHash::Tx(reader.zcash_deserialize_into()?)),
+  168|      0|            2 => Ok(InventoryHash::Block(reader.zcash_deserialize_into()?)),
+  169|       |            3 => Ok(InventoryHash::FilteredBlock(
+  170|      0|                reader.zcash_deserialize_into()?,
+  171|       |            )),
+  172|      0|            5 => Ok(InventoryHash::Wtx(reader.zcash_deserialize_into()?)),
+  173|       |
+  174|      0|            _ => Err(SerializationError::Parse("invalid inventory code")),
+  175|       |        }
+  176|      1|    }
+_RNvXs6_NtNtNtCs9luMEzl4jni_13zebra_network8protocol8external3invNtB5_13InventoryHashNtNtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserialize18TrustedPreallocate14max_allocation:
+  204|    151|    fn max_allocation() -> u64 {
+  205|       |        // An Inventory hash takes at least 36 bytes, and we reserve at least one byte for the
+  206|       |        // Vector length so we can never receive more than ((MAX_PROTOCOL_MESSAGE_LEN - 1) / 36) in
+  207|       |        // a single message
+  208|    151|        let message_size_limit = ((MAX_PROTOCOL_MESSAGE_LEN - 1) / MIN_INV_HASH_SIZE) as u64;
+  209|       |
+  210|    151|        min(message_size_limit, MAX_INV_IN_RECEIVED_MESSAGE)
+  211|    151|    }
+

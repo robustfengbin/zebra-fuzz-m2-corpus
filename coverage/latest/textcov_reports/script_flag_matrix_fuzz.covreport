@@ -7,3 +7,90 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+_RNCNvNvCsi8vlsJrd3gw_23script_flag_matrix_fuzz1__19___libfuzzer_sys_runs0_0B5_:
+  211|  3.18k|    let rust_result = panic::catch_unwind(AssertUnwindSafe(|| {
+  212|       |        use zcash_script::interpreter::NullSignatureChecker;
+  213|       |        // NullSignatureChecker::check_sig / check_lock_time always
+  214|       |        // return false (zcash_script-0.4.4/src/interpreter.rs:202-220)
+  215|       |        // — exactly the behaviour we want (sentinel sighash, no real
+  216|       |        // key material).
+  217|  3.18k|        let interp = RustInterpreter::new(NullSignatureChecker());
+  218|  3.18k|        interp.verify_callback(&raw, flags)
+  219|  3.18k|    }));
+_RNCNvNvCsi8vlsJrd3gw_23script_flag_matrix_fuzz1__19___libfuzzer_sys_runs1_0B5_:
+  250|  3.18k|    let _ = panic::catch_unwind(AssertUnwindSafe(|| {
+  251|  3.18k|        let cxx = CxxInterpreter {
+  252|  3.18k|            sighash: sighash_cb,
+  253|  3.18k|            lock_time: 0,
+  254|  3.18k|            is_final: false,
+  255|  3.18k|        };
+  256|  3.18k|        let base = cxx.verify_callback(&raw, base_flags);
+  257|  3.18k|        let strict_run = cxx.verify_callback(&raw, strict_flags);
+  258|       |
+  259|       |        // Monotonicity: if base failed (Err or Ok(false)), the strict
+  260|       |        // run cannot become Ok(true). A violation = candidate finding;
+  261|       |        // we deliberately do NOT panic — libfuzzer coverage is the
+  262|       |        // signal, and a panic would mask the real crash classes (FFI
+  263|       |        // SIGSEGV etc.) in the same artifact.
+  264|  3.18k|        let base_failed = !matches!(&base, Ok(true));
+  265|  3.18k|        let strict_succeeded = matches!(&strict_run, Ok(true));
+  266|  3.18k|        if base_failed && strict_succeeded {
+  267|      0|            // Observability marker: the branch existing in the binary
+  268|      0|            // gives libfuzzer a coverage edge to chase. We do not abort.
+  269|      0|            std::hint::black_box(&strict);
+  270|  3.18k|        }
+  271|  3.18k|    }));
+_RNCNvNvCsi8vlsJrd3gw_23script_flag_matrix_fuzz1__19___libfuzzer_sys_runs_0B5_:
+  196|  3.18k|    let cxx_result = panic::catch_unwind(AssertUnwindSafe(|| {
+  197|  3.18k|        let cxx = CxxInterpreter {
+  198|  3.18k|            sighash: sighash_cb,
+  199|  3.18k|            lock_time: 0,
+  200|  3.18k|            is_final: false,
+  201|  3.18k|        };
+  202|  3.18k|        cxx.verify_callback(&raw, flags)
+  203|  3.18k|    }));
+

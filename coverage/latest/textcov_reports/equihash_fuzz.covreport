@@ -24,3 +24,670 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+_RNCNvNvCs2x26UnJ6jX5_13equihash_fuzz1__19___libfuzzer_sys_run0B5_:
+   89|    664|    let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+   90|    664|        let _ = Solution::zcash_deserialize(Cursor::new(data));
+   91|    664|    }));
+_RNCNvNvCs2x26UnJ6jX5_13equihash_fuzz1__19___libfuzzer_sys_runs0_0B5_:
+  159|    650|        let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  160|       |            // (50, 3) — minimum sane.
+  161|    650|            let _ = equihash::is_valid_solution(50, 3, input_bytes, nonce_bytes, soln_bytes);
+  162|    650|        }));
+_RNCNvNvCs2x26UnJ6jX5_13equihash_fuzz1__19___libfuzzer_sys_runs1_0B5_:
+  163|    650|        let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  164|       |            // (96, 5) — upstream test-vector params.
+  165|    650|            let _ = equihash::is_valid_solution(96, 5, input_bytes, nonce_bytes, soln_bytes);
+  166|    650|        }));
+_RNCNvNvCs2x26UnJ6jX5_13equihash_fuzz1__19___libfuzzer_sys_runs2_0B5_:
+  176|     56|            let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  177|     56|                let _ = equihash::is_valid_solution(200, 9, input_bytes, nonce_bytes, soln_bytes);
+  178|     56|            }));
+_RNCNvNvCs2x26UnJ6jX5_13equihash_fuzz1__19___libfuzzer_sys_runs3_0B5_:
+  207|    596|    let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  208|    596|        let _ = header.solution.check(&header);
+  209|    596|    }));
+_RNCNvNvCs2x26UnJ6jX5_13equihash_fuzz1__19___libfuzzer_sys_runs4_0B5_:
+  220|    596|    let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  221|    596|        let _ = zebra_consensus::block::check::equihash_solution_is_valid(&header);
+  222|    596|    }));
+_RNCNvNvCs2x26UnJ6jX5_13equihash_fuzz1__19___libfuzzer_sys_runs5_0B5_:
+  239|    596|    let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  240|    596|        let mut buf = Vec::new();
+  241|    596|        if header.zcash_serialize(&mut buf).is_err() {
+  242|      0|            return;
+  243|    596|        }
+  244|    596|        let header2 = match Header::zcash_deserialize(Cursor::new(&buf)) {
+  245|    596|            Ok(h) => h,
+  246|      0|            Err(_) => return,
+  247|       |        };
+  248|    596|        let mut buf2 = Vec::new();
+  249|    596|        if header2.zcash_serialize(&mut buf2).is_err() {
+  250|      0|            return;
+  251|    596|        }
+  252|       |
+  253|       |        // Byte-level round-trip equality — the canonical asymmetry
+  254|       |        // detector. Mismatch = consensus-split candidate.
+  255|    596|        assert_eq!(
+  256|       |            buf, buf2,
+  257|      0|            "Header round-trip byte mismatch — consensus-split vector"
+  258|       |        );
+  259|       |
+  260|       |        // Hash equality — defence-in-depth. If buf == buf2 but
+  261|       |        // hash() differs, we have a hashing non-determinism
+  262|       |        // (different invocation = different output for the same
+  263|       |        // bytes), which is an even stronger finding.
+  264|    596|        assert_eq!(
+  265|    596|            header.hash(),
+  266|    596|            header2.hash(),
+  267|      0|            "Header hash non-determinism on identical round-tripped bytes"
+  268|       |        );
+  269|       |
+  270|       |        // Solution-field equality — the PoW slot specifically. If
+  271|       |        // header bytes match but solution differs (would imply
+  272|       |        // PartialEq lies), it is a consensus-split candidate inside
+  273|       |        // the equihash Solution type itself.
+  274|    596|        assert!(
+  275|    596|            header.solution == header2.solution,
+  276|      0|            "Solution PartialEq mismatch on round-tripped header — consensus-split vector"
+  277|       |        );
+  278|    596|    }));
+_RNCNvNvCs2x26UnJ6jX5_13equihash_fuzz1__19___libfuzzer_sys_runs6_0B5_:
+  295|    596|    let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  296|    596|        let r1 = header.solution.check(&header).is_ok();
+  297|    596|        let r2 = header.solution.check(&header).is_ok();
+  298|    596|        assert_eq!(
+  299|       |            r1, r2,
+  300|      0|            "Equihash verification non-determinism on identical header"
+  301|       |        );
+  302|    596|    }));
+_RNCNvNvCs2x26UnJ6jX5_13equihash_fuzz1__19___libfuzzer_sys_runs_0B5_:
+  107|    664|    let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  108|    664|        let _ = Solution::from_bytes(data);
+  109|    664|        if !data.is_empty() {
+  110|    664|            let _ = Solution::from_bytes(&data[..data.len() - 1]);
+  111|       |            // Length picked from first byte modulated to span the
+  112|       |            // {0, 36, 1344, garbage} regions.
+  113|    664|            let pick = match data[0] % 4 {
+  114|    614|                0 => 0,
+  115|     20|                1 => core::cmp::min(36, data.len()),
+  116|     20|                2 => core::cmp::min(1344, data.len()),
+  117|     10|                _ => core::cmp::min(data[0] as usize * 17, data.len()),
+  118|       |            };
+  119|    664|            let _ = Solution::from_bytes(&data[..pick]);
+  120|      0|        }
+  121|    664|    }));
+
+_RINvXsa_NtNtCsc4HhLwrPL7g_11zebra_chain5block4hashNtB6_4HashNtNtNtBa_13serialization17zcash_deserialize16ZcashDeserialize17zcash_deserializeQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRINtNtCshDtJu3Ru83O_5alloc3vec3VechEEECs2x26UnJ6jX5_13equihash_fuzz:
+  130|    596|    fn zcash_deserialize<R: io::Read>(mut reader: R) -> Result<Self, SerializationError> {
+  131|    596|        Ok(Hash(reader.read_32_bytes()?))
+  132|    596|    }
+_RINvXsa_NtNtCsc4HhLwrPL7g_11zebra_chain5block4hashNtB6_4HashNtNtNtBa_13serialization17zcash_deserialize16ZcashDeserialize17zcash_deserializeQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRShEECs2x26UnJ6jX5_13equihash_fuzz:
+  130|    647|    fn zcash_deserialize<R: io::Read>(mut reader: R) -> Result<Self, SerializationError> {
+  131|    647|        Ok(Hash(reader.read_32_bytes()?))
+  132|    647|    }
+_RNvXs5_NtNtCsc4HhLwrPL7g_11zebra_chain5block4hashNtB5_4HashINtNtCs6SNw0SRvItZ_4core7convert4FromRNtNtB7_6header6HeaderE4from:
+   89|  1.19k|    fn from(block_header: &'a Header) -> Self {
+   90|  1.19k|        let mut hash_writer = sha256d::Writer::default();
+   91|  1.19k|        block_header
+   92|  1.19k|            .zcash_serialize(&mut hash_writer)
+   93|  1.19k|            .expect("Sha256dWriter is infallible");
+   94|  1.19k|        Self(hash_writer.finish())
+   95|  1.19k|    }
+_RINvXs9_NtNtCsc4HhLwrPL7g_11zebra_chain5block4hashNtB6_4HashNtNtNtBa_13serialization15zcash_serialize14ZcashSerialize15zcash_serializeQQINtNtCshDtJu3Ru83O_5alloc3vec3VechEEBa_:
+  123|  3.57k|    fn zcash_serialize<W: io::Write>(&self, mut writer: W) -> Result<(), io::Error> {
+  124|  3.57k|        writer.write_all(&self.0)?;
+  125|  3.57k|        Ok(())
+  126|  3.57k|    }
+_RINvXs9_NtNtCsc4HhLwrPL7g_11zebra_chain5block4hashNtB6_4HashNtNtNtBa_13serialization15zcash_serialize14ZcashSerialize15zcash_serializeQQNtNtB10_7sha256d6WriterEBa_:
+  123|  1.19k|    fn zcash_serialize<W: io::Write>(&self, mut writer: W) -> Result<(), io::Error> {
+  124|  1.19k|        writer.write_all(&self.0)?;
+  125|  1.19k|        Ok(())
+  126|  1.19k|    }
+
+_RNvMNtNtCsc4HhLwrPL7g_11zebra_chain5block6headerNtB2_6Header4hash:
+  139|  1.19k|    pub fn hash(&self) -> Hash {
+  140|  1.19k|        Hash::from(self)
+  141|  1.19k|    }
+
+_RINvXs_NtNtCsc4HhLwrPL7g_11zebra_chain5block9serializeNtNtB7_6header6HeaderNtNtNtB9_13serialization17zcash_deserialize16ZcashDeserialize17zcash_deserializeINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRINtNtCshDtJu3Ru83O_5alloc3vec3VechEEECs2x26UnJ6jX5_13equihash_fuzz:
+   87|    596|    fn zcash_deserialize<R: io::Read>(mut reader: R) -> Result<Self, SerializationError> {
+   88|    596|        let version = reader.read_u32::<LittleEndian>()?;
+   89|    596|        check_version(version).map_err(SerializationError::Parse)?;
+   90|       |
+   91|       |        Ok(Header {
+   92|    596|            version,
+   93|    596|            previous_block_hash: Hash::zcash_deserialize(&mut reader)?,
+   94|    596|            merkle_root: merkle::Root(reader.read_32_bytes()?),
+   95|    596|            commitment_bytes: reader.read_32_bytes()?.into(),
+   96|       |            // This can't panic, because all u32 values are valid `Utc.timestamp`s
+   97|    596|            time: Utc
+   98|    596|                .timestamp_opt(reader.read_u32::<LittleEndian>()?.into(), 0)
+   99|    596|                .single()
+  100|    596|                .ok_or(SerializationError::Parse(
+  101|    596|                    "out-of-range number of seconds and/or invalid nanosecond",
+  102|    596|                ))?,
+  103|    596|            difficulty_threshold: CompactDifficulty(reader.read_u32::<LittleEndian>()?),
+  104|    596|            nonce: reader.read_32_bytes()?.into(),
+  105|    596|            solution: equihash::Solution::zcash_deserialize(reader)?,
+  106|       |        })
+  107|    596|    }
+_RINvXs_NtNtCsc4HhLwrPL7g_11zebra_chain5block9serializeNtNtB7_6header6HeaderNtNtNtB9_13serialization17zcash_deserialize16ZcashDeserialize17zcash_deserializeINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRShEECs2x26UnJ6jX5_13equihash_fuzz:
+   87|    664|    fn zcash_deserialize<R: io::Read>(mut reader: R) -> Result<Self, SerializationError> {
+   88|    664|        let version = reader.read_u32::<LittleEndian>()?;
+   89|    655|        check_version(version).map_err(SerializationError::Parse)?;
+   90|       |
+   91|       |        Ok(Header {
+   92|    647|            version,
+   93|    647|            previous_block_hash: Hash::zcash_deserialize(&mut reader)?,
+   94|    641|            merkle_root: merkle::Root(reader.read_32_bytes()?),
+   95|    635|            commitment_bytes: reader.read_32_bytes()?.into(),
+   96|       |            // This can't panic, because all u32 values are valid `Utc.timestamp`s
+   97|    634|            time: Utc
+   98|    634|                .timestamp_opt(reader.read_u32::<LittleEndian>()?.into(), 0)
+   99|    633|                .single()
+  100|    633|                .ok_or(SerializationError::Parse(
+  101|    633|                    "out-of-range number of seconds and/or invalid nanosecond",
+  102|    633|                ))?,
+  103|    633|            difficulty_threshold: CompactDifficulty(reader.read_u32::<LittleEndian>()?),
+  104|    631|            nonce: reader.read_32_bytes()?.into(),
+  105|    627|            solution: equihash::Solution::zcash_deserialize(reader)?,
+  106|       |        })
+  107|    664|    }
+_RNvNtNtCsc4HhLwrPL7g_11zebra_chain5block9serialize13check_version:
+   36|  6.01k|fn check_version(version: u32) -> Result<(), &'static str> {
+   37|  6.01k|    match version {
+   38|       |        // The Zcash specification says that:
+   39|       |        // "The current and only defined block version number for Zcash is 4."
+   40|       |        // but this is not actually part of the consensus rules, and in fact
+   41|       |        // broken mining software created blocks that do not have version 4.
+   42|       |        // There are approximately 4,000 blocks with version 536870912; this
+   43|       |        // is the bit-reversal of the value 4, indicating that mining pool
+   44|       |        // reversed bit-ordering of the version field. Because the version field
+   45|       |        // was not properly validated, these blocks were added to the chain.
+   46|       |        //
+   47|       |        // The only possible way to work around this is to do a similar hack
+   48|       |        // as the overwintered field in transaction parsing, which we do here:
+   49|       |        // treat the high bit (which zcashd interprets as a sign bit) as an
+   50|       |        // indicator that the version field is meaningful.
+   51|  6.01k|        version if version >> 31 != 0 => Err("high bit was set in version field"),
+   52|       |
+   53|       |        // # Consensus
+   54|       |        //
+   55|       |        // > The block version number MUST be greater than or equal to 4.
+   56|       |        //
+   57|       |        // https://zips.z.cash/protocol/protocol.pdf#blockheader
+   58|  6.01k|        version if version < ZCASH_BLOCK_VERSION => Err("version must be at least 4"),
+   59|       |
+   60|  6.01k|        _ => Ok(()),
+   61|       |    }
+   62|  6.01k|}
+_RINvXNtNtCsc4HhLwrPL7g_11zebra_chain5block9serializeNtNtB5_6header6HeaderNtNtNtB7_13serialization15zcash_serialize14ZcashSerialize15zcash_serializeQINtNtCshDtJu3Ru83O_5alloc3vec3VechEEB7_:
+   66|  3.57k|    fn zcash_serialize<W: io::Write>(&self, mut writer: W) -> Result<(), io::Error> {
+   67|  3.57k|        check_version(self.version).map_err(io::Error::other)?;
+   68|       |
+   69|  3.57k|        writer.write_u32::<LittleEndian>(self.version)?;
+   70|  3.57k|        self.previous_block_hash.zcash_serialize(&mut writer)?;
+   71|  3.57k|        writer.write_all(&self.merkle_root.0[..])?;
+   72|  3.57k|        writer.write_all(&self.commitment_bytes[..])?;
+   73|  3.57k|        writer.write_u32::<LittleEndian>(
+   74|  3.57k|            self.time
+   75|  3.57k|                .timestamp()
+   76|  3.57k|                .try_into()
+   77|  3.57k|                .expect("deserialized and generated timestamps are u32 values"),
+   78|      0|        )?;
+   79|  3.57k|        writer.write_u32::<LittleEndian>(self.difficulty_threshold.0)?;
+   80|  3.57k|        writer.write_all(&self.nonce[..])?;
+   81|  3.57k|        self.solution.zcash_serialize(&mut writer)?;
+   82|  3.57k|        Ok(())
+   83|  3.57k|    }
+_RINvXNtNtCsc4HhLwrPL7g_11zebra_chain5block9serializeNtNtB5_6header6HeaderNtNtNtB7_13serialization15zcash_serialize14ZcashSerialize15zcash_serializeQNtNtB1d_7sha256d6WriterEB7_:
+   66|  1.19k|    fn zcash_serialize<W: io::Write>(&self, mut writer: W) -> Result<(), io::Error> {
+   67|  1.19k|        check_version(self.version).map_err(io::Error::other)?;
+   68|       |
+   69|  1.19k|        writer.write_u32::<LittleEndian>(self.version)?;
+   70|  1.19k|        self.previous_block_hash.zcash_serialize(&mut writer)?;
+   71|  1.19k|        writer.write_all(&self.merkle_root.0[..])?;
+   72|  1.19k|        writer.write_all(&self.commitment_bytes[..])?;
+   73|  1.19k|        writer.write_u32::<LittleEndian>(
+   74|  1.19k|            self.time
+   75|  1.19k|                .timestamp()
+   76|  1.19k|                .try_into()
+   77|  1.19k|                .expect("deserialized and generated timestamps are u32 values"),
+   78|      0|        )?;
+   79|  1.19k|        writer.write_u32::<LittleEndian>(self.difficulty_threshold.0)?;
+   80|  1.19k|        writer.write_all(&self.nonce[..])?;
+   81|  1.19k|        self.solution.zcash_serialize(&mut writer)?;
+   82|  1.19k|        Ok(())
+   83|  1.19k|    }
+
+_RNvXsd_NtCsc4HhLwrPL7g_11zebra_chain3fmtINtB5_8HexDebugAhj20_ENtNtNtCs6SNw0SRvItZ_4core3ops5deref5Deref5derefB7_:
+  182|  11.9k|    fn deref(&self) -> &Self::Target {
+  183|  11.9k|        &self.0
+  184|  11.9k|    }
+_RNvXsf_NtCsc4HhLwrPL7g_11zebra_chain3fmtINtB5_8HexDebugAhj20_EINtNtCs6SNw0SRvItZ_4core7convert4FromBR_E4fromB7_:
+  194|  2.45k|    fn from(t: T) -> Self {
+  195|  2.45k|        Self(t)
+  196|  2.45k|    }
+
+_RINvXs3_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization12compact_sizeNtB6_18CompactSizeMessageNtNtB8_17zcash_deserialize16ZcashDeserialize17zcash_deserializeQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRINtNtCshDtJu3Ru83O_5alloc3vec3VechEEECs2x26UnJ6jX5_13equihash_fuzz:
+  308|    596|    fn zcash_deserialize<R: std::io::Read>(reader: R) -> Result<Self, SerializationError> {
+  309|       |        // Use the same deserialization format as CompactSize64.
+  310|    596|        let size: CompactSize64 = reader.zcash_deserialize_into()?;
+  311|       |
+  312|    596|        let size: usize = size.0.try_into()?;
+  313|    596|        size.try_into()
+  314|    596|    }
+_RINvXs3_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization12compact_sizeNtB6_18CompactSizeMessageNtNtB8_17zcash_deserialize16ZcashDeserialize17zcash_deserializeQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRShEECs2x26UnJ6jX5_13equihash_fuzz:
+  308|  1.29k|    fn zcash_deserialize<R: std::io::Read>(reader: R) -> Result<Self, SerializationError> {
+  309|       |        // Use the same deserialization format as CompactSize64.
+  310|  1.29k|        let size: CompactSize64 = reader.zcash_deserialize_into()?;
+  311|       |
+  312|  1.25k|        let size: usize = size.0.try_into()?;
+  313|  1.25k|        size.try_into()
+  314|  1.29k|    }
+_RINvXs5_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization12compact_sizeNtB6_13CompactSize64NtNtB8_17zcash_deserialize16ZcashDeserialize17zcash_deserializeQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRINtNtCshDtJu3Ru83O_5alloc3vec3VechEEECs2x26UnJ6jX5_13equihash_fuzz:
+  341|    596|    fn zcash_deserialize<R: std::io::Read>(mut reader: R) -> Result<Self, SerializationError> {
+  342|       |        use SerializationError::Parse;
+  343|       |
+  344|    596|        let flag_byte = reader.read_u8()?;
+  345|    596|        let size = match flag_byte {
+  346|    596|            n @ 0x00..=0xfc => Ok(n as u64),
+  347|    592|            0xfd => match reader.read_u16::<LittleEndian>()? {
+  348|    592|                n @ 0x00fd..=u16::MAX => Ok(n as u64),
+  349|      0|                _ => Err(Parse("non-canonical CompactSize")),
+  350|       |            },
+  351|      0|            0xfe => match reader.read_u32::<LittleEndian>()? {
+  352|      0|                n @ 0x0001_0000..=u32::MAX => Ok(n as u64),
+  353|      0|                _ => Err(Parse("non-canonical CompactSize")),
+  354|       |            },
+  355|      0|            0xff => match reader.read_u64::<LittleEndian>()? {
+  356|      0|                n @ 0x0000_0001_0000_0000..=u64::MAX => Ok(n),
+  357|      0|                _ => Err(Parse("non-canonical CompactSize")),
+  358|       |            },
+  359|      0|        }?;
+  360|       |
+  361|    596|        Ok(CompactSize64(size))
+  362|    596|    }
+_RINvXs5_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization12compact_sizeNtB6_13CompactSize64NtNtB8_17zcash_deserialize16ZcashDeserialize17zcash_deserializeQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRShEECs2x26UnJ6jX5_13equihash_fuzz:
+  341|  1.29k|    fn zcash_deserialize<R: std::io::Read>(mut reader: R) -> Result<Self, SerializationError> {
+  342|       |        use SerializationError::Parse;
+  343|       |
+  344|  1.29k|        let flag_byte = reader.read_u8()?;
+  345|  1.28k|        let size = match flag_byte {
+  346|  1.28k|            n @ 0x00..=0xfc => Ok(n as u64),
+  347|    613|            0xfd => match reader.read_u16::<LittleEndian>()? {
+  348|    601|                n @ 0x00fd..=u16::MAX => Ok(n as u64),
+  349|     11|                _ => Err(Parse("non-canonical CompactSize")),
+  350|       |            },
+  351|     19|            0xfe => match reader.read_u32::<LittleEndian>()? {
+  352|     11|                n @ 0x0001_0000..=u32::MAX => Ok(n as u64),
+  353|      7|                _ => Err(Parse("non-canonical CompactSize")),
+  354|       |            },
+  355|     16|            0xff => match reader.read_u64::<LittleEndian>()? {
+  356|      4|                n @ 0x0000_0001_0000_0000..=u64::MAX => Ok(n),
+  357|     11|                _ => Err(Parse("non-canonical CompactSize")),
+  358|       |            },
+  359|     29|        }?;
+  360|       |
+  361|  1.25k|        Ok(CompactSize64(size))
+  362|  1.29k|    }
+_RNvXNtNtCsc4HhLwrPL7g_11zebra_chain13serialization12compact_sizeNtB2_18CompactSizeMessageINtNtCs6SNw0SRvItZ_4core7convert7TryFromjE8try_fromB6_:
+  238|  6.62k|    fn try_from(size: usize) -> Result<Self, Self::Error> {
+  239|       |        use SerializationError::Parse;
+  240|       |
+  241|  6.62k|        let size: u32 = size.try_into()?;
+  242|       |
+  243|       |        // # Security
+  244|       |        // Defense-in-depth for memory DoS via preallocation.
+  245|  6.61k|        if size
+  246|  6.61k|            > MAX_PROTOCOL_MESSAGE_LEN
+  247|  6.61k|                .try_into()
+  248|  6.61k|                .expect("MAX_PROTOCOL_MESSAGE_LEN fits in u32")
+  249|       |        {
+  250|       |            // This could be invalid data from peers, so we return a parse error.
+  251|     11|            Err(Parse("CompactSize larger than protocol message limit"))?;
+  252|  6.60k|        }
+  253|       |
+  254|  6.60k|        Ok(CompactSizeMessage(size))
+  255|  6.62k|    }
+_RNvXs_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization12compact_sizejINtNtCs6SNw0SRvItZ_4core7convert4FromNtB4_18CompactSizeMessageE4fromB8_:
+  260|  1.83k|    fn from(size: CompactSizeMessage) -> Self {
+  261|  1.83k|        size.0.try_into().expect("u32 fits in usize")
+  262|  1.83k|    }
+_RINvXs2_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization12compact_sizeNtB6_18CompactSizeMessageNtNtB8_15zcash_serialize14ZcashSerialize15zcash_serializeQQQINtNtCshDtJu3Ru83O_5alloc3vec3VechEEBa_:
+  287|  3.57k|    fn zcash_serialize<W: std::io::Write>(&self, writer: W) -> Result<(), std::io::Error> {
+  288|       |        // # Security
+  289|       |        // Defence-in-depth for memory DoS via preallocation.
+  290|       |        //
+  291|       |        // This is validated data inside Zebra, so we panic.
+  292|  3.57k|        assert!(
+  293|  3.57k|            self.0
+  294|  3.57k|                <= MAX_PROTOCOL_MESSAGE_LEN
+  295|  3.57k|                    .try_into()
+  296|  3.57k|                    .expect("usize fits in u64"),
+  297|      0|            "CompactSize larger than protocol message limit"
+  298|       |        );
+  299|       |
+  300|       |        // Use the same serialization format as CompactSize64.
+  301|  3.57k|        let size: u64 = self.0.into();
+  302|  3.57k|        CompactSize64(size).zcash_serialize(writer)
+  303|  3.57k|    }
+_RINvXs2_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization12compact_sizeNtB6_18CompactSizeMessageNtNtB8_15zcash_serialize14ZcashSerialize15zcash_serializeQQQNtNtB8_7sha256d6WriterEBa_:
+  287|  1.19k|    fn zcash_serialize<W: std::io::Write>(&self, writer: W) -> Result<(), std::io::Error> {
+  288|       |        // # Security
+  289|       |        // Defence-in-depth for memory DoS via preallocation.
+  290|       |        //
+  291|       |        // This is validated data inside Zebra, so we panic.
+  292|  1.19k|        assert!(
+  293|  1.19k|            self.0
+  294|  1.19k|                <= MAX_PROTOCOL_MESSAGE_LEN
+  295|  1.19k|                    .try_into()
+  296|  1.19k|                    .expect("usize fits in u64"),
+  297|      0|            "CompactSize larger than protocol message limit"
+  298|       |        );
+  299|       |
+  300|       |        // Use the same serialization format as CompactSize64.
+  301|  1.19k|        let size: u64 = self.0.into();
+  302|  1.19k|        CompactSize64(size).zcash_serialize(writer)
+  303|  1.19k|    }
+_RINvXs4_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization12compact_sizeNtB6_13CompactSize64NtNtB8_15zcash_serialize14ZcashSerialize15zcash_serializeQQQINtNtCshDtJu3Ru83O_5alloc3vec3VechEEBa_:
+  319|  3.57k|    fn zcash_serialize<W: std::io::Write>(&self, mut writer: W) -> Result<(), std::io::Error> {
+  320|  3.57k|        let n = self.0;
+  321|  3.57k|        match n {
+  322|  3.57k|            0x00..=0xfc => writer.write_u8(n as u8),
+  323|  3.55k|            0x00fd..=0xffff => {
+  324|  3.55k|                writer.write_u8(0xfd)?;
+  325|  3.55k|                writer.write_u16::<LittleEndian>(n as u16)
+  326|       |            }
+  327|      0|            0x0001_0000..=0xffff_ffff => {
+  328|      0|                writer.write_u8(0xfe)?;
+  329|      0|                writer.write_u32::<LittleEndian>(n as u32)
+  330|       |            }
+  331|       |            _ => {
+  332|      0|                writer.write_u8(0xff)?;
+  333|      0|                writer.write_u64::<LittleEndian>(n)
+  334|       |            }
+  335|       |        }
+  336|  3.57k|    }
+_RINvXs4_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization12compact_sizeNtB6_13CompactSize64NtNtB8_15zcash_serialize14ZcashSerialize15zcash_serializeQQQNtNtB8_7sha256d6WriterEBa_:
+  319|  1.19k|    fn zcash_serialize<W: std::io::Write>(&self, mut writer: W) -> Result<(), std::io::Error> {
+  320|  1.19k|        let n = self.0;
+  321|  1.19k|        match n {
+  322|  1.19k|            0x00..=0xfc => writer.write_u8(n as u8),
+  323|  1.18k|            0x00fd..=0xffff => {
+  324|  1.18k|                writer.write_u8(0xfd)?;
+  325|  1.18k|                writer.write_u16::<LittleEndian>(n as u16)
+  326|       |            }
+  327|      0|            0x0001_0000..=0xffff_ffff => {
+  328|      0|                writer.write_u8(0xfe)?;
+  329|      0|                writer.write_u32::<LittleEndian>(n as u32)
+  330|       |            }
+  331|       |            _ => {
+  332|      0|                writer.write_u8(0xff)?;
+  333|      0|                writer.write_u64::<LittleEndian>(n)
+  334|       |            }
+  335|       |        }
+  336|  1.19k|    }
+
+_RNvXs0_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization5errorNtB5_18SerializationErrorINtNtCs6SNw0SRvItZ_4core7convert4FromNtNtNtCsjS9ICikYiHq_3std2io5error5ErrorE4from:
+  112|     47|    fn from(value: io::Error) -> Self {
+  113|     47|        Arc::new(value).into()
+  114|     47|    }
+
+_RNvYINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRINtNtCshDtJu3Ru83O_5alloc3vec3VechEENtNtNtCsc4HhLwrPL7g_11zebra_chain13serialization10read_zcash12ReadZcashExt13read_32_bytesCs2x26UnJ6jX5_13equihash_fuzz:
+   25|  1.78k|    fn read_32_bytes(&mut self) -> io::Result<[u8; 32]> {
+   26|  1.78k|        let mut bytes = [0; 32];
+   27|  1.78k|        self.read_exact(&mut bytes)?;
+   28|  1.78k|        Ok(bytes)
+   29|  1.78k|    }
+_RNvYINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRShENtNtNtCsc4HhLwrPL7g_11zebra_chain13serialization10read_zcash12ReadZcashExt13read_32_bytesCs2x26UnJ6jX5_13equihash_fuzz:
+   25|  1.90k|    fn read_32_bytes(&mut self) -> io::Result<[u8; 32]> {
+   26|  1.90k|        let mut bytes = [0; 32];
+   27|  1.90k|        self.read_exact(&mut bytes)?;
+   28|  1.89k|        Ok(bytes)
+   29|  1.90k|    }
+_RNvYQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRINtNtCshDtJu3Ru83O_5alloc3vec3VechEENtNtNtCsc4HhLwrPL7g_11zebra_chain13serialization10read_zcash12ReadZcashExt13read_32_bytesCs2x26UnJ6jX5_13equihash_fuzz:
+   25|    596|    fn read_32_bytes(&mut self) -> io::Result<[u8; 32]> {
+   26|    596|        let mut bytes = [0; 32];
+   27|    596|        self.read_exact(&mut bytes)?;
+   28|    596|        Ok(bytes)
+   29|    596|    }
+_RNvYQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRShENtNtNtCsc4HhLwrPL7g_11zebra_chain13serialization10read_zcash12ReadZcashExt13read_32_bytesCs2x26UnJ6jX5_13equihash_fuzz:
+   25|    647|    fn read_32_bytes(&mut self) -> io::Result<[u8; 32]> {
+   26|    647|        let mut bytes = [0; 32];
+   27|    647|        self.read_exact(&mut bytes)?;
+   28|    641|        Ok(bytes)
+   29|    647|    }
+
+_RNvMNtNtCsc4HhLwrPL7g_11zebra_chain13serialization7sha256dNtB2_6Writer6finish:
+   15|  1.19k|    pub fn finish(self) -> [u8; 32] {
+   16|  1.19k|        let result1 = self.hash.finalize();
+   17|  1.19k|        let result2 = Sha256::digest(result1);
+   18|  1.19k|        let mut buffer = [0u8; 32];
+   19|  1.19k|        buffer[0..32].copy_from_slice(&result2[0..32]);
+   20|  1.19k|        buffer
+   21|  1.19k|    }
+_RNvXs_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization7sha256dNtB4_6WriterNtNtCsjS9ICikYiHq_3std2io5Write5write:
+   25|  11.9k|    fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
+   26|  11.9k|        self.hash.update(buf);
+   27|  11.9k|        Ok(buf.len())
+   28|  11.9k|    }
+
+_RINvXs3_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserializeQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRINtNtCshDtJu3Ru83O_5alloc3vec3VechEENtB6_20ZcashDeserializeInto22zcash_deserialize_intoNtNtB8_12compact_size13CompactSize64ECs2x26UnJ6jX5_13equihash_fuzz:
+  181|    596|    fn zcash_deserialize_into<T>(self) -> Result<T, SerializationError>
+  182|    596|    where
+  183|    596|        T: ZcashDeserialize,
+  184|       |    {
+  185|    596|        T::zcash_deserialize(self)
+  186|    596|    }
+_RINvXs3_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserializeQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRINtNtCshDtJu3Ru83O_5alloc3vec3VechEENtB6_20ZcashDeserializeInto22zcash_deserialize_intoNtNtB8_12compact_size18CompactSizeMessageECs2x26UnJ6jX5_13equihash_fuzz:
+  181|    596|    fn zcash_deserialize_into<T>(self) -> Result<T, SerializationError>
+  182|    596|    where
+  183|    596|        T: ZcashDeserialize,
+  184|       |    {
+  185|    596|        T::zcash_deserialize(self)
+  186|    596|    }
+_RINvXs3_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserializeQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRShENtB6_20ZcashDeserializeInto22zcash_deserialize_intoNtNtB8_12compact_size13CompactSize64ECs2x26UnJ6jX5_13equihash_fuzz:
+  181|  1.29k|    fn zcash_deserialize_into<T>(self) -> Result<T, SerializationError>
+  182|  1.29k|    where
+  183|  1.29k|        T: ZcashDeserialize,
+  184|       |    {
+  185|  1.29k|        T::zcash_deserialize(self)
+  186|  1.29k|    }
+_RINvXs3_NtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserializeQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRShENtB6_20ZcashDeserializeInto22zcash_deserialize_intoNtNtB8_12compact_size18CompactSizeMessageECs2x26UnJ6jX5_13equihash_fuzz:
+  181|  1.29k|    fn zcash_deserialize_into<T>(self) -> Result<T, SerializationError>
+  182|  1.29k|    where
+  183|  1.29k|        T: ZcashDeserialize,
+  184|       |    {
+  185|  1.29k|        T::zcash_deserialize(self)
+  186|  1.29k|    }
+_RINvNtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserialize38zcash_deserialize_bytes_external_countQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRINtNtCshDtJu3Ru83O_5alloc3vec3VechEEECs2x26UnJ6jX5_13equihash_fuzz:
+  120|    596|pub fn zcash_deserialize_bytes_external_count<R: io::Read>(
+  121|    596|    external_count: usize,
+  122|    596|    mut reader: R,
+  123|    596|) -> Result<Vec<u8>, SerializationError> {
+  124|    596|    if external_count > MAX_U8_ALLOCATION {
+  125|      0|        return Err(SerializationError::Parse(
+  126|      0|            "Byte vector longer than MAX_U8_ALLOCATION",
+  127|      0|        ));
+  128|    596|    }
+  129|    596|    let mut vec = vec![0u8; external_count];
+  130|    596|    reader.read_exact(&mut vec)?;
+  131|    596|    Ok(vec)
+  132|    596|}
+_RINvNtNtCsc4HhLwrPL7g_11zebra_chain13serialization17zcash_deserialize38zcash_deserialize_bytes_external_countQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRShEECs2x26UnJ6jX5_13equihash_fuzz:
+  120|  1.23k|pub fn zcash_deserialize_bytes_external_count<R: io::Read>(
+  121|  1.23k|    external_count: usize,
+  122|  1.23k|    mut reader: R,
+  123|  1.23k|) -> Result<Vec<u8>, SerializationError> {
+  124|  1.23k|    if external_count > MAX_U8_ALLOCATION {
+  125|      0|        return Err(SerializationError::Parse(
+  126|      0|            "Byte vector longer than MAX_U8_ALLOCATION",
+  127|      0|        ));
+  128|  1.23k|    }
+  129|  1.23k|    let mut vec = vec![0u8; external_count];
+  130|  1.23k|    reader.read_exact(&mut vec)?;
+  131|  1.22k|    Ok(vec)
+  132|  1.23k|}
+
+_RINvNtNtCsc4HhLwrPL7g_11zebra_chain13serialization15zcash_serialize21zcash_serialize_bytesQQINtNtCshDtJu3Ru83O_5alloc3vec3VechEEB6_:
+  111|  3.57k|pub fn zcash_serialize_bytes<W: io::Write>(vec: &Vec<u8>, mut writer: W) -> Result<(), io::Error> {
+  112|  3.57k|    CompactSizeMessage::try_from(vec.len())?.zcash_serialize(&mut writer)?;
+  113|       |
+  114|  3.57k|    zcash_serialize_bytes_external_count(vec, writer)
+  115|  3.57k|}
+_RINvNtNtCsc4HhLwrPL7g_11zebra_chain13serialization15zcash_serialize21zcash_serialize_bytesQQNtNtB4_7sha256d6WriterEB6_:
+  111|  1.19k|pub fn zcash_serialize_bytes<W: io::Write>(vec: &Vec<u8>, mut writer: W) -> Result<(), io::Error> {
+  112|  1.19k|    CompactSizeMessage::try_from(vec.len())?.zcash_serialize(&mut writer)?;
+  113|       |
+  114|  1.19k|    zcash_serialize_bytes_external_count(vec, writer)
+  115|  1.19k|}
+_RINvNtNtCsc4HhLwrPL7g_11zebra_chain13serialization15zcash_serialize36zcash_serialize_bytes_external_countQQINtNtCshDtJu3Ru83O_5alloc3vec3VechEEB6_:
+  167|  3.57k|pub fn zcash_serialize_bytes_external_count<W: io::Write>(
+  168|  3.57k|    vec: &Vec<u8>,
+  169|  3.57k|    mut writer: W,
+  170|  3.57k|) -> Result<(), io::Error> {
+  171|  3.57k|    writer.write_all(vec)
+  172|  3.57k|}
+_RINvNtNtCsc4HhLwrPL7g_11zebra_chain13serialization15zcash_serialize36zcash_serialize_bytes_external_countQQNtNtB4_7sha256d6WriterEB6_:
+  167|  1.19k|pub fn zcash_serialize_bytes_external_count<W: io::Write>(
+  168|  1.19k|    vec: &Vec<u8>,
+  169|  1.19k|    mut writer: W,
+  170|  1.19k|) -> Result<(), io::Error> {
+  171|  1.19k|    writer.write_all(vec)
+  172|  1.19k|}
+
+_RINvXs6_NtNtCsc4HhLwrPL7g_11zebra_chain4work8equihashNtB6_8SolutionNtNtNtBa_13serialization17zcash_deserialize16ZcashDeserialize17zcash_deserializeINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRINtNtCshDtJu3Ru83O_5alloc3vec3VechEEECs2x26UnJ6jX5_13equihash_fuzz:
+  264|    596|    fn zcash_deserialize<R: io::Read>(mut reader: R) -> Result<Self, SerializationError> {
+  265|    596|        let len: CompactSizeMessage = (&mut reader).zcash_deserialize_into()?;
+  266|    596|        let len: usize = len.into();
+  267|       |
+  268|       |        // Validate the length against the consensus-required sizes before
+  269|       |        // allocating, so an attacker-controlled CompactSize cannot force a
+  270|       |        // multi-megabyte allocation.
+  271|    596|        if len > SOLUTION_SIZE {
+  272|      0|            return Err(SerializationError::Parse(
+  273|      0|                "incorrect equihash solution size",
+  274|      0|            ));
+  275|    596|        }
+  276|       |
+  277|    596|        let solution = zcash_deserialize_bytes_external_count(len, &mut reader)?;
+  278|    596|        Self::from_bytes(&solution)
+  279|    596|    }
+_RINvXs6_NtNtCsc4HhLwrPL7g_11zebra_chain4work8equihashNtB6_8SolutionNtNtNtBa_13serialization17zcash_deserialize16ZcashDeserialize17zcash_deserializeINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRShEECs2x26UnJ6jX5_13equihash_fuzz:
+  264|  1.29k|    fn zcash_deserialize<R: io::Read>(mut reader: R) -> Result<Self, SerializationError> {
+  265|  1.29k|        let len: CompactSizeMessage = (&mut reader).zcash_deserialize_into()?;
+  266|  1.24k|        let len: usize = len.into();
+  267|       |
+  268|       |        // Validate the length against the consensus-required sizes before
+  269|       |        // allocating, so an attacker-controlled CompactSize cannot force a
+  270|       |        // multi-megabyte allocation.
+  271|  1.24k|        if len > SOLUTION_SIZE {
+  272|      7|            return Err(SerializationError::Parse(
+  273|      7|                "incorrect equihash solution size",
+  274|      7|            ));
+  275|  1.23k|        }
+  276|       |
+  277|  1.23k|        let solution = zcash_deserialize_bytes_external_count(len, &mut reader)?;
+  278|  1.22k|        Self::from_bytes(&solution)
+  279|  1.29k|    }
+_RNvMNtNtCsc4HhLwrPL7g_11zebra_chain4work8equihashNtB2_8Solution10from_bytes:
+   96|  3.81k|    pub fn from_bytes(solution: &[u8]) -> Result<Self, SerializationError> {
+   97|  3.81k|        match solution.len() {
+   98|       |            // Won't panic, because we just checked the length.
+   99|       |            SOLUTION_SIZE => {
+  100|  1.18k|                let mut bytes = [0; SOLUTION_SIZE];
+  101|  1.18k|                bytes.copy_from_slice(solution);
+  102|  1.18k|                Ok(Self::Common(bytes))
+  103|       |            }
+  104|       |            REGTEST_SOLUTION_SIZE => {
+  105|     29|                let mut bytes = [0; REGTEST_SOLUTION_SIZE];
+  106|     29|                bytes.copy_from_slice(solution);
+  107|     29|                Ok(Self::Regtest(bytes))
+  108|       |            }
+  109|  2.59k|            _unexpected_len => Err(SerializationError::Parse(
+  110|  2.59k|                "incorrect equihash solution size",
+  111|  2.59k|            )),
+  112|       |        }
+  113|  3.81k|    }
+_RNvMNtNtCsc4HhLwrPL7g_11zebra_chain4work8equihashNtB2_8Solution5check:
+   72|  2.38k|    pub fn check(&self, header: &Header) -> Result<(), Error> {
+   73|       |        // TODO:
+   74|       |        // - Add Equihash parameters field to `testnet::Parameters`
+   75|       |        // - Update `Solution::Regtest` variant to hold a `Vec` to support arbitrary parameters - rename to `Other`
+   76|  2.38k|        let n = 200;
+   77|  2.38k|        let k = 9;
+   78|  2.38k|        let nonce = &header.nonce;
+   79|       |
+   80|  2.38k|        let mut input = Vec::new();
+   81|  2.38k|        header
+   82|  2.38k|            .zcash_serialize(&mut input)
+   83|  2.38k|            .expect("serialization into a vec can't fail");
+   84|       |
+   85|       |        // The part of the header before the nonce and solution.
+   86|       |        // This data is kept constant during solver runs, so the verifier API takes it separately.
+   87|  2.38k|        let input = &input[0..Solution::INPUT_LENGTH];
+   88|       |
+   89|  2.38k|        equihash::is_valid_solution(n, k, input, nonce.as_ref(), self.value())?;
+   90|       |
+   91|  1.80k|        Ok(())
+   92|  2.38k|    }
+_RNvMNtNtCsc4HhLwrPL7g_11zebra_chain4work8equihashNtB2_8Solution5value:
+   63|  8.34k|    fn value(&self) -> &[u8] {
+   64|  8.34k|        match self {
+   65|  8.28k|            Solution::Common(solution) => solution.as_slice(),
+   66|     56|            Solution::Regtest(solution) => solution.as_slice(),
+   67|       |        }
+   68|  8.34k|    }
+_RNvXs_NtNtCsc4HhLwrPL7g_11zebra_chain4work8equihashNtB4_8SolutionNtNtCs6SNw0SRvItZ_4core3cmp9PartialEq2eq:
+  225|    596|    fn eq(&self, other: &Solution) -> bool {
+  226|    596|        self.value() == other.value()
+  227|    596|    }
+_RINvXs5_NtNtCsc4HhLwrPL7g_11zebra_chain4work8equihashNtB6_8SolutionNtNtNtBa_13serialization15zcash_serialize14ZcashSerialize15zcash_serializeQQINtNtCshDtJu3Ru83O_5alloc3vec3VechEEBa_:
+  258|  3.57k|    fn zcash_serialize<W: io::Write>(&self, writer: W) -> Result<(), io::Error> {
+  259|  3.57k|        zcash_serialize_bytes(&self.value().to_vec(), writer)
+  260|  3.57k|    }
+_RINvXs5_NtNtCsc4HhLwrPL7g_11zebra_chain4work8equihashNtB6_8SolutionNtNtNtBa_13serialization15zcash_serialize14ZcashSerialize15zcash_serializeQQNtNtB17_7sha256d6WriterEBa_:
+  258|  1.19k|    fn zcash_serialize<W: io::Write>(&self, writer: W) -> Result<(), io::Error> {
+  259|  1.19k|        zcash_serialize_bytes(&self.value().to_vec(), writer)
+  260|  1.19k|    }
+
+_RNvNtNtCs97tR8vrw1AP_15zebra_consensus5block5check26equihash_solution_is_valid:
+  143|    596|pub fn equihash_solution_is_valid(header: &Header) -> Result<(), equihash::Error> {
+  144|       |    // # Consensus
+  145|       |    //
+  146|       |    // > `solution` MUST represent a valid Equihash solution.
+  147|       |    //
+  148|       |    // https://zips.z.cash/protocol/protocol.pdf#blockheader
+  149|    596|    header.solution.check(header)
+  150|    596|}
+

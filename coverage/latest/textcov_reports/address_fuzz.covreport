@@ -1,1 +1,488 @@
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+_RNCNvNvCskjmnGakOn2j_12address_fuzz1__19___libfuzzer_sys_run0B5_:
+   59|    838|    let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+   60|    838|        let _ = TransparentAddress::from_str(s);
+   61|    838|    }));
+_RNCNvNvCskjmnGakOn2j_12address_fuzz1__19___libfuzzer_sys_runs0_0B5_:
+  100|    838|    let convert_outcome = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  101|    838|        match ZcashAddress::try_from_encoded(s) {
+  102|    230|            Ok(addr) => Some(addr.convert::<ZebraAddress>().is_ok()),
+  103|    608|            Err(_) => None,
+  104|       |        }
+  105|    838|    }));
+_RNCNvNvCskjmnGakOn2j_12address_fuzz1__19___libfuzzer_sys_runs1_0B5_:
+  132|    838|    let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  133|    838|        if let Ok(t) = TransparentAddress::from_str(s) {
+  134|    214|            let canon = format!("{}", t);
+  135|    214|            if let Ok(t2) = TransparentAddress::from_str(&canon) {
+  136|       |                // Filter known prefix-ambiguity finding: same hash bytes
+  137|       |                // legitimately decode under multiple version-byte
+  138|       |                // contexts; we record it once and skip asserting for
+  139|       |                // long-campaign exploration efficiency.
+  140|    214|                if t != t2 {
+  141|      0|                    eprintln!(
+  142|      0|                        "FINDING-CANDIDATE: TransparentAddress round-trip diverges (input_len={})",
+  143|      0|                        s.len()
+  144|      0|                    );
+  145|    214|                }
+  146|      0|            }
+  147|       |
+  148|       |            // Once a string parses to a transparent address, drive the
+  149|       |            // production methods a parsed address actually flows through —
+  150|       |            // a parse-only harness never reaches these, so they stay 0%
+  151|       |            // no matter how rich the corpus is:
+  152|       |            //   * `script()` builds the scriptPubKey that state/RPC derive
+  153|       |            //     from an address (P2PKH vs P2SH opcode assembly).
+  154|       |            //   * `From<Address> for ZcashAddress` is the canonical encode
+  155|       |            //     used to format addresses in RPC responses.
+  156|       |            //   * `ZcashSerialize`/`ZcashDeserialize` is the wire/DB byte
+  157|       |            //     form; round-trip it and require structural equality so a
+  158|       |            //     serialize/deserialize asymmetry is a finding, not silent.
+  159|       |            // All are infallible on a valid address; a panic here is a
+  160|       |            // reachable-from-input crash.
+  161|    214|            let _ = t.script();
+  162|    214|            let _ = t.hash_bytes();
+  163|    214|            let _ = t.is_script_hash();
+  164|    214|            let _ = t.network_kind();
+  165|    214|            let _ = ZcashAddress::from(t);
+  166|    214|            if let Ok(bytes) = t.zcash_serialize_to_vec() {
+  167|    214|                if let Ok(t_rt) = TransparentAddress::zcash_deserialize(&bytes[..]) {
+  168|    214|                    assert_eq!(
+  169|       |                        t, t_rt,
+  170|      0|                        "transparent Address serialize→deserialize asymmetry",
+  171|       |                    );
+  172|      0|                }
+  173|      0|            }
+  174|    624|        }
+  175|    838|    }));
+_RNCNvNvCskjmnGakOn2j_12address_fuzz1__19___libfuzzer_sys_runs2_0B5_:
+  184|    838|    let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  185|    838|        if let Ok(za) = ZcashAddress::try_from_encoded(s) {
+  186|    230|            let canon = za.encode();
+  187|    230|            if let Ok(za2) = ZcashAddress::try_from_encoded(&canon) {
+  188|    230|                assert_eq!(
+  189|       |                    za, za2,
+  190|      0|                    "Parser-5 round-trip: encode→try_from_encoded != orig"
+  191|       |                );
+  192|      0|            }
+  193|    608|        }
+  194|    838|    }));
+_RNCNvNvCskjmnGakOn2j_12address_fuzz1__19___libfuzzer_sys_runs_0B5_:
+   75|    838|        panic::catch_unwind(panic::AssertUnwindSafe(|| {
+   76|    838|            ZcashAddress::try_from_encoded(s)
+   77|    838|        }));
+
+_RNvMs0_NtNtCsc4HhLwrPL7g_11zebra_chain10parameters7networkNtB5_11NetworkKind25b58_pubkey_address_prefix:
+   78|     18|    pub fn b58_pubkey_address_prefix(self) -> [u8; 2] {
+   79|     18|        match self {
+   80|     10|            Self::Mainnet => zcash_protocol::constants::mainnet::B58_PUBKEY_ADDRESS_PREFIX,
+   81|       |            Self::Testnet | Self::Regtest => {
+   82|      8|                zcash_protocol::constants::testnet::B58_PUBKEY_ADDRESS_PREFIX
+   83|       |            }
+   84|       |        }
+   85|     18|    }
+_RNvMs0_NtNtCsc4HhLwrPL7g_11zebra_chain10parameters7networkNtB5_11NetworkKind25b58_script_address_prefix:
+   89|    410|    pub fn b58_script_address_prefix(self) -> [u8; 2] {
+   90|    410|        match self {
+   91|    204|            Self::Mainnet => zcash_protocol::constants::mainnet::B58_SCRIPT_ADDRESS_PREFIX,
+   92|       |            Self::Testnet | Self::Regtest => {
+   93|    206|                zcash_protocol::constants::testnet::B58_SCRIPT_ADDRESS_PREFIX
+   94|       |            }
+   95|       |        }
+   96|    410|    }
+
+_RNvXs0_NtNtCsc4HhLwrPL7g_11zebra_chain10primitives7addressNtNtNtB9_10parameters7network11NetworkKindINtNtCs6SNw0SRvItZ_4core7convert4FromNtNtCsbZOVTQwBCv_14zcash_protocol9consensus11NetworkTypeE4from:
+  185|    230|    fn from(network: NetworkType) -> Self {
+  186|    230|        match network {
+  187|    122|            NetworkType::Main => NetworkKind::Mainnet,
+  188|    107|            NetworkType::Test => NetworkKind::Testnet,
+  189|      1|            NetworkType::Regtest => NetworkKind::Regtest,
+  190|       |        }
+  191|    230|    }
+_RNvXs1_NtNtCsc4HhLwrPL7g_11zebra_chain10primitives7addressNtNtCsbZOVTQwBCv_14zcash_protocol9consensus11NetworkTypeINtNtCs6SNw0SRvItZ_4core7convert4FromNtNtNtB9_10parameters7network11NetworkKindE4from:
+  195|    214|    fn from(network: NetworkKind) -> Self {
+  196|    214|        match network {
+  197|    107|            NetworkKind::Mainnet => NetworkType::Main,
+  198|    107|            NetworkKind::Testnet => NetworkType::Test,
+  199|      0|            NetworkKind::Regtest => NetworkType::Regtest,
+  200|       |        }
+  201|    214|    }
+_RNvXNtNtCsc4HhLwrPL7g_11zebra_chain10primitives7addressNtB2_7AddressNtNtCs5FnQp8us7pk_13zcash_address7convert14TryFromAddress16try_from_sapling:
+   67|      4|    fn try_from_sapling(
+   68|      4|        network: NetworkType,
+   69|      4|        data: [u8; 43],
+   70|      4|    ) -> Result<Self, zcash_address::ConversionError<Self::Error>> {
+   71|      4|        let network = network.into();
+   72|      4|        sapling_crypto::PaymentAddress::from_bytes(&data)
+   73|      4|            .map(|address| Self::Sapling { address, network })
+   74|      4|            .ok_or_else(|| BoxError::from("not a valid sapling address").into())
+   75|      4|    }
+_RNvXNtNtCsc4HhLwrPL7g_11zebra_chain10primitives7addressNtB2_7AddressNtNtCs5FnQp8us7pk_13zcash_address7convert14TryFromAddress16try_from_unified:
+   77|      8|    fn try_from_unified(
+   78|      8|        network: NetworkType,
+   79|      8|        unified_address: zcash_address::unified::Address,
+   80|      8|    ) -> Result<Self, zcash_address::ConversionError<Self::Error>> {
+   81|      8|        let network = network.into();
+   82|      8|        let mut orchard = None;
+   83|      8|        let mut sapling = None;
+   84|      8|        let mut transparent = None;
+   85|       |
+   86|     18|        for receiver in unified_address.items().into_iter() {
+   87|     18|            match receiver {
+   88|      7|                unified::Receiver::Orchard(data) => {
+   89|      7|                    orchard = orchard::Address::from_raw_address_bytes(&data).into();
+   90|       |                    // ZIP 316: Consumers MUST reject Unified Addresses/Viewing Keys in
+   91|       |                    // which any constituent Item does not meet the validation
+   92|       |                    // requirements of its encoding.
+   93|      7|                    if orchard.is_none() {
+   94|      0|                        return Err(BoxError::from(
+   95|      0|                            "Unified Address contains an invalid Orchard receiver.",
+   96|      0|                        )
+   97|      0|                        .into());
+   98|      7|                    }
+   99|       |                }
+  100|      4|                unified::Receiver::Sapling(data) => {
+  101|      4|                    sapling = sapling_crypto::PaymentAddress::from_bytes(&data);
+  102|       |                    // ZIP 316: Consumers MUST reject Unified Addresses/Viewing Keys in
+  103|       |                    // which any constituent Item does not meet the validation
+  104|       |                    // requirements of its encoding.
+  105|      4|                    if sapling.is_none() {
+  106|      0|                        return Err(BoxError::from(
+  107|      0|                            "Unified Address contains an invalid Sapling receiver",
+  108|      0|                        )
+  109|      0|                        .into());
+  110|      4|                    }
+  111|       |                }
+  112|      5|                unified::Receiver::P2pkh(data) => {
+  113|      5|                    transparent = Some(transparent::Address::from_pub_key_hash(network, data));
+  114|      5|                }
+  115|      1|                unified::Receiver::P2sh(data) => {
+  116|      1|                    transparent = Some(transparent::Address::from_script_hash(network, data));
+  117|      1|                }
+  118|       |                unified::Receiver::Unknown { .. } => {
+  119|      1|                    return Err(BoxError::from("Unsupported receiver in a Unified Address.").into());
+  120|       |                }
+  121|       |            }
+  122|       |        }
+  123|       |
+  124|      7|        Ok(Self::Unified {
+  125|      7|            network,
+  126|      7|            unified_address,
+  127|      7|            orchard,
+  128|      7|            sapling,
+  129|      7|            transparent,
+  130|      7|        })
+  131|      8|    }
+_RNvXNtNtCsc4HhLwrPL7g_11zebra_chain10primitives7addressNtB2_7AddressNtNtCs5FnQp8us7pk_13zcash_address7convert14TryFromAddress25try_from_transparent_p2sh:
+   57|    209|    fn try_from_transparent_p2sh(
+   58|    209|        network: NetworkType,
+   59|    209|        data: [u8; 20],
+   60|    209|    ) -> Result<Self, zcash_address::ConversionError<Self::Error>> {
+   61|    209|        Ok(Self::Transparent(transparent::Address::from_script_hash(
+   62|    209|            network.into(),
+   63|    209|            data,
+   64|    209|        )))
+   65|    209|    }
+_RNvXNtNtCsc4HhLwrPL7g_11zebra_chain10primitives7addressNtB2_7AddressNtNtCs5FnQp8us7pk_13zcash_address7convert14TryFromAddress26try_from_transparent_p2pkh:
+   47|      9|    fn try_from_transparent_p2pkh(
+   48|      9|        network: NetworkType,
+   49|      9|        data: [u8; 20],
+   50|      9|    ) -> Result<Self, zcash_address::ConversionError<Self::Error>> {
+   51|      9|        Ok(Self::Transparent(transparent::Address::from_pub_key_hash(
+   52|      9|            network.into(),
+   53|      9|            data,
+   54|      9|        )))
+   55|      9|    }
+_RNCNvXNtNtCsc4HhLwrPL7g_11zebra_chain10primitives7addressNtB4_7AddressNtNtCs5FnQp8us7pk_13zcash_address7convert14TryFromAddress16try_from_sapling0B8_:
+   73|      4|            .map(|address| Self::Sapling { address, network })
+
+_RNvYNtNtNtCsc4HhLwrPL7g_11zebra_chain11transparent7address7AddressNtNtNtB8_13serialization15zcash_serialize14ZcashSerialize22zcash_serialize_to_vecCskjmnGakOn2j_12address_fuzz:
+   39|    214|    fn zcash_serialize_to_vec(&self) -> Result<Vec<u8>, io::Error> {
+   40|    214|        let mut data = Vec::new();
+   41|    214|        self.zcash_serialize(&mut data)?;
+   42|    214|        Ok(data)
+   43|    214|    }
+
+_RINvXs3_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB6_7AddressNtNtNtBa_13serialization15zcash_serialize14ZcashSerialize15zcash_serializeQINtNtCshDtJu3Ru83O_5alloc3vec3VechEECskjmnGakOn2j_12address_fuzz:
+  176|    214|    fn zcash_serialize<W: io::Write>(&self, mut writer: W) -> Result<(), io::Error> {
+  177|    214|        match self {
+  178|       |            Address::PayToScriptHash {
+  179|    205|                network_kind,
+  180|    205|                script_hash,
+  181|       |            } => {
+  182|    205|                writer.write_all(&network_kind.b58_script_address_prefix())?;
+  183|    205|                writer.write_all(script_hash)?
+  184|       |            }
+  185|       |            Address::PayToPublicKeyHash {
+  186|      9|                network_kind,
+  187|      9|                pub_key_hash,
+  188|       |            } => {
+  189|      9|                writer.write_all(&network_kind.b58_pubkey_address_prefix())?;
+  190|      9|                writer.write_all(pub_key_hash)?
+  191|       |            }
+  192|       |            Address::Tex {
+  193|      0|                network_kind,
+  194|      0|                validating_key_hash,
+  195|       |            } => {
+  196|      0|                writer.write_all(&network_kind.tex_address_prefix())?;
+  197|      0|                writer.write_all(validating_key_hash)?
+  198|       |            }
+  199|       |        }
+  200|       |
+  201|    214|        Ok(())
+  202|    214|    }
+_RNvMs5_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB5_7Address10hash_bytes:
+  279|    428|    pub fn hash_bytes(&self) -> [u8; 20] {
+  280|    428|        match *self {
+  281|    410|            Address::PayToScriptHash { script_hash, .. } => script_hash,
+  282|     18|            Address::PayToPublicKeyHash { pub_key_hash, .. } => pub_key_hash,
+  283|       |            Address::Tex {
+  284|      0|                validating_key_hash,
+  285|       |                ..
+  286|      0|            } => validating_key_hash,
+  287|       |        }
+  288|    428|    }
+_RNvMs5_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB5_7Address12network_kind:
+  261|    214|    pub fn network_kind(&self) -> NetworkKind {
+  262|    214|        match self {
+  263|    205|            Address::PayToScriptHash { network_kind, .. } => *network_kind,
+  264|      9|            Address::PayToPublicKeyHash { network_kind, .. } => *network_kind,
+  265|      0|            Address::Tex { network_kind, .. } => *network_kind,
+  266|       |        }
+  267|    214|    }
+_RNvMs5_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB5_7Address14is_script_hash:
+  270|    214|    pub fn is_script_hash(&self) -> bool {
+  271|    214|        matches!(self, Address::PayToScriptHash { .. })
+  272|    214|    }
+_RNvMs5_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB5_7Address16from_script_hash:
+  253|    210|    pub fn from_script_hash(network_kind: NetworkKind, script_hash: [u8; 20]) -> Self {
+  254|    210|        Self::PayToScriptHash {
+  255|    210|            network_kind,
+  256|    210|            script_hash,
+  257|    210|        }
+  258|    210|    }
+_RNvMs5_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB5_7Address17from_pub_key_hash:
+  245|     14|    pub fn from_pub_key_hash(network_kind: NetworkKind, pub_key_hash: [u8; 20]) -> Self {
+  246|     14|        Self::PayToPublicKeyHash {
+  247|     14|            network_kind,
+  248|     14|            pub_key_hash,
+  249|     14|        }
+  250|     14|    }
+_RNvMs5_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB5_7Address6script:
+  293|    214|    pub fn script(&self) -> Script {
+  294|    214|        let mut script_bytes = Vec::new();
+  295|       |
+  296|    214|        match self {
+  297|       |            // https://developer.bitcoin.org/devguide/transactions.html#pay-to-script-hash-p2sh
+  298|    205|            Address::PayToScriptHash { .. } => {
+  299|    205|                script_bytes.push(OpCode::Hash160 as u8);
+  300|    205|                script_bytes.push(OpCode::Push20Bytes as u8);
+  301|    205|                script_bytes.extend(self.hash_bytes());
+  302|    205|                script_bytes.push(OpCode::Equal as u8);
+  303|    205|            }
+  304|       |            // https://developer.bitcoin.org/devguide/transactions.html#pay-to-public-key-hash-p2pkh
+  305|      9|            Address::PayToPublicKeyHash { .. } => {
+  306|      9|                script_bytes.push(OpCode::Dup as u8);
+  307|      9|                script_bytes.push(OpCode::Hash160 as u8);
+  308|      9|                script_bytes.push(OpCode::Push20Bytes as u8);
+  309|      9|                script_bytes.extend(self.hash_bytes());
+  310|      9|                script_bytes.push(OpCode::EqualVerify as u8);
+  311|      9|                script_bytes.push(OpCode::CheckSig as u8);
+  312|      9|            }
+  313|      0|            Address::Tex { .. } => {}
+  314|       |        };
+  315|       |
+  316|    214|        Script::new(&script_bytes)
+  317|    214|    }
+_RNvXs1_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB5_7AddressNtNtCs6SNw0SRvItZ_4core3fmt7Display3fmt:
+  124|    214|    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+  125|    214|        let mut bytes = io::Cursor::new(Vec::new());
+  126|    214|        let _ = self.zcash_serialize(&mut bytes);
+  127|       |
+  128|    214|        f.write_str(&bs58::encode(bytes.get_ref()).with_check().into_string())
+  129|    214|    }
+_RNvXs2_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB5_7AddressNtNtNtCs6SNw0SRvItZ_4core3str6traits7FromStr8from_str:
+  135|  1.89k|    fn from_str(s: &str) -> Result<Self, Self::Err> {
+  136|       |        // Try Base58Check (prefixes: t1, t3, tm, t2)
+  137|  1.89k|        if let Ok(data) = bs58::decode(s).with_check(None).into_vec() {
+  138|    642|            return Address::zcash_deserialize(&data[..]);
+  139|  1.24k|        }
+  140|       |
+  141|       |        // Try Bech32 (prefixes: tex, textest)
+  142|     16|        let (hrp, payload) =
+  143|  1.24k|            bech32::decode(s).map_err(|_| SerializationError::Parse("invalid Bech32 encoding"))?;
+  144|       |
+  145|       |        // We can’t meaningfully call `Address::zcash_deserialize` for Bech32 addresses, because
+  146|       |        // that method is explicitly reading two binary prefix bytes (the Base58Check version) + 20 hash bytes.
+  147|       |        // Bech32 textual addresses carry no such binary "version" on the wire, so there’s nothing in the
+  148|       |        // reader for zcash_deserialize to match.
+  149|       |
+  150|       |        // Instead, we deserialize the Bech32 address here:
+  151|       |
+  152|     16|        if payload.len() != 20 {
+  153|     16|            return Err(SerializationError::Parse("unexpected payload length"));
+  154|      0|        }
+  155|       |
+  156|      0|        let mut hash_bytes = [0u8; 20];
+  157|      0|        hash_bytes.copy_from_slice(&payload);
+  158|       |
+  159|      0|        match hrp.as_str() {
+  160|      0|            zcash_protocol::constants::mainnet::HRP_TEX_ADDRESS => Ok(Address::Tex {
+  161|      0|                network_kind: NetworkKind::Mainnet,
+  162|      0|                validating_key_hash: hash_bytes,
+  163|      0|            }),
+  164|       |
+  165|      0|            zcash_protocol::constants::testnet::HRP_TEX_ADDRESS => Ok(Address::Tex {
+  166|      0|                network_kind: NetworkKind::Testnet,
+  167|      0|                validating_key_hash: hash_bytes,
+  168|      0|            }),
+  169|       |
+  170|      0|            _ => Err(SerializationError::Parse("unknown Bech32 HRP")),
+  171|       |        }
+  172|  1.89k|    }
+_RNvXNtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtCs5FnQp8us7pk_13zcash_address12ZcashAddressINtNtCs6SNw0SRvItZ_4core7convert4FromNtB2_7AddressE4from:
+   61|    214|    fn from(taddr: Address) -> Self {
+   62|    214|        match taddr {
+   63|       |            Address::PayToScriptHash {
+   64|    205|                network_kind,
+   65|    205|                script_hash,
+   66|    205|            } => ZcashAddress::from_transparent_p2sh(network_kind.into(), script_hash),
+   67|       |            Address::PayToPublicKeyHash {
+   68|      9|                network_kind,
+   69|      9|                pub_key_hash,
+   70|      9|            } => ZcashAddress::from_transparent_p2pkh(network_kind.into(), pub_key_hash),
+   71|       |            Address::Tex {
+   72|      0|                network_kind,
+   73|      0|                validating_key_hash,
+   74|      0|            } => ZcashAddress::from_tex(network_kind.into(), validating_key_hash),
+   75|       |        }
+   76|    214|    }
+_RINvXs3_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB6_7AddressNtNtNtBa_13serialization15zcash_serialize14ZcashSerialize15zcash_serializeQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorINtNtCshDtJu3Ru83O_5alloc3vec3VechEEEBa_:
+  176|    214|    fn zcash_serialize<W: io::Write>(&self, mut writer: W) -> Result<(), io::Error> {
+  177|    214|        match self {
+  178|       |            Address::PayToScriptHash {
+  179|    205|                network_kind,
+  180|    205|                script_hash,
+  181|       |            } => {
+  182|    205|                writer.write_all(&network_kind.b58_script_address_prefix())?;
+  183|    205|                writer.write_all(script_hash)?
+  184|       |            }
+  185|       |            Address::PayToPublicKeyHash {
+  186|      9|                network_kind,
+  187|      9|                pub_key_hash,
+  188|       |            } => {
+  189|      9|                writer.write_all(&network_kind.b58_pubkey_address_prefix())?;
+  190|      9|                writer.write_all(pub_key_hash)?
+  191|       |            }
+  192|       |            Address::Tex {
+  193|      0|                network_kind,
+  194|      0|                validating_key_hash,
+  195|       |            } => {
+  196|      0|                writer.write_all(&network_kind.tex_address_prefix())?;
+  197|      0|                writer.write_all(validating_key_hash)?
+  198|       |            }
+  199|       |        }
+  200|       |
+  201|    214|        Ok(())
+  202|    214|    }
+_RINvXs4_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB6_7AddressNtNtNtBa_13serialization17zcash_deserialize16ZcashDeserialize17zcash_deserializeRShEBa_:
+  206|    856|    fn zcash_deserialize<R: io::Read>(mut reader: R) -> Result<Self, SerializationError> {
+  207|    856|        let mut version_bytes = [0; 2];
+  208|    856|        reader.read_exact(&mut version_bytes)?;
+  209|       |
+  210|    856|        let mut hash_bytes = [0; 20];
+  211|    856|        reader.read_exact(&mut hash_bytes)?;
+  212|       |
+  213|    856|        match version_bytes {
+  214|       |            zcash_protocol::constants::mainnet::B58_SCRIPT_ADDRESS_PREFIX => {
+  215|    408|                Ok(Address::PayToScriptHash {
+  216|    408|                    network_kind: NetworkKind::Mainnet,
+  217|    408|                    script_hash: hash_bytes,
+  218|    408|                })
+  219|       |            }
+  220|       |            zcash_protocol::constants::testnet::B58_SCRIPT_ADDRESS_PREFIX => {
+  221|    412|                Ok(Address::PayToScriptHash {
+  222|    412|                    network_kind: NetworkKind::Testnet,
+  223|    412|                    script_hash: hash_bytes,
+  224|    412|                })
+  225|       |            }
+  226|       |            zcash_protocol::constants::mainnet::B58_PUBKEY_ADDRESS_PREFIX => {
+  227|     20|                Ok(Address::PayToPublicKeyHash {
+  228|     20|                    network_kind: NetworkKind::Mainnet,
+  229|     20|                    pub_key_hash: hash_bytes,
+  230|     20|                })
+  231|       |            }
+  232|       |            zcash_protocol::constants::testnet::B58_PUBKEY_ADDRESS_PREFIX => {
+  233|     16|                Ok(Address::PayToPublicKeyHash {
+  234|     16|                    network_kind: NetworkKind::Testnet,
+  235|     16|                    pub_key_hash: hash_bytes,
+  236|     16|                })
+  237|       |            }
+  238|      0|            _ => Err(SerializationError::Parse("bad t-addr version/type")),
+  239|       |        }
+  240|    856|    }
+
+_RNvMNtNtCsc4HhLwrPL7g_11zebra_chain11transparent6scriptNtB2_6Script3new:
+   29|    214|    pub fn new(raw_bytes: &[u8]) -> Self {
+   30|    214|        Script(raw_bytes.to_vec())
+   31|    214|    }
+
