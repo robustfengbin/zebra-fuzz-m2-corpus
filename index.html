@@ -1,12 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="refresh" content="0; url=./coverage/latest/report/linux/index.html">
-  <link rel="canonical" href="./coverage/latest/report/linux/index.html">
-  <title>zebra-fuzz coverage report</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zebra Fuzzing — Coverage Overview</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+         max-width: 920px; margin: 2.2rem auto; padding: 0 1.1rem; line-height: 1.55; color: #1b1f23; }
+  h1 { font-size: 1.7rem; margin-bottom: .2rem; }
+  .sub { color: #57606a; margin-top: 0; }
+  .note { background: #f6f8fa; border: 1px solid #d0d7de; border-radius: 8px; padding: .7rem 1rem; margin: 1.2rem 0; font-size: .93rem; }
+  table { border-collapse: collapse; width: 100%; margin: 1.1rem 0; font-size: .95rem; }
+  th, td { text-align: left; padding: .6rem .7rem; border-bottom: 1px solid #d8dee4; vertical-align: top; }
+  th { background: #f6f8fa; font-weight: 600; }
+  td.pct { font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
+  .bar { display: inline-block; height: .55rem; border-radius: 3px; background: #2da44e; vertical-align: middle; margin-right: .45rem; }
+  .bartrack { display: inline-block; width: 70px; height: .55rem; border-radius: 3px; background: #eaecef; vertical-align: middle; margin-right: .5rem; }
+  .ffi { color: #9a6700; font-weight: 600; }
+  code { background: #eff1f3; padding: .07rem .3rem; border-radius: 4px; font-size: .86em; }
+  .tgt { color: #57606a; font-size: .85rem; }
+  a { color: #0969da; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .ms { display: inline-block; font-size: .72rem; font-weight: 700; padding: .05rem .4rem; border-radius: 10px; }
+  .m1 { background: #ddf4ff; color: #0969da; } .m2 { background: #dafbe1; color: #1a7f37; }
+  footer { color: #57606a; font-size: .87rem; margin-top: 2rem; border-top: 1px solid #d8dee4; padding-top: 1rem; }
+  @media (prefers-color-scheme: dark) {
+    body { color: #e6edf3; } .note, th { background: #161b22; border-color: #30363d; }
+    th, td { border-color: #30363d; } code { background: #21262d; } .bartrack { background: #21262d; }
+    .sub, .tgt, footer { color: #8b949e; }
+  }
+</style>
 </head>
 <body>
-  <p>Redirecting to the <a href="./coverage/latest/report/linux/index.html">latest coverage report</a>&hellip;</p>
+<h1>Zebra Coverage-Guided Fuzzing — Coverage Overview</h1>
+<p class="sub">Continuous fuzzing of <a href="https://github.com/ZcashFoundation/zebra">Zebra</a>,
+the Rust Zcash full node, via <a href="https://google.github.io/clusterfuzzlite/">ClusterFuzzLite</a>.
+Twelve targets; coverage refreshed automatically by the daily coverage run.</p>
+
+<div class="note">
+<b>What these numbers are.</b> Each row shows the region coverage of the <b>Zebra source file</b>
+(the code under test) that the listed fuzz targets exercise — measured by <code>llvm-cov</code> over
+the seed corpus, combined across the suite. These per-file numbers are the meaningful coverage
+metric. (A whole-report total of ~6% is not meaningful here: it averages in the entire Rust
+standard library and every third-party dependency, none of which the fuzzers target.)
+</div>
+
+<table id="cov">
+<thead><tr><th>Subject under test (Zebra)</th><th>Region coverage</th><th>Fuzz targets</th></tr></thead>
+<tbody><!-- filled by script, with static fallback below --></tbody>
+</table>
+
+<footer>
+Coverage is recomputed nightly and published from the suite's CI. &nbsp;·&nbsp;
+<a id="fullreport" href="coverage/latest/report/linux/index.html">Full llvm-cov HTML report →</a><br>
+Targets are the cumulative suite: 5 from the first milestone (block / P2P deserialization) and 7
+from the second (RPC, script, address, note-commitment tree, Equihash).
+</footer>
+
+<script>
+// [label, sourceFile, reportPath (relative), [targets], milestone, summaryMatchSuffix, fallback "pct% (cov/tot)"]
+const ROWS = [
+  ["Equihash proof-of-work validation", "work/equihash.rs",
+   "coverage/latest/report/linux/src/zebra-fuzz-m2/zebra-chain/src/work/equihash.rs.html",
+   ["equihash_fuzz"], "m2", "zebra-chain/src/work/equihash.rs", "65.29% (79/121)"],
+  ["Block deserialization", "block/serialize.rs",
+   "coverage/latest/report/linux/src/zebra-fuzz-m2/zebra-chain/src/block/serialize.rs.html",
+   ["block_deserialize", "block_deep_fuzz"], "m1", "zebra-chain/src/block/serialize.rs", "67.50% (108/160)"],
+  ["Transparent &amp; shielded address parsing", "transparent/address.rs",
+   "coverage/latest/report/linux/src/zebra-fuzz-m2/zebra-chain/src/transparent/address.rs.html",
+   ["address_fuzz"], "m2", "zebra-chain/src/transparent/address.rs", "62.88% (144/229)"],
+  ["Note-commitment tree (Orchard / Sapling / Sprout)", "orchard/tree.rs",
+   "coverage/latest/report/linux/src/zebra-fuzz-m2/zebra-chain/src/orchard/tree.rs.html",
+   ["note_commitment_tree_fuzz"], "m2", "zebra-chain/src/orchard/tree.rs", "53.68% (226/421)"],
+  ["P2P network message codec", "protocol/external/codec.rs",
+   "coverage/latest/report/linux/src/zebra-fuzz-m2/zebra-network/src/protocol/external/codec.rs.html",
+   ["p2p_message_parse", "p2p_deep_fuzz", "addr_message_fuzz"], "m1", "zebra-network/src/protocol/external/codec.rs", "53.23% (437/821)"],
+  ["JSON-RPC method handlers", "methods.rs",
+   "coverage/latest/report/linux/src/zebra-fuzz-m2/zebra-rpc/src/methods.rs.html",
+   ["rpc_handler_fuzz", "jsonrpsee_envelope_fuzz"], "m2", "zebra-rpc/src/methods.rs", "33.69% (317/941)"],
+  ["Transparent script verification (zcash_script, C/C++)", null, null,
+   ["script_verify_fuzz", "script_flag_matrix_fuzz"], "m2", null, null],
+];
+
+function bar(pct) {
+  const w = Math.max(2, Math.round(pct * 0.7)); // 70px track
+  return '<span class="bartrack"><span class="bar" style="width:' + w + 'px"></span></span>';
+}
+function render(livePct) {
+  const tb = document.querySelector('#cov tbody');
+  tb.innerHTML = '';
+  for (const [label, file, report, targets, ms, suffix, fallback] of ROWS) {
+    const tr = document.createElement('tr');
+    const msTag = '<span class="ms ' + ms + '">' + ms.toUpperCase() + '</span> ';
+    let sutCell = msTag + label;
+    if (file) sutCell += '<br><code>' + file + '</code>';
+    let covCell;
+    if (suffix === null) {
+      covCell = '<span class="ffi">FFI — crash detection</span><br><span class="tgt">C side not instrumented (no Rust region %)</span>';
+    } else {
+      const live = livePct[suffix];
+      const text = live || fallback;
+      const num = parseFloat(text);
+      covCell = (isNaN(num) ? '' : bar(num)) +
+                (report ? '<a href="' + report + '">' + text + '</a>' : text) +
+                '<br><span class="tgt">region coverage · click to view line-by-line</span>';
+    }
+    const tgtCell = targets.map(t => '<code>' + t + '</code>').join(' ');
+    tr.innerHTML = '<td>' + sutCell + '</td><td class="pct">' + covCell + '</td><td>' + tgtCell + '</td>';
+    tb.appendChild(tr);
+  }
+}
+render({}); // static fallback first paint
+fetch('coverage/latest/report/linux/summary.json')
+  .then(r => r.ok ? r.json() : Promise.reject())
+  .then(d => {
+    const files = d.data[0].files, live = {};
+    for (const [, , , , , suffix] of ROWS) {
+      if (!suffix) continue;
+      const f = files.find(x => x.filename.endsWith(suffix));
+      if (f) { const reg = f.summary.regions;
+        live[suffix] = reg.percent.toFixed(2) + '% (' + reg.covered + '/' + reg.count + ')'; }
+    }
+    render(live);
+  })
+  .catch(() => { /* keep static fallback */ });
+</script>
 </body>
 </html>
