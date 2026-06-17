@@ -1,0 +1,12 @@
+script_verify_fuzz
+p2p_message_parse
+rpc_handler_fuzz
+block_deep_fuzz
+block_deserialize
+note_commitment_tree_fuzz
+address_fuzz
+p2p_deep_fuzz
+jsonrpsee_envelope_fuzz
+equihash_fuzz
+addr_message_fuzz
+script_flag_matrix_fuzz
