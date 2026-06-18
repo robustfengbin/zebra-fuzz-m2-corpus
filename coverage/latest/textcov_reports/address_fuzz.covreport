@@ -103,8 +103,8 @@ _RINvNvMCsekqC0esIP5x_12blake2b_simdNtB5_6Params8to_wordss_9as_arrayshEB5_:
   151|    190|            }
 
 _RNvCsaQLrihHycad_6bech326decodeCsc4HhLwrPL7g_11zebra_chain:
-  208|    648|pub fn decode(s: &str) -> Result<(Hrp, Vec<u8>), DecodeError> {
-  209|    648|    let unchecked = UncheckedHrpstring::new(s)?;
+  208|    702|pub fn decode(s: &str) -> Result<(Hrp, Vec<u8>), DecodeError> {
+  209|    702|    let unchecked = UncheckedHrpstring::new(s)?;
   210|       |
   211|    134|    if let Err(e) = unchecked.validate_checksum::<Bech32m>() {
   212|    122|        if !unchecked.has_valid_checksum::<Bech32>() {
@@ -116,9 +116,9 @@ _RNvCsaQLrihHycad_6bech326decodeCsc4HhLwrPL7g_11zebra_chain:
   218|     16|    let checked = unchecked.remove_checksum::<Bech32m>();
   219|       |
   220|     16|    Ok((checked.hrp(), checked.byte_iter().collect()))
-  221|    648|}
+  221|    702|}
 _RNvXs0_CsaQLrihHycad_6bech32NtB5_11DecodeErrorINtNtCs6SNw0SRvItZ_4core7convert4FromNtNtNtB5_10primitives6decode23UncheckedHrpstringErrorE4fromCsc4HhLwrPL7g_11zebra_chain:
-  482|    514|    fn from(e: UncheckedHrpstringError) -> Self { Self::Parse(e) }
+  482|    568|    fn from(e: UncheckedHrpstringError) -> Self { Self::Parse(e) }
 _RINvCsaQLrihHycad_6bech3212encode_lowerNtNtB2_10primitives6Bech32ECs5FnQp8us7pk_13zcash_address:
   239|      3|pub fn encode_lower<Ck: Checksum>(hrp: Hrp, data: &[u8]) -> Result<String, EncodeError> {
   240|      3|    let mut buf = String::new();
@@ -221,73 +221,73 @@ _RINvCsaQLrihHycad_6bech3214encoded_lengthNtNtB2_10primitives6Bech32EB2_:
   442|      3|}
 
 _RNvMs2_NtNtCsaQLrihHycad_6bech3210primitives8checksumNtB5_11HrpFe32Iter3newCsq645jlIU7N_5zip32:
-  229|     82|    pub fn new(hrp: &'hrp Hrp) -> Self {
-  230|     82|        let high_iter = hrp.lowercase_byte_iter();
-  231|     82|        let low_iter = hrp.lowercase_byte_iter();
+  229|     84|    pub fn new(hrp: &'hrp Hrp) -> Self {
+  230|     84|        let high_iter = hrp.lowercase_byte_iter();
+  231|     84|        let low_iter = hrp.lowercase_byte_iter();
   232|       |
-  233|     82|        Self { high_iter: Some(high_iter), low_iter: Some(low_iter) }
-  234|     82|    }
+  233|     84|        Self { high_iter: Some(high_iter), low_iter: Some(low_iter) }
+  234|     84|    }
 _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives8checksumINtB4_6EngineNtB6_7Bech32mE3newCsq645jlIU7N_5zip32:
-  102|     82|    pub fn new() -> Self { Engine { residue: Ck::MidstateRepr::ONE } }
+  102|     84|    pub fn new() -> Self { Engine { residue: Ck::MidstateRepr::ONE } }
 _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives8checksumINtB4_6EngineNtB6_7Bech32mE7residueCsq645jlIU7N_5zip32:
-  140|     82|    pub fn residue(&self) -> &Ck::MidstateRepr { &self.residue }
+  140|     84|    pub fn residue(&self) -> &Ck::MidstateRepr { &self.residue }
 _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives8checksumINtB4_6EngineNtB6_7Bech32mE8input_feCsq645jlIU7N_5zip32:
-  116|  10.5k|    pub fn input_fe(&mut self, e: Fe32) {
-  117|  10.5k|        let xn = self.residue.mul_by_x_then_add(Ck::CHECKSUM_LENGTH, e.into());
-  118|  63.0k|        for i in 0..5 {
-  119|  52.5k|            if xn & (1 << i) != 0 {
-  120|  24.9k|                self.residue = self.residue ^ Ck::GENERATOR_SH[i];
-  121|  27.6k|            }
+  116|  10.2k|    pub fn input_fe(&mut self, e: Fe32) {
+  117|  10.2k|        let xn = self.residue.mul_by_x_then_add(Ck::CHECKSUM_LENGTH, e.into());
+  118|  61.7k|        for i in 0..5 {
+  119|  51.4k|            if xn & (1 << i) != 0 {
+  120|  24.3k|                self.residue = self.residue ^ Ck::GENERATOR_SH[i];
+  121|  27.0k|            }
   122|       |        }
-  123|  10.5k|    }
+  123|  10.2k|    }
 _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives8checksumINtB4_6EngineNtB6_7Bech32mE9input_hrpCsq645jlIU7N_5zip32:
-  106|     82|    pub fn input_hrp(&mut self, hrp: Hrp) {
-  107|  1.57k|        for fe in HrpFe32Iter::new(&hrp) {
-  108|  1.57k|            self.input_fe(fe)
+  106|     84|    pub fn input_hrp(&mut self, hrp: Hrp) {
+  107|  1.24k|        for fe in HrpFe32Iter::new(&hrp) {
+  108|  1.24k|            self.input_fe(fe)
   109|       |        }
-  110|     82|    }
+  110|     84|    }
 _RNvXs3_NtNtCsaQLrihHycad_6bech3210primitives8checksumNtB5_11HrpFe32IterNtNtNtNtCs6SNw0SRvItZ_4core4iter6traits8iterator8Iterator4nextCsq645jlIU7N_5zip32:
-  240|  1.65k|    fn next(&mut self) -> Option<Fe32> {
-  241|  1.65k|        if let Some(ref mut high_iter) = &mut self.high_iter {
-  242|    826|            match high_iter.next() {
-  243|    744|                Some(high) => return Some(Fe32(high >> 5)),
+  240|  1.33k|    fn next(&mut self) -> Option<Fe32> {
+  241|  1.33k|        if let Some(ref mut high_iter) = &mut self.high_iter {
+  242|    666|            match high_iter.next() {
+  243|    582|                Some(high) => return Some(Fe32(high >> 5)),
   244|       |                None => {
-  245|     82|                    self.high_iter = None;
-  246|     82|                    return Some(Fe32::Q);
+  245|     84|                    self.high_iter = None;
+  246|     84|                    return Some(Fe32::Q);
   247|       |                }
   248|       |            }
-  249|    826|        }
-  250|    826|        if let Some(ref mut low_iter) = &mut self.low_iter {
-  251|    826|            match low_iter.next() {
-  252|    744|                Some(low) => return Some(Fe32(low & 0x1f)),
-  253|     82|                None => self.low_iter = None,
+  249|    666|        }
+  250|    666|        if let Some(ref mut low_iter) = &mut self.low_iter {
+  251|    666|            match low_iter.next() {
+  252|    582|                Some(low) => return Some(Fe32(low & 0x1f)),
+  253|     84|                None => self.low_iter = None,
   254|       |            }
   255|      0|        }
-  256|     82|        None
-  257|  1.65k|    }
+  256|     84|        None
+  257|  1.33k|    }
 _RNvXsg_NtNtCsaQLrihHycad_6bech3210primitives8checksummNtB5_10PackedFe3217mul_by_x_then_addCsq645jlIU7N_5zip32:
-  200|  10.5k|            fn mul_by_x_then_add(&mut self, degree: usize, add: u8) -> u8 {
-  201|  10.5k|                debug_assert!(degree > 0);
-  202|  10.5k|                debug_assert!(degree <= Self::WIDTH);
-  203|  10.5k|                debug_assert!(add < 32);
-  204|  10.5k|                let ret = self.unpack(degree - 1);
-  205|  10.5k|                *self &= !(0x1f << ((degree - 1) * 5));
-  206|  10.5k|                *self <<= 5;
-  207|  10.5k|                *self |= Self::from(add);
-  208|  10.5k|                ret
-  209|  10.5k|            }
+  200|  10.2k|            fn mul_by_x_then_add(&mut self, degree: usize, add: u8) -> u8 {
+  201|  10.2k|                debug_assert!(degree > 0);
+  202|  10.2k|                debug_assert!(degree <= Self::WIDTH);
+  203|  10.2k|                debug_assert!(add < 32);
+  204|  10.2k|                let ret = self.unpack(degree - 1);
+  205|  10.2k|                *self &= !(0x1f << ((degree - 1) * 5));
+  206|  10.2k|                *self <<= 5;
+  207|  10.2k|                *self |= Self::from(add);
+  208|  10.2k|                ret
+  209|  10.2k|            }
 _RNvXsg_NtNtCsaQLrihHycad_6bech3210primitives8checksummNtB5_10PackedFe326unpackCsq645jlIU7N_5zip32:
-  194|  10.5k|            fn unpack(&self, n: usize) -> u8 {
-  195|  10.5k|                debug_assert!(n < Self::WIDTH);
-  196|  10.5k|                (*self >> (n * 5)) as u8 & 0x1f
-  197|  10.5k|            }
+  194|  10.2k|            fn unpack(&self, n: usize) -> u8 {
+  195|  10.2k|                debug_assert!(n < Self::WIDTH);
+  196|  10.2k|                (*self >> (n * 5)) as u8 & 0x1f
+  197|  10.2k|            }
 _RNvMs2_NtNtCsaQLrihHycad_6bech3210primitives8checksumNtB5_11HrpFe32Iter3newCs5FnQp8us7pk_13zcash_address:
-  229|    455|    pub fn new(hrp: &'hrp Hrp) -> Self {
-  230|    455|        let high_iter = hrp.lowercase_byte_iter();
-  231|    455|        let low_iter = hrp.lowercase_byte_iter();
+  229|    475|    pub fn new(hrp: &'hrp Hrp) -> Self {
+  230|    475|        let high_iter = hrp.lowercase_byte_iter();
+  231|    475|        let low_iter = hrp.lowercase_byte_iter();
   232|       |
-  233|    455|        Self { high_iter: Some(high_iter), low_iter: Some(low_iter) }
-  234|    455|    }
+  233|    475|        Self { high_iter: Some(high_iter), low_iter: Some(low_iter) }
+  234|    475|    }
 _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives8checksumINtB4_6EngineNtB6_6Bech32E20input_target_residueCs5FnQp8us7pk_13zcash_address:
   132|      3|    pub fn input_target_residue(&mut self) {
   133|     21|        for i in 0..Ck::CHECKSUM_LENGTH {
@@ -295,43 +295,43 @@ _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives8checksumINtB4_6EngineNtB6_6Bech32E2
   135|     18|        }
   136|      3|    }
 _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives8checksumINtB4_6EngineNtB6_6Bech32E3newCs5FnQp8us7pk_13zcash_address:
-  102|    190|    pub fn new() -> Self { Engine { residue: Ck::MidstateRepr::ONE } }
+  102|    198|    pub fn new() -> Self { Engine { residue: Ck::MidstateRepr::ONE } }
 _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives8checksumINtB4_6EngineNtB6_6Bech32E7residueCs5FnQp8us7pk_13zcash_address:
-  140|    205|    pub fn residue(&self) -> &Ck::MidstateRepr { &self.residue }
+  140|    213|    pub fn residue(&self) -> &Ck::MidstateRepr { &self.residue }
 _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives8checksumINtB4_6EngineNtB6_6Bech32E8input_feCs5FnQp8us7pk_13zcash_address:
-  116|  20.7k|    pub fn input_fe(&mut self, e: Fe32) {
-  117|  20.7k|        let xn = self.residue.mul_by_x_then_add(Ck::CHECKSUM_LENGTH, e.into());
-  118|   124k|        for i in 0..5 {
-  119|   103k|            if xn & (1 << i) != 0 {
-  120|  48.8k|                self.residue = self.residue ^ Ck::GENERATOR_SH[i];
-  121|  54.7k|            }
+  116|  20.5k|    pub fn input_fe(&mut self, e: Fe32) {
+  117|  20.5k|        let xn = self.residue.mul_by_x_then_add(Ck::CHECKSUM_LENGTH, e.into());
+  118|   123k|        for i in 0..5 {
+  119|   102k|            if xn & (1 << i) != 0 {
+  120|  48.3k|                self.residue = self.residue ^ Ck::GENERATOR_SH[i];
+  121|  54.3k|            }
   122|       |        }
-  123|  20.7k|    }
+  123|  20.5k|    }
 _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives8checksumINtB4_6EngineNtB6_6Bech32E9input_hrpCs5FnQp8us7pk_13zcash_address:
-  106|    190|    pub fn input_hrp(&mut self, hrp: Hrp) {
-  107|  3.82k|        for fe in HrpFe32Iter::new(&hrp) {
-  108|  3.82k|            self.input_fe(fe)
+  106|    198|    pub fn input_hrp(&mut self, hrp: Hrp) {
+  107|  3.03k|        for fe in HrpFe32Iter::new(&hrp) {
+  108|  3.03k|            self.input_fe(fe)
   109|       |        }
-  110|    190|    }
+  110|    198|    }
 _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives8checksumINtB4_6EngineNtB6_7Bech32mE3newCs5FnQp8us7pk_13zcash_address:
-  102|    105|    pub fn new() -> Self { Engine { residue: Ck::MidstateRepr::ONE } }
+  102|    111|    pub fn new() -> Self { Engine { residue: Ck::MidstateRepr::ONE } }
 _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives8checksumINtB4_6EngineNtB6_7Bech32mE7residueCs5FnQp8us7pk_13zcash_address:
-  140|    105|    pub fn residue(&self) -> &Ck::MidstateRepr { &self.residue }
+  140|    111|    pub fn residue(&self) -> &Ck::MidstateRepr { &self.residue }
 _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives8checksumINtB4_6EngineNtB6_7Bech32mE8input_feCs5FnQp8us7pk_13zcash_address:
   116|  11.7k|    pub fn input_fe(&mut self, e: Fe32) {
   117|  11.7k|        let xn = self.residue.mul_by_x_then_add(Ck::CHECKSUM_LENGTH, e.into());
-  118|  70.2k|        for i in 0..5 {
-  119|  58.5k|            if xn & (1 << i) != 0 {
+  118|  70.3k|        for i in 0..5 {
+  119|  58.6k|            if xn & (1 << i) != 0 {
   120|  27.4k|                self.residue = self.residue ^ Ck::GENERATOR_SH[i];
-  121|  31.0k|            }
+  121|  31.1k|            }
   122|       |        }
   123|  11.7k|    }
 _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives8checksumINtB4_6EngineNtB6_7Bech32mE9input_hrpCs5FnQp8us7pk_13zcash_address:
-  106|    105|    pub fn input_hrp(&mut self, hrp: Hrp) {
-  107|  2.24k|        for fe in HrpFe32Iter::new(&hrp) {
-  108|  2.24k|            self.input_fe(fe)
+  106|    111|    pub fn input_hrp(&mut self, hrp: Hrp) {
+  107|  1.77k|        for fe in HrpFe32Iter::new(&hrp) {
+  108|  1.77k|            self.input_fe(fe)
   109|       |        }
-  110|    105|    }
+  110|    111|    }
 _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives8checksumINtB4_6EngineNtNtNtCs5FnQp8us7pk_13zcash_address4kind7unified13Bech32mZip316E20input_target_residueB17_:
   132|      8|    pub fn input_target_residue(&mut self) {
   133|     56|        for i in 0..Ck::CHECKSUM_LENGTH {
@@ -339,77 +339,77 @@ _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives8checksumINtB4_6EngineNtNtNtCs5FnQp8
   135|     48|        }
   136|      8|    }
 _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives8checksumINtB4_6EngineNtNtNtCs5FnQp8us7pk_13zcash_address4kind7unified13Bech32mZip316E3newB17_:
-  102|    160|    pub fn new() -> Self { Engine { residue: Ck::MidstateRepr::ONE } }
+  102|    166|    pub fn new() -> Self { Engine { residue: Ck::MidstateRepr::ONE } }
 _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives8checksumINtB4_6EngineNtNtNtCs5FnQp8us7pk_13zcash_address4kind7unified13Bech32mZip316E7residueB17_:
-  140|    200|    pub fn residue(&self) -> &Ck::MidstateRepr { &self.residue }
+  140|    206|    pub fn residue(&self) -> &Ck::MidstateRepr { &self.residue }
 _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives8checksumINtB4_6EngineNtNtNtCs5FnQp8us7pk_13zcash_address4kind7unified13Bech32mZip316E8input_feB17_:
   116|  24.0k|    pub fn input_fe(&mut self, e: Fe32) {
   117|  24.0k|        let xn = self.residue.mul_by_x_then_add(Ck::CHECKSUM_LENGTH, e.into());
   118|   144k|        for i in 0..5 {
   119|   120k|            if xn & (1 << i) != 0 {
   120|  57.3k|                self.residue = self.residue ^ Ck::GENERATOR_SH[i];
-  121|  62.9k|            }
+  121|  63.0k|            }
   122|       |        }
   123|  24.0k|    }
 _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives8checksumINtB4_6EngineNtNtNtCs5FnQp8us7pk_13zcash_address4kind7unified13Bech32mZip316E9input_hrpB17_:
-  106|    160|    pub fn input_hrp(&mut self, hrp: Hrp) {
-  107|  2.50k|        for fe in HrpFe32Iter::new(&hrp) {
-  108|  2.50k|            self.input_fe(fe)
+  106|    166|    pub fn input_hrp(&mut self, hrp: Hrp) {
+  107|  2.03k|        for fe in HrpFe32Iter::new(&hrp) {
+  108|  2.03k|            self.input_fe(fe)
   109|       |        }
-  110|    160|    }
+  110|    166|    }
 _RNvXs3_NtNtCsaQLrihHycad_6bech3210primitives8checksumNtB5_11HrpFe32IterNtNtNtNtCs6SNw0SRvItZ_4core4iter6traits8iterator8Iterator4nextCs5FnQp8us7pk_13zcash_address:
-  240|  9.03k|    fn next(&mut self) -> Option<Fe32> {
-  241|  9.03k|        if let Some(ref mut high_iter) = &mut self.high_iter {
-  242|  4.51k|            match high_iter.next() {
-  243|  4.06k|                Some(high) => return Some(Fe32(high >> 5)),
+  240|  7.31k|    fn next(&mut self) -> Option<Fe32> {
+  241|  7.31k|        if let Some(ref mut high_iter) = &mut self.high_iter {
+  242|  3.65k|            match high_iter.next() {
+  243|  3.18k|                Some(high) => return Some(Fe32(high >> 5)),
   244|       |                None => {
-  245|    455|                    self.high_iter = None;
-  246|    455|                    return Some(Fe32::Q);
+  245|    475|                    self.high_iter = None;
+  246|    475|                    return Some(Fe32::Q);
   247|       |                }
   248|       |            }
-  249|  4.51k|        }
-  250|  4.51k|        if let Some(ref mut low_iter) = &mut self.low_iter {
-  251|  4.51k|            match low_iter.next() {
-  252|  4.06k|                Some(low) => return Some(Fe32(low & 0x1f)),
-  253|    455|                None => self.low_iter = None,
+  249|  3.65k|        }
+  250|  3.65k|        if let Some(ref mut low_iter) = &mut self.low_iter {
+  251|  3.65k|            match low_iter.next() {
+  252|  3.18k|                Some(low) => return Some(Fe32(low & 0x1f)),
+  253|    475|                None => self.low_iter = None,
   254|       |            }
   255|      0|        }
-  256|    455|        None
-  257|  9.03k|    }
+  256|    475|        None
+  257|  7.31k|    }
 _RNvXsg_NtNtCsaQLrihHycad_6bech3210primitives8checksummNtB5_10PackedFe3217mul_by_x_then_addCs5FnQp8us7pk_13zcash_address:
-  200|  56.4k|            fn mul_by_x_then_add(&mut self, degree: usize, add: u8) -> u8 {
-  201|  56.4k|                debug_assert!(degree > 0);
-  202|  56.4k|                debug_assert!(degree <= Self::WIDTH);
-  203|  56.4k|                debug_assert!(add < 32);
-  204|  56.4k|                let ret = self.unpack(degree - 1);
-  205|  56.4k|                *self &= !(0x1f << ((degree - 1) * 5));
-  206|  56.4k|                *self <<= 5;
-  207|  56.4k|                *self |= Self::from(add);
-  208|  56.4k|                ret
-  209|  56.4k|            }
+  200|  56.3k|            fn mul_by_x_then_add(&mut self, degree: usize, add: u8) -> u8 {
+  201|  56.3k|                debug_assert!(degree > 0);
+  202|  56.3k|                debug_assert!(degree <= Self::WIDTH);
+  203|  56.3k|                debug_assert!(add < 32);
+  204|  56.3k|                let ret = self.unpack(degree - 1);
+  205|  56.3k|                *self &= !(0x1f << ((degree - 1) * 5));
+  206|  56.3k|                *self <<= 5;
+  207|  56.3k|                *self |= Self::from(add);
+  208|  56.3k|                ret
+  209|  56.3k|            }
 _RNvXsg_NtNtCsaQLrihHycad_6bech3210primitives8checksummNtB5_10PackedFe326unpackCs5FnQp8us7pk_13zcash_address:
-  194|  56.6k|            fn unpack(&self, n: usize) -> u8 {
-  195|  56.6k|                debug_assert!(n < Self::WIDTH);
-  196|  56.6k|                (*self >> (n * 5)) as u8 & 0x1f
-  197|  56.6k|            }
+  194|  56.4k|            fn unpack(&self, n: usize) -> u8 {
+  195|  56.4k|                debug_assert!(n < Self::WIDTH);
+  196|  56.4k|                (*self >> (n * 5)) as u8 & 0x1f
+  197|  56.4k|            }
 
 _RINvMNtNtCsaQLrihHycad_6bech3210primitives6decodeNtB3_18UncheckedHrpstring18has_valid_checksumNtB5_6Bech32ECsc4HhLwrPL7g_11zebra_chain:
   246|    122|    pub fn has_valid_checksum<Ck: Checksum>(&self) -> bool {
   247|    122|        self.validate_checksum::<Ck>().is_ok()
   248|    122|    }
 _RNvMNtNtCsaQLrihHycad_6bech3210primitives6decodeNtB2_18UncheckedHrpstring3newCsc4HhLwrPL7g_11zebra_chain:
-  131|    648|    pub fn new(s: &'s str) -> Result<Self, UncheckedHrpstringError> {
-  132|    648|        let sep_pos = check_characters(s)?;
-  133|    226|        let (hrp, rest) = s.split_at(sep_pos);
+  131|    702|    pub fn new(s: &'s str) -> Result<Self, UncheckedHrpstringError> {
+  132|    702|        let sep_pos = check_characters(s)?;
+  133|    258|        let (hrp, rest) = s.split_at(sep_pos);
   134|       |
   135|    134|        let ret = UncheckedHrpstring {
-  136|    226|            hrp: Hrp::parse(hrp)?,
+  136|    258|            hrp: Hrp::parse(hrp)?,
   137|    134|            data_part_ascii: &rest.as_bytes()[1..], // Skip the separator.
   138|    134|            hrpstring_length: s.len(),
   139|       |        };
   140|       |
   141|    134|        Ok(ret)
-  142|    648|    }
+  142|    702|    }
 _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives6decodeNtB4_16CheckedHrpstring3hrpCsc4HhLwrPL7g_11zebra_chain:
   358|     16|    pub fn hrp(&self) -> Hrp { self.hrp }
 _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives6decodeNtB4_16CheckedHrpstring9byte_iterCsc4HhLwrPL7g_11zebra_chain:
@@ -443,33 +443,33 @@ _RINvMNtNtCsaQLrihHycad_6bech3210primitives6decodeNtB3_18UncheckedHrpstring17val
   266|    132|        }
   267|       |
   268|    132|        if self.data_part_ascii.len() < Ck::CHECKSUM_LENGTH {
-  269|     50|            return Err(InvalidLength);
-  270|     82|        }
+  269|     48|            return Err(InvalidLength);
+  270|     84|        }
   271|       |
-  272|     82|        let mut checksum_eng = checksum::Engine::<Ck>::new();
-  273|     82|        checksum_eng.input_hrp(self.hrp());
+  272|     84|        let mut checksum_eng = checksum::Engine::<Ck>::new();
+  273|     84|        checksum_eng.input_hrp(self.hrp());
   274|       |
   275|       |        // Unwrap ok since we checked all characters in our constructor.
-  276|  8.94k|        for fe in self.data_part_ascii.iter().map(|&b| Fe32::from_char_unchecked(b)) {
-  277|  8.94k|            checksum_eng.input_fe(fe);
-  278|  8.94k|        }
+  276|  9.04k|        for fe in self.data_part_ascii.iter().map(|&b| Fe32::from_char_unchecked(b)) {
+  277|  9.04k|            checksum_eng.input_fe(fe);
+  278|  9.04k|        }
   279|       |
-  280|     82|        if checksum_eng.residue() != &Ck::TARGET_RESIDUE {
-  281|     70|            return Err(InvalidResidue);
+  280|     84|        if checksum_eng.residue() != &Ck::TARGET_RESIDUE {
+  281|     72|            return Err(InvalidResidue);
   282|     12|        }
   283|       |
   284|     12|        Ok(())
   285|    134|    }
 _RNCINvMNtNtCsaQLrihHycad_6bech3210primitives6decodeNtB5_18UncheckedHrpstring17validate_checksumNtB7_7Bech32mE0Csq645jlIU7N_5zip32:
-  276|  8.94k|        for fe in self.data_part_ascii.iter().map(|&b| Fe32::from_char_unchecked(b)) {
+  276|  9.04k|        for fe in self.data_part_ascii.iter().map(|&b| Fe32::from_char_unchecked(b)) {
 _RNvMNtNtCsaQLrihHycad_6bech3210primitives6decodeNtB2_18UncheckedHrpstring3hrpCsq645jlIU7N_5zip32:
-  146|     98|    pub fn hrp(&self) -> Hrp { self.hrp }
+  146|    100|    pub fn hrp(&self) -> Hrp { self.hrp }
 _RNvXs4_NtNtCsaQLrihHycad_6bech3210primitives6decodeNtB5_15AsciiToFe32IterNtNtNtNtCs6SNw0SRvItZ_4core4iter6traits8iterator8Iterator4nextCsq645jlIU7N_5zip32:
   750|     16|    fn next(&mut self) -> Option<Fe32> { self.iter.next().map(Fe32::from_char_unchecked) }
 _RNvXsh_NtNtCsaQLrihHycad_6bech3210primitives6decodeNtB5_23UncheckedHrpstringErrorINtNtCs6SNw0SRvItZ_4core7convert4FromNtB5_9CharErrorE4fromCsq645jlIU7N_5zip32:
-  915|    422|    fn from(e: CharError) -> Self { Self::Char(e) }
+  915|    444|    fn from(e: CharError) -> Self { Self::Char(e) }
 _RNvXsi_NtNtCsaQLrihHycad_6bech3210primitives6decodeNtB5_23UncheckedHrpstringErrorINtNtCs6SNw0SRvItZ_4core7convert4FromNtNtB7_3hrp5ErrorE4fromCsq645jlIU7N_5zip32:
-  920|     92|    fn from(e: hrp::Error) -> Self { Self::Hrp(e) }
+  920|    124|    fn from(e: hrp::Error) -> Self { Self::Hrp(e) }
 _RINvMNtNtCsaQLrihHycad_6bech3210primitives6decodeNtB3_18UncheckedHrpstring15remove_checksumNtB5_6Bech32ECs5FnQp8us7pk_13zcash_address:
   297|     12|    pub fn remove_checksum<Ck: Checksum>(self) -> CheckedHrpstring<'s> {
   298|     12|        let end = self.data_part_ascii.len() - Ck::CHECKSUM_LENGTH;
@@ -491,167 +491,167 @@ _RINvMNtNtCsaQLrihHycad_6bech3210primitives6decodeNtB3_18UncheckedHrpstring15rem
   304|     32|        }
   305|     32|    }
 _RINvMNtNtCsaQLrihHycad_6bech3210primitives6decodeNtB3_18UncheckedHrpstring17validate_checksumNtB5_6Bech32ECs5FnQp8us7pk_13zcash_address:
-  253|    371|    pub fn validate_checksum<Ck: Checksum>(&self) -> Result<(), ChecksumError> {
+  253|    368|    pub fn validate_checksum<Ck: Checksum>(&self) -> Result<(), ChecksumError> {
   254|       |        use ChecksumError::*;
   255|       |
-  256|    371|        if self.hrpstring_length > Ck::CODE_LENGTH {
+  256|    368|        if self.hrpstring_length > Ck::CODE_LENGTH {
   257|      5|            return Err(ChecksumError::CodeLength(CodeLengthError {
   258|      5|                encoded_length: self.hrpstring_length,
   259|      5|                code_length: Ck::CODE_LENGTH,
   260|      5|            }));
-  261|    366|        }
+  261|    363|        }
   262|       |
-  263|    366|        if Ck::CHECKSUM_LENGTH == 0 {
+  263|    363|        if Ck::CHECKSUM_LENGTH == 0 {
   264|       |            // Called with NoChecksum
   265|      0|            return Ok(());
-  266|    366|        }
+  266|    363|        }
   267|       |
-  268|    366|        if self.data_part_ascii.len() < Ck::CHECKSUM_LENGTH {
-  269|    179|            return Err(InvalidLength);
-  270|    187|        }
+  268|    363|        if self.data_part_ascii.len() < Ck::CHECKSUM_LENGTH {
+  269|    168|            return Err(InvalidLength);
+  270|    195|        }
   271|       |
-  272|    187|        let mut checksum_eng = checksum::Engine::<Ck>::new();
-  273|    187|        checksum_eng.input_hrp(self.hrp());
+  272|    195|        let mut checksum_eng = checksum::Engine::<Ck>::new();
+  273|    195|        checksum_eng.input_hrp(self.hrp());
   274|       |
   275|       |        // Unwrap ok since we checked all characters in our constructor.
-  276|  16.6k|        for fe in self.data_part_ascii.iter().map(|&b| Fe32::from_char_unchecked(b)) {
-  277|  16.6k|            checksum_eng.input_fe(fe);
-  278|  16.6k|        }
+  276|  17.2k|        for fe in self.data_part_ascii.iter().map(|&b| Fe32::from_char_unchecked(b)) {
+  277|  17.2k|            checksum_eng.input_fe(fe);
+  278|  17.2k|        }
   279|       |
-  280|    187|        if checksum_eng.residue() != &Ck::TARGET_RESIDUE {
-  281|    171|            return Err(InvalidResidue);
+  280|    195|        if checksum_eng.residue() != &Ck::TARGET_RESIDUE {
+  281|    179|            return Err(InvalidResidue);
   282|     16|        }
   283|       |
   284|     16|        Ok(())
-  285|    371|    }
+  285|    368|    }
 _RINvMNtNtCsaQLrihHycad_6bech3210primitives6decodeNtB3_18UncheckedHrpstring17validate_checksumNtB5_7Bech32mECs5FnQp8us7pk_13zcash_address:
-  253|    237|    pub fn validate_checksum<Ck: Checksum>(&self) -> Result<(), ChecksumError> {
+  253|    234|    pub fn validate_checksum<Ck: Checksum>(&self) -> Result<(), ChecksumError> {
   254|       |        use ChecksumError::*;
   255|       |
-  256|    237|        if self.hrpstring_length > Ck::CODE_LENGTH {
+  256|    234|        if self.hrpstring_length > Ck::CODE_LENGTH {
   257|      3|            return Err(ChecksumError::CodeLength(CodeLengthError {
   258|      3|                encoded_length: self.hrpstring_length,
   259|      3|                code_length: Ck::CODE_LENGTH,
   260|      3|            }));
-  261|    234|        }
+  261|    231|        }
   262|       |
-  263|    234|        if Ck::CHECKSUM_LENGTH == 0 {
+  263|    231|        if Ck::CHECKSUM_LENGTH == 0 {
   264|       |            // Called with NoChecksum
   265|      0|            return Ok(());
-  266|    234|        }
+  266|    231|        }
   267|       |
-  268|    234|        if self.data_part_ascii.len() < Ck::CHECKSUM_LENGTH {
-  269|    129|            return Err(InvalidLength);
-  270|    105|        }
+  268|    231|        if self.data_part_ascii.len() < Ck::CHECKSUM_LENGTH {
+  269|    120|            return Err(InvalidLength);
+  270|    111|        }
   271|       |
-  272|    105|        let mut checksum_eng = checksum::Engine::<Ck>::new();
-  273|    105|        checksum_eng.input_hrp(self.hrp());
+  272|    111|        let mut checksum_eng = checksum::Engine::<Ck>::new();
+  273|    111|        checksum_eng.input_hrp(self.hrp());
   274|       |
   275|       |        // Unwrap ok since we checked all characters in our constructor.
-  276|  9.45k|        for fe in self.data_part_ascii.iter().map(|&b| Fe32::from_char_unchecked(b)) {
-  277|  9.45k|            checksum_eng.input_fe(fe);
-  278|  9.45k|        }
+  276|  9.95k|        for fe in self.data_part_ascii.iter().map(|&b| Fe32::from_char_unchecked(b)) {
+  277|  9.95k|            checksum_eng.input_fe(fe);
+  278|  9.95k|        }
   279|       |
-  280|    105|        if checksum_eng.residue() != &Ck::TARGET_RESIDUE {
-  281|    105|            return Err(InvalidResidue);
+  280|    111|        if checksum_eng.residue() != &Ck::TARGET_RESIDUE {
+  281|    111|            return Err(InvalidResidue);
   282|      0|        }
   283|       |
   284|      0|        Ok(())
-  285|    237|    }
+  285|    234|    }
 _RINvMNtNtCsaQLrihHycad_6bech3210primitives6decodeNtB3_18UncheckedHrpstring17validate_checksumNtNtNtCs5FnQp8us7pk_13zcash_address4kind7unified13Bech32mZip316EB1z_:
-  253|    281|    pub fn validate_checksum<Ck: Checksum>(&self) -> Result<(), ChecksumError> {
+  253|    278|    pub fn validate_checksum<Ck: Checksum>(&self) -> Result<(), ChecksumError> {
   254|       |        use ChecksumError::*;
   255|       |
-  256|    281|        if self.hrpstring_length > Ck::CODE_LENGTH {
+  256|    278|        if self.hrpstring_length > Ck::CODE_LENGTH {
   257|      0|            return Err(ChecksumError::CodeLength(CodeLengthError {
   258|      0|                encoded_length: self.hrpstring_length,
   259|      0|                code_length: Ck::CODE_LENGTH,
   260|      0|            }));
-  261|    281|        }
+  261|    278|        }
   262|       |
-  263|    281|        if Ck::CHECKSUM_LENGTH == 0 {
+  263|    278|        if Ck::CHECKSUM_LENGTH == 0 {
   264|       |            // Called with NoChecksum
   265|      0|            return Ok(());
-  266|    281|        }
+  266|    278|        }
   267|       |
-  268|    281|        if self.data_part_ascii.len() < Ck::CHECKSUM_LENGTH {
-  269|    129|            return Err(InvalidLength);
-  270|    152|        }
+  268|    278|        if self.data_part_ascii.len() < Ck::CHECKSUM_LENGTH {
+  269|    120|            return Err(InvalidLength);
+  270|    158|        }
   271|       |
-  272|    152|        let mut checksum_eng = checksum::Engine::<Ck>::new();
-  273|    152|        checksum_eng.input_hrp(self.hrp());
+  272|    158|        let mut checksum_eng = checksum::Engine::<Ck>::new();
+  273|    158|        checksum_eng.input_hrp(self.hrp());
   274|       |
   275|       |        // Unwrap ok since we checked all characters in our constructor.
-  276|  19.9k|        for fe in self.data_part_ascii.iter().map(|&b| Fe32::from_char_unchecked(b)) {
-  277|  19.9k|            checksum_eng.input_fe(fe);
-  278|  19.9k|        }
+  276|  20.4k|        for fe in self.data_part_ascii.iter().map(|&b| Fe32::from_char_unchecked(b)) {
+  277|  20.4k|            checksum_eng.input_fe(fe);
+  278|  20.4k|        }
   279|       |
-  280|    152|        if checksum_eng.residue() != &Ck::TARGET_RESIDUE {
-  281|    120|            return Err(InvalidResidue);
+  280|    158|        if checksum_eng.residue() != &Ck::TARGET_RESIDUE {
+  281|    126|            return Err(InvalidResidue);
   282|     32|        }
   283|       |
   284|     32|        Ok(())
-  285|    281|    }
+  285|    278|    }
 _RINvMNtNtCsaQLrihHycad_6bech3210primitives6decodeNtB3_18UncheckedHrpstring28validate_and_remove_checksumNtB5_6Bech32ECs5FnQp8us7pk_13zcash_address:
-  232|    249|    pub fn validate_and_remove_checksum<Ck: Checksum>(
-  233|    249|        self,
-  234|    249|    ) -> Result<CheckedHrpstring<'s>, ChecksumError> {
-  235|    249|        self.validate_checksum::<Ck>()?;
+  232|    246|    pub fn validate_and_remove_checksum<Ck: Checksum>(
+  233|    246|        self,
+  234|    246|    ) -> Result<CheckedHrpstring<'s>, ChecksumError> {
+  235|    246|        self.validate_checksum::<Ck>()?;
   236|     12|        Ok(self.remove_checksum::<Ck>())
-  237|    249|    }
+  237|    246|    }
 _RINvMNtNtCsaQLrihHycad_6bech3210primitives6decodeNtB3_18UncheckedHrpstring28validate_and_remove_checksumNtB5_7Bech32mECs5FnQp8us7pk_13zcash_address:
-  232|    237|    pub fn validate_and_remove_checksum<Ck: Checksum>(
-  233|    237|        self,
-  234|    237|    ) -> Result<CheckedHrpstring<'s>, ChecksumError> {
-  235|    237|        self.validate_checksum::<Ck>()?;
+  232|    234|    pub fn validate_and_remove_checksum<Ck: Checksum>(
+  233|    234|        self,
+  234|    234|    ) -> Result<CheckedHrpstring<'s>, ChecksumError> {
+  235|    234|        self.validate_checksum::<Ck>()?;
   236|      0|        Ok(self.remove_checksum::<Ck>())
-  237|    237|    }
+  237|    234|    }
 _RINvMNtNtCsaQLrihHycad_6bech3210primitives6decodeNtB3_18UncheckedHrpstring28validate_and_remove_checksumNtNtNtCs5FnQp8us7pk_13zcash_address4kind7unified13Bech32mZip316EB1K_:
-  232|    281|    pub fn validate_and_remove_checksum<Ck: Checksum>(
-  233|    281|        self,
-  234|    281|    ) -> Result<CheckedHrpstring<'s>, ChecksumError> {
-  235|    281|        self.validate_checksum::<Ck>()?;
+  232|    278|    pub fn validate_and_remove_checksum<Ck: Checksum>(
+  233|    278|        self,
+  234|    278|    ) -> Result<CheckedHrpstring<'s>, ChecksumError> {
+  235|    278|        self.validate_checksum::<Ck>()?;
   236|     32|        Ok(self.remove_checksum::<Ck>())
-  237|    281|    }
+  237|    278|    }
 _RINvMs_NtNtCsaQLrihHycad_6bech3210primitives6decodeNtB5_16CheckedHrpstring3newNtB7_6Bech32ECs5FnQp8us7pk_13zcash_address:
-  350|    979|    pub fn new<Ck: Checksum>(s: &'s str) -> Result<Self, CheckedHrpstringError> {
-  351|    979|        let unchecked = UncheckedHrpstring::new(s)?;
-  352|    249|        let checked = unchecked.validate_and_remove_checksum::<Ck>()?;
+  350|  1.05k|    pub fn new<Ck: Checksum>(s: &'s str) -> Result<Self, CheckedHrpstringError> {
+  351|  1.05k|        let unchecked = UncheckedHrpstring::new(s)?;
+  352|    246|        let checked = unchecked.validate_and_remove_checksum::<Ck>()?;
   353|     12|        Ok(checked)
-  354|    979|    }
+  354|  1.05k|    }
 _RINvMs_NtNtCsaQLrihHycad_6bech3210primitives6decodeNtB5_16CheckedHrpstring3newNtB7_7Bech32mECs5FnQp8us7pk_13zcash_address:
-  350|    967|    pub fn new<Ck: Checksum>(s: &'s str) -> Result<Self, CheckedHrpstringError> {
-  351|    967|        let unchecked = UncheckedHrpstring::new(s)?;
-  352|    237|        let checked = unchecked.validate_and_remove_checksum::<Ck>()?;
+  350|  1.04k|    pub fn new<Ck: Checksum>(s: &'s str) -> Result<Self, CheckedHrpstringError> {
+  351|  1.04k|        let unchecked = UncheckedHrpstring::new(s)?;
+  352|    234|        let checked = unchecked.validate_and_remove_checksum::<Ck>()?;
   353|      0|        Ok(checked)
-  354|    967|    }
+  354|  1.04k|    }
 _RINvMs_NtNtCsaQLrihHycad_6bech3210primitives6decodeNtB5_16CheckedHrpstring3newNtNtNtCs5FnQp8us7pk_13zcash_address4kind7unified13Bech32mZip316EB1k_:
-  350|  1.01k|    pub fn new<Ck: Checksum>(s: &'s str) -> Result<Self, CheckedHrpstringError> {
-  351|  1.01k|        let unchecked = UncheckedHrpstring::new(s)?;
-  352|    281|        let checked = unchecked.validate_and_remove_checksum::<Ck>()?;
+  350|  1.08k|    pub fn new<Ck: Checksum>(s: &'s str) -> Result<Self, CheckedHrpstringError> {
+  351|  1.08k|        let unchecked = UncheckedHrpstring::new(s)?;
+  352|    278|        let checked = unchecked.validate_and_remove_checksum::<Ck>()?;
   353|     32|        Ok(checked)
-  354|  1.01k|    }
+  354|  1.08k|    }
 _RNCINvMNtNtCsaQLrihHycad_6bech3210primitives6decodeNtB5_18UncheckedHrpstring17validate_checksumNtB7_6Bech32E0Cs5FnQp8us7pk_13zcash_address:
-  276|  16.6k|        for fe in self.data_part_ascii.iter().map(|&b| Fe32::from_char_unchecked(b)) {
+  276|  17.2k|        for fe in self.data_part_ascii.iter().map(|&b| Fe32::from_char_unchecked(b)) {
 _RNCINvMNtNtCsaQLrihHycad_6bech3210primitives6decodeNtB5_18UncheckedHrpstring17validate_checksumNtB7_7Bech32mE0Cs5FnQp8us7pk_13zcash_address:
-  276|  9.45k|        for fe in self.data_part_ascii.iter().map(|&b| Fe32::from_char_unchecked(b)) {
+  276|  9.95k|        for fe in self.data_part_ascii.iter().map(|&b| Fe32::from_char_unchecked(b)) {
 _RNCINvMNtNtCsaQLrihHycad_6bech3210primitives6decodeNtB5_18UncheckedHrpstring17validate_checksumNtNtNtCs5FnQp8us7pk_13zcash_address4kind7unified13Bech32mZip316E0B1B_:
-  276|  19.9k|        for fe in self.data_part_ascii.iter().map(|&b| Fe32::from_char_unchecked(b)) {
+  276|  20.4k|        for fe in self.data_part_ascii.iter().map(|&b| Fe32::from_char_unchecked(b)) {
 _RNvMNtNtCsaQLrihHycad_6bech3210primitives6decodeNtB2_18UncheckedHrpstring3hrpCs5FnQp8us7pk_13zcash_address:
-  146|    488|    pub fn hrp(&self) -> Hrp { self.hrp }
+  146|    508|    pub fn hrp(&self) -> Hrp { self.hrp }
 _RNvMNtNtCsaQLrihHycad_6bech3210primitives6decodeNtB2_18UncheckedHrpstring3newCs5FnQp8us7pk_13zcash_address:
-  131|  2.95k|    pub fn new(s: &'s str) -> Result<Self, UncheckedHrpstringError> {
-  132|  2.95k|        let sep_pos = check_characters(s)?;
-  133|  1.16k|        let (hrp, rest) = s.split_at(sep_pos);
+  131|  3.18k|    pub fn new(s: &'s str) -> Result<Self, UncheckedHrpstringError> {
+  132|  3.18k|        let sep_pos = check_characters(s)?;
+  133|  1.36k|        let (hrp, rest) = s.split_at(sep_pos);
   134|       |
-  135|    767|        let ret = UncheckedHrpstring {
-  136|  1.16k|            hrp: Hrp::parse(hrp)?,
-  137|    767|            data_part_ascii: &rest.as_bytes()[1..], // Skip the separator.
-  138|    767|            hrpstring_length: s.len(),
+  135|    758|        let ret = UncheckedHrpstring {
+  136|  1.36k|            hrp: Hrp::parse(hrp)?,
+  137|    758|            data_part_ascii: &rest.as_bytes()[1..], // Skip the separator.
+  138|    758|            hrpstring_length: s.len(),
   139|       |        };
   140|       |
-  141|    767|        Ok(ret)
-  142|  2.95k|    }
+  141|    758|        Ok(ret)
+  142|  3.18k|    }
 _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives6decodeNtB4_16CheckedHrpstring3hrpCs5FnQp8us7pk_13zcash_address:
   358|     44|    pub fn hrp(&self) -> Hrp { self.hrp }
 _RNvMs_NtNtCsaQLrihHycad_6bech3210primitives6decodeNtB4_16CheckedHrpstring9byte_iterCs5FnQp8us7pk_13zcash_address:
@@ -670,45 +670,45 @@ _RNvXs4_NtNtCsaQLrihHycad_6bech3210primitives6decodeNtB5_15AsciiToFe32IterNtNtNt
   754|     60|        self.iter.size_hint()
   755|     60|    }
 _RNvXsd_NtNtCsaQLrihHycad_6bech3210primitives6decodeNtB5_21CheckedHrpstringErrorINtNtCs6SNw0SRvItZ_4core7convert4FromNtB5_23UncheckedHrpstringErrorE4fromCs5FnQp8us7pk_13zcash_address:
-  872|  2.19k|    fn from(e: UncheckedHrpstringError) -> Self { Self::Parse(e) }
+  872|  2.43k|    fn from(e: UncheckedHrpstringError) -> Self { Self::Parse(e) }
 _RNvXse_NtNtCsaQLrihHycad_6bech3210primitives6decodeNtB5_21CheckedHrpstringErrorINtNtCs6SNw0SRvItZ_4core7convert4FromNtB5_13ChecksumErrorE4fromCs5FnQp8us7pk_13zcash_address:
-  877|    723|    fn from(e: ChecksumError) -> Self { Self::Checksum(e) }
+  877|    714|    fn from(e: ChecksumError) -> Self { Self::Checksum(e) }
 _RNvXsh_NtNtCsaQLrihHycad_6bech3210primitives6decodeNtB5_23UncheckedHrpstringErrorINtNtCs6SNw0SRvItZ_4core7convert4FromNtB5_9CharErrorE4fromCs5FnQp8us7pk_13zcash_address:
-  915|  1.79k|    fn from(e: CharError) -> Self { Self::Char(e) }
+  915|  1.82k|    fn from(e: CharError) -> Self { Self::Char(e) }
 _RNvXsi_NtNtCsaQLrihHycad_6bech3210primitives6decodeNtB5_23UncheckedHrpstringErrorINtNtCs6SNw0SRvItZ_4core7convert4FromNtNtB7_3hrp5ErrorE4fromCs5FnQp8us7pk_13zcash_address:
-  920|    396|    fn from(e: hrp::Error) -> Self { Self::Hrp(e) }
+  920|    603|    fn from(e: hrp::Error) -> Self { Self::Hrp(e) }
 _RNCNvNtNtCsaQLrihHycad_6bech3210primitives6decode16check_characters0B7_:
-  688|  1.20k|            Fe32::from_char(ch).map_err(|_| InvalidChar(ch))?;
+  688|  1.14k|            Fe32::from_char(ch).map_err(|_| InvalidChar(ch))?;
 _RNvNtNtCsaQLrihHycad_6bech3210primitives6decode16check_characters:
-  675|  3.60k|fn check_characters(s: &str) -> Result<usize, CharError> {
+  675|  3.89k|fn check_characters(s: &str) -> Result<usize, CharError> {
   676|       |    use CharError::*;
   677|       |
-  678|  3.60k|    let mut has_upper = false;
-  679|  3.60k|    let mut has_lower = false;
-  680|  3.60k|    let mut req_bech32 = true;
-  681|  3.60k|    let mut sep_pos = None;
-  682|   297k|    for (n, ch) in s.char_indices().rev() {
-  683|   297k|        if ch == SEP && sep_pos.is_none() {
-  684|  1.79k|            req_bech32 = false;
-  685|  1.79k|            sep_pos = Some(n);
-  686|   296k|        }
-  687|   297k|        if req_bech32 {
-  688|  96.1k|            Fe32::from_char(ch).map_err(|_| InvalidChar(ch))?;
-  689|   201k|        }
-  690|   296k|        if ch.is_ascii_uppercase() {
-  691|  18.4k|            has_upper = true;
-  692|   278k|        } else if ch.is_ascii_lowercase() {
-  693|   217k|            has_lower = true;
-  694|   217k|        }
+  678|  3.89k|    let mut has_upper = false;
+  679|  3.89k|    let mut has_lower = false;
+  680|  3.89k|    let mut req_bech32 = true;
+  681|  3.89k|    let mut sep_pos = None;
+  682|   309k|    for (n, ch) in s.char_indices().rev() {
+  683|   309k|        if ch == SEP && sep_pos.is_none() {
+  684|  2.10k|            req_bech32 = false;
+  685|  2.10k|            sep_pos = Some(n);
+  686|   307k|        }
+  687|   309k|        if req_bech32 {
+  688|  96.7k|            Fe32::from_char(ch).map_err(|_| InvalidChar(ch))?;
+  689|   213k|        }
+  690|   308k|        if ch.is_ascii_uppercase() {
+  691|  18.7k|            has_upper = true;
+  692|   290k|        } else if ch.is_ascii_lowercase() {
+  693|   220k|            has_lower = true;
+  694|   220k|        }
   695|       |    }
-  696|  2.40k|    if has_upper && has_lower {
-  697|    518|        Err(MixedCase)
-  698|  1.88k|    } else if let Some(pos) = sep_pos {
-  699|  1.38k|        Ok(pos)
+  696|  2.74k|    if has_upper && has_lower {
+  697|    586|        Err(MixedCase)
+  698|  2.16k|    } else if let Some(pos) = sep_pos {
+  699|  1.61k|        Ok(pos)
   700|       |    } else {
-  701|    494|        Err(MissingSeparator)
+  701|    541|        Err(MissingSeparator)
   702|       |    }
-  703|  3.60k|}
+  703|  3.89k|}
 
 _RNCNvXs0_NtNtCsaQLrihHycad_6bech3210primitives6encodeINtB7_18WitnessVersionIterINtNtB9_4iter10BytesToFesINtNtNtNtCs6SNw0SRvItZ_4core4iter8adapters6copied6CopiedINtNtNtB1N_5slice4iter4IterhEEEENtNtNtB1L_6traits8iterator8Iterator4next0Cs5FnQp8us7pk_13zcash_address:
   161|  1.86k|    fn next(&mut self) -> Option<Fe32> { self.witness_version.take().or_else(|| self.iter.next()) }
@@ -778,54 +778,54 @@ _RNvXs2_NtNtCsaQLrihHycad_6bech3210primitives6encodeINtB5_8CharIterINtNtB7_4iter
   221|  1.65k|    }
 
 _RNvXs0_NtNtCsaQLrihHycad_6bech3210primitives4gf32hINtNtCs6SNw0SRvItZ_4core7convert4FromNtB5_4Fe32E4fromCsq645jlIU7N_5zip32:
-  255|  10.5k|    fn from(v: Fe32) -> u8 { v.0 }
+  255|  10.2k|    fn from(v: Fe32) -> u8 { v.0 }
 _RNvMNtNtCsaQLrihHycad_6bech3210primitives4gf32NtB2_4Fe327to_charCs5FnQp8us7pk_13zcash_address:
   209|  1.85k|    pub fn to_char(self) -> char {
   210|       |        // Indexing fine as we have self.0 in [0, 32) as an invariant.
   211|  1.85k|        CHARS_LOWER[usize::from(self.0)]
   212|  1.85k|    }
 _RNvXs0_NtNtCsaQLrihHycad_6bech3210primitives4gf32hINtNtCs6SNw0SRvItZ_4core7convert4FromNtB5_4Fe32E4fromCs5FnQp8us7pk_13zcash_address:
-  255|  56.4k|    fn from(v: Fe32) -> u8 { v.0 }
+  255|  56.3k|    fn from(v: Fe32) -> u8 { v.0 }
 _RNCNvMNtNtCsaQLrihHycad_6bech3210primitives4gf32NtB4_4Fe329from_char0B8_:
-  191|    254|        let byte = i8::try_from(u32::from(c)).map_err(|_| NotAscii(c))?;
+  191|    234|        let byte = i8::try_from(u32::from(c)).map_err(|_| NotAscii(c))?;
 _RNCNvMNtNtCsaQLrihHycad_6bech3210primitives4gf32NtB4_4Fe329from_chars_0B8_:
-  195|    950|        let u5 = u8::try_from(CHARS_INV[ascii]).map_err(|_| Invalid(c))?;
+  195|    910|        let u5 = u8::try_from(CHARS_INV[ascii]).map_err(|_| Invalid(c))?;
 _RNvMNtNtCsaQLrihHycad_6bech3210primitives4gf32NtB2_4Fe3219from_char_unchecked:
-  205|  64.9k|    pub fn from_char_unchecked(c: u8) -> Fe32 { Fe32(CHARS_INV[usize::from(c)] as u8) }
+  205|  66.6k|    pub fn from_char_unchecked(c: u8) -> Fe32 { Fe32(CHARS_INV[usize::from(c)] as u8) }
 _RNvMNtNtCsaQLrihHycad_6bech3210primitives4gf32NtB2_4Fe329from_charB6_:
-  187|  96.1k|    pub fn from_char(c: char) -> Result<Fe32, FromCharError> {
+  187|  96.7k|    pub fn from_char(c: char) -> Result<Fe32, FromCharError> {
   188|       |        use FromCharError::*;
   189|       |
   190|       |        // i8::try_from gets a value in the range 0..=127 since char is unsigned.
-  191|  96.1k|        let byte = i8::try_from(u32::from(c)).map_err(|_| NotAscii(c))?;
+  191|  96.7k|        let byte = i8::try_from(u32::from(c)).map_err(|_| NotAscii(c))?;
   192|       |        // Now we have a valid ASCII value cast is safe.
-  193|  95.9k|        let ascii = byte as usize;
+  193|  96.4k|        let ascii = byte as usize;
   194|       |        // We use -1 for any array element that is an invalid char to trigger error from u8::try_from
-  195|  95.9k|        let u5 = u8::try_from(CHARS_INV[ascii]).map_err(|_| Invalid(c))?;
+  195|  96.4k|        let u5 = u8::try_from(CHARS_INV[ascii]).map_err(|_| Invalid(c))?;
   196|       |
-  197|  94.9k|        Ok(Fe32(u5))
-  198|  96.1k|    }
+  197|  95.5k|        Ok(Fe32(u5))
+  198|  96.7k|    }
 
 _RNCNvXsd_NtNtCsaQLrihHycad_6bech3210primitives3hrpNtB7_17LowercaseByteIterNtNtNtNtCs6SNw0SRvItZ_4core4iter6traits8iterator8Iterator4next0Csq645jlIU7N_5zip32:
-  326|  1.48k|        self.iter.next().map(|b| if is_ascii_uppercase(b) { b | 32 } else { b })
+  326|  1.16k|        self.iter.next().map(|b| if is_ascii_uppercase(b) { b | 32 } else { b })
 _RNvMNtNtCsaQLrihHycad_6bech3210primitives3hrpNtB2_3Hrp19lowercase_byte_iterCsq645jlIU7N_5zip32:
-  177|    164|    pub fn lowercase_byte_iter(&self) -> LowercaseByteIter<'_> {
-  178|    164|        LowercaseByteIter { iter: self.byte_iter() }
-  179|    164|    }
+  177|    168|    pub fn lowercase_byte_iter(&self) -> LowercaseByteIter<'_> {
+  178|    168|        LowercaseByteIter { iter: self.byte_iter() }
+  179|    168|    }
 _RNvMNtNtCsaQLrihHycad_6bech3210primitives3hrpNtB2_3Hrp9byte_iterCsq645jlIU7N_5zip32:
-  166|    164|    pub fn byte_iter(&self) -> ByteIter<'_> { ByteIter { iter: self.buf[..self.size].iter() } }
+  166|    168|    pub fn byte_iter(&self) -> ByteIter<'_> { ByteIter { iter: self.buf[..self.size].iter() } }
 _RNvXs5_NtNtCsaQLrihHycad_6bech3210primitives3hrpNtB5_8ByteIterNtNtNtNtCs6SNw0SRvItZ_4core4iter6traits8iterator8Iterator4nextCsq645jlIU7N_5zip32:
-  273|  1.65k|    fn next(&mut self) -> Option<u8> { self.iter.next().copied() }
+  273|  1.33k|    fn next(&mut self) -> Option<u8> { self.iter.next().copied() }
 _RNvXsd_NtNtCsaQLrihHycad_6bech3210primitives3hrpNtB5_17LowercaseByteIterNtNtNtNtCs6SNw0SRvItZ_4core4iter6traits8iterator8Iterator4nextCsq645jlIU7N_5zip32:
-  325|  1.65k|    fn next(&mut self) -> Option<u8> {
-  326|  1.65k|        self.iter.next().map(|b| if is_ascii_uppercase(b) { b | 32 } else { b })
-  327|  1.65k|    }
+  325|  1.33k|    fn next(&mut self) -> Option<u8> {
+  326|  1.33k|        self.iter.next().map(|b| if is_ascii_uppercase(b) { b | 32 } else { b })
+  327|  1.33k|    }
 _RNCNvXsd_NtNtCsaQLrihHycad_6bech3210primitives3hrpNtB7_17LowercaseByteIterNtNtNtNtCs6SNw0SRvItZ_4core4iter6traits8iterator8Iterator4next0Cs5FnQp8us7pk_13zcash_address:
-  326|  8.14k|        self.iter.next().map(|b| if is_ascii_uppercase(b) { b | 32 } else { b })
+  326|  6.38k|        self.iter.next().map(|b| if is_ascii_uppercase(b) { b | 32 } else { b })
 _RNvMNtNtCsaQLrihHycad_6bech3210primitives3hrpNtB2_3Hrp19lowercase_byte_iterCs5FnQp8us7pk_13zcash_address:
-  177|    921|    pub fn lowercase_byte_iter(&self) -> LowercaseByteIter<'_> {
-  178|    921|        LowercaseByteIter { iter: self.byte_iter() }
-  179|    921|    }
+  177|    961|    pub fn lowercase_byte_iter(&self) -> LowercaseByteIter<'_> {
+  178|    961|        LowercaseByteIter { iter: self.byte_iter() }
+  179|    961|    }
 _RNvMNtNtCsaQLrihHycad_6bech3210primitives3hrpNtB2_3Hrp19lowercase_char_iterCs5FnQp8us7pk_13zcash_address:
   183|     11|    pub fn lowercase_char_iter(&self) -> LowercaseCharIter<'_> {
   184|     11|        LowercaseCharIter { iter: self.lowercase_byte_iter() }
@@ -837,13 +837,13 @@ _RNvMNtNtCsaQLrihHycad_6bech3210primitives3hrpNtB2_3Hrp6as_strCs5FnQp8us7pk_13zc
   158|     44|        str::from_utf8(&self.buf[..self.size]).expect("we only store ASCII bytes")
   159|     44|    }
 _RNvMNtNtCsaQLrihHycad_6bech3210primitives3hrpNtB2_3Hrp9byte_iterCs5FnQp8us7pk_13zcash_address:
-  166|    921|    pub fn byte_iter(&self) -> ByteIter<'_> { ByteIter { iter: self.buf[..self.size].iter() } }
+  166|    961|    pub fn byte_iter(&self) -> ByteIter<'_> { ByteIter { iter: self.buf[..self.size].iter() } }
 _RNvXs5_NtNtCsaQLrihHycad_6bech3210primitives3hrpNtB5_8ByteIterNtNtNtNtCs6SNw0SRvItZ_4core4iter6traits8iterator8Iterator4nextCs5FnQp8us7pk_13zcash_address:
-  273|  9.06k|    fn next(&mut self) -> Option<u8> { self.iter.next().copied() }
+  273|  7.34k|    fn next(&mut self) -> Option<u8> { self.iter.next().copied() }
 _RNvXsd_NtNtCsaQLrihHycad_6bech3210primitives3hrpNtB5_17LowercaseByteIterNtNtNtNtCs6SNw0SRvItZ_4core4iter6traits8iterator8Iterator4nextCs5FnQp8us7pk_13zcash_address:
-  325|  9.06k|    fn next(&mut self) -> Option<u8> {
-  326|  9.06k|        self.iter.next().map(|b| if is_ascii_uppercase(b) { b | 32 } else { b })
-  327|  9.06k|    }
+  325|  7.34k|    fn next(&mut self) -> Option<u8> {
+  326|  7.34k|        self.iter.next().map(|b| if is_ascii_uppercase(b) { b | 32 } else { b })
+  327|  7.34k|    }
 _RNvXsh_NtNtCsaQLrihHycad_6bech3210primitives3hrpNtB5_17LowercaseCharIterNtNtNtNtCs6SNw0SRvItZ_4core4iter6traits8iterator8Iterator4nextCs5FnQp8us7pk_13zcash_address:
   354|     32|    fn next(&mut self) -> Option<char> { self.iter.next().map(Into::into) }
 _RNvMNtNtCsaQLrihHycad_6bech3210primitives3hrpNtB2_3Hrp15parse_unchecked:
@@ -869,51 +869,51 @@ _RNvMNtNtCsaQLrihHycad_6bech3210primitives3hrpNtB2_3Hrp15parse_unchecked:
 _RNvMNtNtCsaQLrihHycad_6bech3210primitives3hrpNtB2_3Hrp3lenB6_:
   192|      3|    pub fn len(&self) -> usize { self.size }
 _RNvMNtNtCsaQLrihHycad_6bech3210primitives3hrpNtB2_3Hrp5parse:
-   78|  1.38k|    pub fn parse(hrp: &str) -> Result<Self, Error> {
+   78|  1.61k|    pub fn parse(hrp: &str) -> Result<Self, Error> {
    79|       |        use Error::*;
    80|       |
-   81|  1.38k|        let mut new = Hrp { buf: [0_u8; MAX_HRP_LEN], size: 0 };
+   81|  1.61k|        let mut new = Hrp { buf: [0_u8; MAX_HRP_LEN], size: 0 };
    82|       |
-   83|  1.38k|        if hrp.is_empty() {
+   83|  1.61k|        if hrp.is_empty() {
    84|     94|            return Err(Empty);
-   85|  1.29k|        }
-   86|  1.29k|        if hrp.len() > MAX_HRP_LEN {
-   87|    109|            return Err(TooLong(hrp.len()));
-   88|  1.18k|        }
+   85|  1.52k|        }
+   86|  1.52k|        if hrp.len() > MAX_HRP_LEN {
+   87|    120|            return Err(TooLong(hrp.len()));
+   88|  1.40k|        }
    89|       |
-   90|  1.18k|        let mut has_lower: bool = false;
-   91|  1.18k|        let mut has_upper: bool = false;
-   92|  17.5k|        for (i, c) in hrp.chars().enumerate() {
-   93|  17.5k|            if !c.is_ascii() {
-   94|    155|                return Err(NonAsciiChar(c));
-   95|  17.4k|            }
-   96|  17.4k|            let b = c as u8; // cast OK as we just checked that c is an ASCII value
+   90|  1.40k|        let mut has_lower: bool = false;
+   91|  1.40k|        let mut has_upper: bool = false;
+   92|  19.4k|        for (i, c) in hrp.chars().enumerate() {
+   93|  19.4k|            if !c.is_ascii() {
+   94|    221|                return Err(NonAsciiChar(c));
+   95|  19.2k|            }
+   96|  19.2k|            let b = c as u8; // cast OK as we just checked that c is an ASCII value
    97|       |
    98|       |            // Valid subset of ASCII
-   99|  17.4k|            if !(33..=126).contains(&b) {
-  100|    130|                return Err(InvalidAsciiByte(b));
-  101|  17.2k|            }
+   99|  19.2k|            if !(33..=126).contains(&b) {
+  100|    292|                return Err(InvalidAsciiByte(b));
+  101|  18.9k|            }
   102|       |
-  103|  17.2k|            if b.is_ascii_lowercase() {
-  104|  4.82k|                if has_upper {
+  103|  18.9k|            if b.is_ascii_lowercase() {
+  104|  4.87k|                if has_upper {
   105|      0|                    return Err(MixedCase);
-  106|  4.82k|                }
-  107|  4.82k|                has_lower = true;
-  108|  12.4k|            } else if b.is_ascii_uppercase() {
+  106|  4.87k|                }
+  107|  4.87k|                has_lower = true;
+  108|  14.0k|            } else if b.is_ascii_uppercase() {
   109|  1.30k|                if has_lower {
   110|      0|                    return Err(MixedCase);
   111|  1.30k|                }
   112|  1.30k|                has_upper = true;
-  113|  11.1k|            };
+  113|  12.7k|            };
   114|       |
-  115|  17.2k|            new.buf[i] = b;
-  116|  17.2k|            new.size += 1;
+  115|  18.9k|            new.buf[i] = b;
+  116|  18.9k|            new.size += 1;
   117|       |        }
   118|       |
-  119|    901|        Ok(new)
-  120|  1.38k|    }
+  119|    892|        Ok(new)
+  120|  1.61k|    }
 _RNvNtNtCsaQLrihHycad_6bech3210primitives3hrp18is_ascii_uppercase:
-  371|  9.63k|fn is_ascii_uppercase(b: u8) -> bool { (65..=90).contains(&b) }
+  371|  7.54k|fn is_ascii_uppercase(b: u8) -> bool { (65..=90).contains(&b) }
 
 _RNvYNtNtNtCsaQLrihHycad_6bech3210primitives6decode15AsciiToFe32IterNtNtB6_4iter11Fe32IterExt12fes_to_bytesCsq645jlIU7N_5zip32:
    58|     16|    fn fes_to_bytes(mut self) -> FesToBytes<Self> {
@@ -2430,16 +2430,16 @@ _RNvNtCskdFz3GUvwFQ_12blake2s_simd5sse416storeu:
    27|     28|}
 
 _RINvMs3_CsG2CKexGv9Q_12block_bufferINtB6_11BlockBufferINtNtCs6K91jTNoEt_7typenum4uint4UIntIBR_IBR_IBR_IBR_IBR_IBR_NtBT_5UTermNtNtBV_3bit2B1ENtB21_2B0EB2e_EB2e_EB2e_EB2e_EB2e_ENtB6_5EagerE13digest_blocksNCNvXs5_NtNtCslYFrylcTFUJ_6digest8core_api7wrapperINtB3m_11CoreWrapperINtNtB3o_11ct_variable21CtVariableCoreWrapperNtNtCsTIDoG4KXfJ_4sha28core_api13Sha256VarCoreB1q_NtB59_9OidSha256EENtB3q_6Update6update0ECsjyycqNoLf64_4bs58:
-  138|  1.03k|    pub fn digest_blocks(
-  139|  1.03k|        &mut self,
-  140|  1.03k|        mut input: &[u8],
-  141|  1.03k|        mut compress: impl FnMut(&[Block<BlockSize>]),
-  142|  1.03k|    ) {
-  143|  1.03k|        let pos = self.get_pos();
+  138|    950|    pub fn digest_blocks(
+  139|    950|        &mut self,
+  140|    950|        mut input: &[u8],
+  141|    950|        mut compress: impl FnMut(&[Block<BlockSize>]),
+  142|    950|    ) {
+  143|    950|        let pos = self.get_pos();
   144|       |        // using `self.remaining()` for some reason
   145|       |        // prevents panic elimination
-  146|  1.03k|        let rem = self.size() - pos;
-  147|  1.03k|        let n = input.len();
+  146|    950|        let rem = self.size() - pos;
+  147|    950|        let n = input.len();
   148|       |        // Note that checking condition `pos + n < BlockSize` is
   149|       |        // equivalent to checking `n < rem`, where `rem` is equal
   150|       |        // to `BlockSize - pos`. Using the latter allows us to work
@@ -2447,113 +2447,113 @@ _RINvMs3_CsG2CKexGv9Q_12block_bufferINtB6_11BlockBufferINtNtCs6K91jTNoEt_7typenu
   152|       |        // `pos + n` which results in it inserting unreachable
   153|       |        // panic branches. Using `unreachable_unchecked` in `get_pos`
   154|       |        // we convince compiler that `BlockSize - pos` never underflows.
-  155|  1.03k|        if Kind::invariant(n, rem) {
+  155|    950|        if Kind::invariant(n, rem) {
   156|       |            // double slicing allows to remove panic branches
-  157|    904|            self.buffer[pos..][..n].copy_from_slice(input);
-  158|    904|            self.set_pos_unchecked(pos + n);
-  159|    904|            return;
-  160|    126|        }
-  161|    126|        if pos != 0 {
+  157|    830|            self.buffer[pos..][..n].copy_from_slice(input);
+  158|    830|            self.set_pos_unchecked(pos + n);
+  159|    830|            return;
+  160|    120|        }
+  161|    120|        if pos != 0 {
   162|      0|            let (left, right) = input.split_at(rem);
   163|      0|            input = right;
   164|      0|            self.buffer[pos..].copy_from_slice(left);
   165|      0|            compress(slice::from_ref(&self.buffer));
-  166|    126|        }
+  166|    120|        }
   167|       |
-  168|    126|        let (blocks, leftover) = Kind::split_blocks(input);
-  169|    126|        if !blocks.is_empty() {
-  170|    126|            compress(blocks);
-  171|    126|        }
+  168|    120|        let (blocks, leftover) = Kind::split_blocks(input);
+  169|    120|        if !blocks.is_empty() {
+  170|    120|            compress(blocks);
+  171|    120|        }
   172|       |
-  173|    126|        let n = leftover.len();
-  174|    126|        self.buffer[..n].copy_from_slice(leftover);
-  175|    126|        self.set_pos_unchecked(n);
-  176|  1.03k|    }
+  173|    120|        let n = leftover.len();
+  174|    120|        self.buffer[..n].copy_from_slice(leftover);
+  175|    120|        self.set_pos_unchecked(n);
+  176|    950|    }
 _RINvMs4_CsG2CKexGv9Q_12block_bufferINtB6_11BlockBufferINtNtCs6K91jTNoEt_7typenum4uint4UIntIBR_IBR_IBR_IBR_IBR_IBR_NtBT_5UTermNtNtBV_3bit2B1ENtB21_2B0EB2e_EB2e_EB2e_EB2e_EB2e_ENtB6_5EagerE10digest_padNCNvXs3_NtCsTIDoG4KXfJ_4sha28core_apiNtB3j_13Sha256VarCoreNtNtCslYFrylcTFUJ_6digest8core_api18VariableOutputCore22finalize_variable_core0ECsjyycqNoLf64_4bs58:
-  290|  1.03k|    pub fn digest_pad(
-  291|  1.03k|        &mut self,
-  292|  1.03k|        delim: u8,
-  293|  1.03k|        suffix: &[u8],
-  294|  1.03k|        mut compress: impl FnMut(&Block<BlockSize>),
-  295|  1.03k|    ) {
-  296|  1.03k|        if suffix.len() > BlockSize::USIZE {
+  290|    950|    pub fn digest_pad(
+  291|    950|        &mut self,
+  292|    950|        delim: u8,
+  293|    950|        suffix: &[u8],
+  294|    950|        mut compress: impl FnMut(&Block<BlockSize>),
+  295|    950|    ) {
+  296|    950|        if suffix.len() > BlockSize::USIZE {
   297|      0|            panic!("suffix is too long");
-  298|  1.03k|        }
-  299|  1.03k|        let pos = self.get_pos();
-  300|  1.03k|        self.buffer[pos] = delim;
-  301|  38.8k|        for b in &mut self.buffer[pos + 1..] {
-  302|  38.8k|            *b = 0;
-  303|  38.8k|        }
+  298|    950|        }
+  299|    950|        let pos = self.get_pos();
+  300|    950|        self.buffer[pos] = delim;
+  301|  35.6k|        for b in &mut self.buffer[pos + 1..] {
+  302|  35.6k|            *b = 0;
+  303|  35.6k|        }
   304|       |
-  305|  1.03k|        let n = self.size() - suffix.len();
-  306|  1.03k|        if self.size() - pos - 1 < suffix.len() {
+  305|    950|        let n = self.size() - suffix.len();
+  306|    950|        if self.size() - pos - 1 < suffix.len() {
   307|     24|            compress(&self.buffer);
   308|     24|            let mut block = Block::<BlockSize>::default();
   309|     24|            block[n..].copy_from_slice(suffix);
   310|     24|            compress(&block);
-  311|  1.00k|        } else {
-  312|  1.00k|            self.buffer[n..].copy_from_slice(suffix);
-  313|  1.00k|            compress(&self.buffer);
-  314|  1.00k|        }
-  315|  1.03k|        self.set_pos_unchecked(0)
-  316|  1.03k|    }
+  311|    926|        } else {
+  312|    926|            self.buffer[n..].copy_from_slice(suffix);
+  313|    926|            compress(&self.buffer);
+  314|    926|        }
+  315|    950|        self.set_pos_unchecked(0)
+  316|    950|    }
 _RINvMs4_CsG2CKexGv9Q_12block_bufferINtB6_11BlockBufferINtNtCs6K91jTNoEt_7typenum4uint4UIntIBR_IBR_IBR_IBR_IBR_IBR_NtBT_5UTermNtNtBV_3bit2B1ENtB21_2B0EB2e_EB2e_EB2e_EB2e_EB2e_ENtB6_5EagerE16len64_padding_beNCNvXs3_NtCsTIDoG4KXfJ_4sha28core_apiNtB3p_13Sha256VarCoreNtNtCslYFrylcTFUJ_6digest8core_api18VariableOutputCore22finalize_variable_core0ECsjyycqNoLf64_4bs58:
-  321|  1.03k|    pub fn len64_padding_be(&mut self, data_len: u64, compress: impl FnMut(&Block<BlockSize>)) {
-  322|  1.03k|        self.digest_pad(0x80, &data_len.to_be_bytes(), compress);
-  323|  1.03k|    }
+  321|    950|    pub fn len64_padding_be(&mut self, data_len: u64, compress: impl FnMut(&Block<BlockSize>)) {
+  322|    950|        self.digest_pad(0x80, &data_len.to_be_bytes(), compress);
+  323|    950|    }
 _RNvMs3_CsG2CKexGv9Q_12block_bufferINtB5_11BlockBufferINtNtCs6K91jTNoEt_7typenum4uint4UIntIBQ_IBQ_IBQ_IBQ_IBQ_IBQ_NtBS_5UTermNtNtBU_3bit2B1ENtB20_2B0EB2d_EB2d_EB2d_EB2d_EB2d_ENtB5_5EagerE17set_pos_uncheckedCsjyycqNoLf64_4bs58:
-  237|  2.06k|    fn set_pos_unchecked(&mut self, pos: usize) {
-  238|  2.06k|        debug_assert!(Kind::invariant(pos, BlockSize::USIZE));
-  239|  2.06k|        self.pos = pos as u8;
-  240|  2.06k|    }
+  237|  1.90k|    fn set_pos_unchecked(&mut self, pos: usize) {
+  238|  1.90k|        debug_assert!(Kind::invariant(pos, BlockSize::USIZE));
+  239|  1.90k|        self.pos = pos as u8;
+  240|  1.90k|    }
 _RNvMs3_CsG2CKexGv9Q_12block_bufferINtB5_11BlockBufferINtNtCs6K91jTNoEt_7typenum4uint4UIntIBQ_IBQ_IBQ_IBQ_IBQ_IBQ_NtBS_5UTermNtNtBU_3bit2B1ENtB20_2B0EB2d_EB2d_EB2d_EB2d_EB2d_ENtB5_5EagerE4sizeCsjyycqNoLf64_4bs58:
-  226|  3.09k|    pub fn size(&self) -> usize {
-  227|  3.09k|        BlockSize::USIZE
-  228|  3.09k|    }
+  226|  2.85k|    pub fn size(&self) -> usize {
+  227|  2.85k|        BlockSize::USIZE
+  228|  2.85k|    }
 _RNvMs3_CsG2CKexGv9Q_12block_bufferINtB5_11BlockBufferINtNtCs6K91jTNoEt_7typenum4uint4UIntIBQ_IBQ_IBQ_IBQ_IBQ_IBQ_NtBS_5UTermNtNtBU_3bit2B1ENtB20_2B0EB2d_EB2d_EB2d_EB2d_EB2d_ENtB5_5EagerE7get_posCsjyycqNoLf64_4bs58:
-  195|  3.09k|    pub fn get_pos(&self) -> usize {
-  196|  3.09k|        let pos = self.pos as usize;
-  197|  3.09k|        if !Kind::invariant(pos, BlockSize::USIZE) {
+  195|  2.85k|    pub fn get_pos(&self) -> usize {
+  196|  2.85k|        let pos = self.pos as usize;
+  197|  2.85k|        if !Kind::invariant(pos, BlockSize::USIZE) {
   198|      0|            debug_assert!(false);
   199|       |            // SAFETY: `pos` never breaks the invariant
   200|       |            unsafe {
   201|      0|                core::hint::unreachable_unchecked();
   202|       |            }
-  203|  3.09k|        }
-  204|  3.09k|        pos
-  205|  3.09k|    }
+  203|  2.85k|        }
+  204|  2.85k|        pos
+  205|  2.85k|    }
 _RNvXs1_CsG2CKexGv9Q_12block_bufferINtB5_11BlockBufferINtNtCs6K91jTNoEt_7typenum4uint4UIntIBQ_IBQ_IBQ_IBQ_IBQ_IBQ_NtBS_5UTermNtNtBU_3bit2B1ENtB20_2B0EB2d_EB2d_EB2d_EB2d_EB2d_ENtB5_5EagerENtNtCs6SNw0SRvItZ_4core7default7Default7defaultCsjyycqNoLf64_4bs58:
-   72|  1.03k|    fn default() -> Self {
-   73|  1.03k|        if BlockSize::USIZE == 0 {
+   72|    950|    fn default() -> Self {
+   73|    950|        if BlockSize::USIZE == 0 {
    74|      0|            panic!("Block size can not be equal to zero");
-   75|  1.03k|        }
-   76|  1.03k|        Self {
-   77|  1.03k|            buffer: Default::default(),
-   78|  1.03k|            pos: 0,
-   79|  1.03k|            _pd: PhantomData,
-   80|  1.03k|        }
-   81|  1.03k|    }
+   75|    950|        }
+   76|    950|        Self {
+   77|    950|            buffer: Default::default(),
+   78|    950|            pos: 0,
+   79|    950|            _pd: PhantomData,
+   80|    950|        }
+   81|    950|    }
 
 _RNvXNtCsG2CKexGv9Q_12block_buffer6sealedNtB4_5EagerNtB2_6Sealed9invariant:
-   16|  4.12k|    fn invariant(pos: usize, block_size: usize) -> bool {
-   17|  4.12k|        pos < block_size
-   18|  4.12k|    }
+   16|  3.80k|    fn invariant(pos: usize, block_size: usize) -> bool {
+   17|  3.80k|        pos < block_size
+   18|  3.80k|    }
 _RINvXNtCsG2CKexGv9Q_12block_buffer6sealedNtB5_5EagerNtB3_6Sealed12split_blocksINtNtCs6K91jTNoEt_7typenum4uint4UIntIB1f_IB1f_IB1f_IB1f_IB1f_IB1f_NtB1h_5UTermNtNtB1j_3bit2B1ENtB2w_2B0EB2K_EB2K_EB2K_EB2K_EB2K_EECsjyycqNoLf64_4bs58:
-   21|    126|    fn split_blocks<N: ArrayLength<u8>>(data: &[u8]) -> (&[Block<N>], &[u8]) {
-   22|    126|        let nb = data.len() / N::USIZE;
-   23|    126|        let blocks_len = nb * N::USIZE;
-   24|    126|        let tail_len = data.len() - blocks_len;
+   21|    120|    fn split_blocks<N: ArrayLength<u8>>(data: &[u8]) -> (&[Block<N>], &[u8]) {
+   22|    120|        let nb = data.len() / N::USIZE;
+   23|    120|        let blocks_len = nb * N::USIZE;
+   24|    120|        let tail_len = data.len() - blocks_len;
    25|       |        // SAFETY: we guarantee that created slices do not point
    26|       |        // outside of `data`
    27|       |        unsafe {
-   28|    126|            let blocks_ptr = data.as_ptr() as *const Block<N>;
-   29|    126|            let tail_ptr = data.as_ptr().add(blocks_len);
-   30|    126|            (
-   31|    126|                slice::from_raw_parts(blocks_ptr, nb),
-   32|    126|                slice::from_raw_parts(tail_ptr, tail_len),
-   33|    126|            )
+   28|    120|            let blocks_ptr = data.as_ptr() as *const Block<N>;
+   29|    120|            let tail_ptr = data.as_ptr().add(blocks_len);
+   30|    120|            (
+   31|    120|                slice::from_raw_parts(blocks_ptr, nb),
+   32|    120|                slice::from_raw_parts(tail_ptr, tail_len),
+   33|    120|            )
    34|       |        }
-   35|    126|    }
+   35|    120|    }
 
 _RNvMsa_NtCsg5EGzpCjk9o_9bls12_3816scalarNtB5_6Scalar17montgomery_reduce:
   506|  44.7k|    const fn montgomery_reduce(
@@ -3039,47 +3039,47 @@ _RNvXsz_NtCsg5EGzpCjk9o_9bls12_3816scalarNtB5_6ScalarNtNtNtCs6SNw0SRvItZ_4core3o
   117|    686|            }
 
 _RNvMs2_NtCsjyycqNoLf64_4bs586decodeINtB5_13DecodeBuilderReE10from_inputCs4LqIAExT8vq_5bip32:
-  208|    666|    pub(crate) const fn from_input(input: I) -> DecodeBuilder<'static, I> {
-  209|    666|        DecodeBuilder {
-  210|    666|            input,
-  211|    666|            alpha: Alphabet::DEFAULT,
-  212|    666|            check: Check::Disabled,
-  213|    666|        }
-  214|    666|    }
+  208|    717|    pub(crate) const fn from_input(input: I) -> DecodeBuilder<'static, I> {
+  209|    717|        DecodeBuilder {
+  210|    717|            input,
+  211|    717|            alpha: Alphabet::DEFAULT,
+  212|    717|            check: Check::Disabled,
+  213|    717|        }
+  214|    717|    }
 _RNvMs2_NtCsjyycqNoLf64_4bs586decodeINtB5_13DecodeBuilderReE10with_checkCs4LqIAExT8vq_5bip32:
-  252|    666|    pub fn with_check(self, expected_ver: Option<u8>) -> DecodeBuilder<'a, I> {
-  253|    666|        let check = Check::Enabled(expected_ver);
-  254|    666|        DecodeBuilder { check, ..self }
-  255|    666|    }
+  252|    717|    pub fn with_check(self, expected_ver: Option<u8>) -> DecodeBuilder<'a, I> {
+  253|    717|        let check = Check::Enabled(expected_ver);
+  254|    717|        DecodeBuilder { check, ..self }
+  255|    717|    }
 _RINvXNtCsjyycqNoLf64_4bs586decodeQINtNtCshDtJu3Ru83O_5alloc3vec3VechENtB3_12DecodeTarget11decode_withNCINvMs2_B3_INtB3_13DecodeBuilderReE4ontoBv_Es_0ECs5FnQp8us7pk_13zcash_address:
-   89|  1.63k|    fn decode_with(
-   90|  1.63k|        &mut self,
-   91|  1.63k|        max_len: usize,
-   92|  1.63k|        f: impl for<'a> FnOnce(&'a mut [u8]) -> Result<usize>,
-   93|  1.63k|    ) -> Result<usize> {
-   94|  1.63k|        T::decode_with(self, max_len, f)
-   95|  1.63k|    }
+   89|  1.76k|    fn decode_with(
+   90|  1.76k|        &mut self,
+   91|  1.76k|        max_len: usize,
+   92|  1.76k|        f: impl for<'a> FnOnce(&'a mut [u8]) -> Result<usize>,
+   93|  1.76k|    ) -> Result<usize> {
+   94|  1.76k|        T::decode_with(self, max_len, f)
+   95|  1.76k|    }
 _RINvXs_NtCsjyycqNoLf64_4bs586decodeINtNtCshDtJu3Ru83O_5alloc3vec3VechENtB5_12DecodeTarget11decode_withNCINvMs2_B5_INtB5_13DecodeBuilderReE4ontoQBx_Es_0ECs5FnQp8us7pk_13zcash_address:
-  100|  1.63k|    fn decode_with(
-  101|  1.63k|        &mut self,
-  102|  1.63k|        max_len: usize,
-  103|  1.63k|        f: impl for<'a> FnOnce(&'a mut [u8]) -> Result<usize>,
-  104|  1.63k|    ) -> Result<usize> {
-  105|  1.63k|        let original = self.len();
-  106|  1.63k|        self.resize(original + max_len, 0);
-  107|  1.63k|        let len = f(&mut self[original..])?;
-  108|     58|        self.truncate(original + len);
-  109|     58|        Ok(len)
-  110|  1.63k|    }
+  100|  1.76k|    fn decode_with(
+  101|  1.76k|        &mut self,
+  102|  1.76k|        max_len: usize,
+  103|  1.76k|        f: impl for<'a> FnOnce(&'a mut [u8]) -> Result<usize>,
+  104|  1.76k|    ) -> Result<usize> {
+  105|  1.76k|        let original = self.len();
+  106|  1.76k|        self.resize(original + max_len, 0);
+  107|  1.76k|        let len = f(&mut self[original..])?;
+  108|     51|        self.truncate(original + len);
+  109|     51|        Ok(len)
+  110|  1.76k|    }
 _RINvMs2_NtCsjyycqNoLf64_4bs586decodeINtB6_13DecodeBuilderReE4ontoQINtNtCshDtJu3Ru83O_5alloc3vec3VechEECs5FnQp8us7pk_13zcash_address:
-  333|  1.63k|    pub fn onto(self, mut output: impl DecodeTarget) -> Result<usize> {
-  334|  1.63k|        let max_decoded_len = self.input.as_ref().len();
-  335|  1.63k|        match self.check {
+  333|  1.76k|    pub fn onto(self, mut output: impl DecodeTarget) -> Result<usize> {
+  334|  1.76k|        let max_decoded_len = self.input.as_ref().len();
+  335|  1.76k|        match self.check {
   336|      0|            Check::Disabled => output.decode_with(max_decoded_len, |output| {
   337|       |                decode_into(self.input.as_ref(), output, self.alpha)
   338|       |            }),
   339|       |            #[cfg(feature = "check")]
-  340|  1.63k|            Check::Enabled(expected_ver) => output.decode_with(max_decoded_len, |output| {
+  340|  1.76k|            Check::Enabled(expected_ver) => output.decode_with(max_decoded_len, |output| {
   341|       |                decode_check_into(self.input.as_ref(), output, self.alpha, expected_ver)
   342|       |            }),
   343|       |            #[cfg(feature = "cb58")]
@@ -3087,96 +3087,96 @@ _RINvMs2_NtCsjyycqNoLf64_4bs586decodeINtB6_13DecodeBuilderReE4ontoQINtNtCshDtJu3
   345|       |                decode_cb58_into(self.input.as_ref(), output, self.alpha, expected_ver)
   346|       |            }),
   347|       |        }
-  348|  1.63k|    }
+  348|  1.76k|    }
 _RNCINvMs2_NtCsjyycqNoLf64_4bs586decodeINtB8_13DecodeBuilderReE4ontoQINtNtCshDtJu3Ru83O_5alloc3vec3VechEEs_0Cs5FnQp8us7pk_13zcash_address:
-  340|  1.63k|            Check::Enabled(expected_ver) => output.decode_with(max_decoded_len, |output| {
-  341|  1.63k|                decode_check_into(self.input.as_ref(), output, self.alpha, expected_ver)
-  342|  1.63k|            }),
+  340|  1.76k|            Check::Enabled(expected_ver) => output.decode_with(max_decoded_len, |output| {
+  341|  1.76k|                decode_check_into(self.input.as_ref(), output, self.alpha, expected_ver)
+  342|  1.76k|            }),
 _RNvMs2_NtCsjyycqNoLf64_4bs586decodeINtB5_13DecodeBuilderReE10from_inputCs5FnQp8us7pk_13zcash_address:
-  208|    967|    pub(crate) const fn from_input(input: I) -> DecodeBuilder<'static, I> {
-  209|    967|        DecodeBuilder {
-  210|    967|            input,
-  211|    967|            alpha: Alphabet::DEFAULT,
-  212|    967|            check: Check::Disabled,
-  213|    967|        }
-  214|    967|    }
+  208|  1.04k|    pub(crate) const fn from_input(input: I) -> DecodeBuilder<'static, I> {
+  209|  1.04k|        DecodeBuilder {
+  210|  1.04k|            input,
+  211|  1.04k|            alpha: Alphabet::DEFAULT,
+  212|  1.04k|            check: Check::Disabled,
+  213|  1.04k|        }
+  214|  1.04k|    }
 _RNvMs2_NtCsjyycqNoLf64_4bs586decodeINtB5_13DecodeBuilderReE10with_checkCs5FnQp8us7pk_13zcash_address:
-  252|    967|    pub fn with_check(self, expected_ver: Option<u8>) -> DecodeBuilder<'a, I> {
-  253|    967|        let check = Check::Enabled(expected_ver);
-  254|    967|        DecodeBuilder { check, ..self }
-  255|    967|    }
+  252|  1.04k|    pub fn with_check(self, expected_ver: Option<u8>) -> DecodeBuilder<'a, I> {
+  253|  1.04k|        let check = Check::Enabled(expected_ver);
+  254|  1.04k|        DecodeBuilder { check, ..self }
+  255|  1.04k|    }
 _RNvMs2_NtCsjyycqNoLf64_4bs586decodeINtB5_13DecodeBuilderReE8into_vecCs5FnQp8us7pk_13zcash_address:
-  295|  1.63k|    pub fn into_vec(self) -> Result<Vec<u8>> {
-  296|  1.63k|        let mut output = Vec::new();
-  297|  1.63k|        self.onto(&mut output)?;
-  298|     58|        Ok(output)
-  299|  1.63k|    }
+  295|  1.76k|    pub fn into_vec(self) -> Result<Vec<u8>> {
+  296|  1.76k|        let mut output = Vec::new();
+  297|  1.76k|        self.onto(&mut output)?;
+  298|     51|        Ok(output)
+  299|  1.76k|    }
 _RNCNvNtCsjyycqNoLf64_4bs586decode11decode_into0B5_:
-  442|  5.35k|    for _ in input.iter().take_while(|c| **c == zero) {
+  442|  4.75k|    for _ in input.iter().take_while(|c| **c == zero) {
 _RNvNtCsjyycqNoLf64_4bs586decode11decode_into:
-  411|  1.63k|fn decode_into(input: &[u8], output: &mut [u8], alpha: &Alphabet) -> Result<usize> {
-  412|  1.63k|    let mut index = 0;
-  413|  1.63k|    let zero = alpha.encode[0];
+  411|  1.76k|fn decode_into(input: &[u8], output: &mut [u8], alpha: &Alphabet) -> Result<usize> {
+  412|  1.76k|    let mut index = 0;
+  413|  1.76k|    let zero = alpha.encode[0];
   414|       |
-  415|  87.7k|    for (i, c) in input.iter().enumerate() {
-  416|  87.7k|        if *c > 127 {
-  417|    173|            return Err(Error::NonAsciiCharacter { index: i });
-  418|  87.5k|        }
+  415|  89.7k|    for (i, c) in input.iter().enumerate() {
+  416|  89.7k|        if *c > 127 {
+  417|    188|            return Err(Error::NonAsciiCharacter { index: i });
+  418|  89.5k|        }
   419|       |
-  420|  87.5k|        let mut val = alpha.decode[*c as usize] as usize;
-  421|  87.5k|        if val == 0xFF {
-  422|    758|            return Err(Error::InvalidCharacter {
-  423|    758|                character: *c as char,
-  424|    758|                index: i,
-  425|    758|            });
-  426|  86.8k|        }
+  420|  89.5k|        let mut val = alpha.decode[*c as usize] as usize;
+  421|  89.5k|        if val == 0xFF {
+  422|    895|            return Err(Error::InvalidCharacter {
+  423|    895|                character: *c as char,
+  424|    895|                index: i,
+  425|    895|            });
+  426|  88.6k|        }
   427|       |
-  428|  48.5M|        for byte in &mut output[..index] {
-  429|  48.5M|            val += (*byte as usize) * 58;
-  430|  48.5M|            *byte = (val & 0xFF) as u8;
-  431|  48.5M|            val >>= 8;
-  432|  48.5M|        }
+  428|  48.6M|        for byte in &mut output[..index] {
+  429|  48.6M|            val += (*byte as usize) * 58;
+  430|  48.6M|            *byte = (val & 0xFF) as u8;
+  431|  48.6M|            val >>= 8;
+  432|  48.6M|        }
   433|       |
-  434|   146k|        while val > 0 {
-  435|  59.4k|            let byte = output.get_mut(index).ok_or(Error::BufferTooSmall)?;
-  436|  59.4k|            *byte = (val & 0xFF) as u8;
-  437|  59.4k|            index += 1;
-  438|  59.4k|            val >>= 8
+  434|   148k|        while val > 0 {
+  435|  60.3k|            let byte = output.get_mut(index).ok_or(Error::BufferTooSmall)?;
+  436|  60.3k|            *byte = (val & 0xFF) as u8;
+  437|  60.3k|            index += 1;
+  438|  60.3k|            val >>= 8
   439|       |        }
   440|       |    }
   441|       |
-  442|    702|    for _ in input.iter().take_while(|c| **c == zero) {
-  443|  4.81k|        let byte = output.get_mut(index).ok_or(Error::BufferTooSmall)?;
-  444|  4.81k|        *byte = 0;
-  445|  4.81k|        index += 1;
+  442|    678|    for _ in input.iter().take_while(|c| **c == zero) {
+  443|  4.23k|        let byte = output.get_mut(index).ok_or(Error::BufferTooSmall)?;
+  444|  4.23k|        *byte = 0;
+  445|  4.23k|        index += 1;
   446|       |    }
   447|       |
-  448|    702|    output[..index].reverse();
-  449|    702|    Ok(index)
-  450|  1.63k|}
+  448|    678|    output[..index].reverse();
+  449|    678|    Ok(index)
+  450|  1.76k|}
 _RNvNtCsjyycqNoLf64_4bs586decode17decode_check_into:
-  453|  1.63k|fn decode_check_into(
-  454|  1.63k|    input: &[u8],
-  455|  1.63k|    output: &mut [u8],
-  456|  1.63k|    alpha: &Alphabet,
-  457|  1.63k|    expected_ver: Option<u8>,
-  458|  1.63k|) -> Result<usize> {
+  453|  1.76k|fn decode_check_into(
+  454|  1.76k|    input: &[u8],
+  455|  1.76k|    output: &mut [u8],
+  456|  1.76k|    alpha: &Alphabet,
+  457|  1.76k|    expected_ver: Option<u8>,
+  458|  1.76k|) -> Result<usize> {
   459|       |    use sha2::{Digest, Sha256};
   460|       |
-  461|  1.63k|    let decoded_len = decode_into(input, output, alpha)?;
-  462|    702|    if decoded_len < CHECKSUM_LEN {
-  463|    203|        return Err(Error::NoChecksum);
-  464|    499|    }
-  465|    499|    let checksum_index = decoded_len - CHECKSUM_LEN;
+  461|  1.76k|    let decoded_len = decode_into(input, output, alpha)?;
+  462|    678|    if decoded_len < CHECKSUM_LEN {
+  463|    217|        return Err(Error::NoChecksum);
+  464|    461|    }
+  465|    461|    let checksum_index = decoded_len - CHECKSUM_LEN;
   466|       |
-  467|    499|    let expected_checksum = &output[checksum_index..decoded_len];
+  467|    461|    let expected_checksum = &output[checksum_index..decoded_len];
   468|       |
-  469|    499|    let first_hash = Sha256::digest(&output[0..checksum_index]);
-  470|    499|    let second_hash = Sha256::digest(first_hash);
-  471|    499|    let (checksum, _) = second_hash.split_at(CHECKSUM_LEN);
+  469|    461|    let first_hash = Sha256::digest(&output[0..checksum_index]);
+  470|    461|    let second_hash = Sha256::digest(first_hash);
+  471|    461|    let (checksum, _) = second_hash.split_at(CHECKSUM_LEN);
   472|       |
-  473|    499|    if checksum == expected_checksum {
-  474|     58|        if let Some(ver) = expected_ver {
+  473|    461|    if checksum == expected_checksum {
+  474|     51|        if let Some(ver) = expected_ver {
   475|      0|            if output[0] == ver {
   476|      0|                Ok(checksum_index)
   477|       |            } else {
@@ -3186,31 +3186,31 @@ _RNvNtCsjyycqNoLf64_4bs586decode17decode_check_into:
   481|      0|                })
   482|       |            }
   483|       |        } else {
-  484|     58|            Ok(checksum_index)
+  484|     51|            Ok(checksum_index)
   485|       |        }
   486|       |    } else {
-  487|    441|        let mut a: [u8; CHECKSUM_LEN] = Default::default();
-  488|    441|        a.copy_from_slice(checksum);
-  489|    441|        let mut b: [u8; CHECKSUM_LEN] = Default::default();
-  490|    441|        b.copy_from_slice(expected_checksum);
-  491|    441|        Err(Error::InvalidChecksum {
-  492|    441|            checksum: a,
-  493|    441|            expected_checksum: b,
-  494|    441|        })
+  487|    410|        let mut a: [u8; CHECKSUM_LEN] = Default::default();
+  488|    410|        a.copy_from_slice(checksum);
+  489|    410|        let mut b: [u8; CHECKSUM_LEN] = Default::default();
+  490|    410|        b.copy_from_slice(expected_checksum);
+  491|    410|        Err(Error::InvalidChecksum {
+  492|    410|            checksum: a,
+  493|    410|            expected_checksum: b,
+  494|    410|        })
   495|       |    }
-  496|  1.63k|}
+  496|  1.76k|}
 
 _RINvMs3_NtCsjyycqNoLf64_4bs586encodeINtB6_13EncodeBuilderRINtNtCshDtJu3Ru83O_5alloc3vec3VechEE4ontoQNtNtBZ_6string6StringECsc4HhLwrPL7g_11zebra_chain:
-  401|      6|    pub fn onto(self, mut output: impl EncodeTarget) -> Result<usize> {
-  402|      6|        let input = self.input.as_ref();
-  403|      6|        match self.check {
+  401|      5|    pub fn onto(self, mut output: impl EncodeTarget) -> Result<usize> {
+  402|      5|        let input = self.input.as_ref();
+  403|      5|        match self.check {
   404|      0|            Check::Disabled => output.encode_with(max_encoded_len(input.len()), |output| {
   405|       |                encode_into(input, output, self.alpha)
   406|       |            }),
   407|       |            #[cfg(feature = "check")]
-  408|      6|            Check::Enabled(version) => {
-  409|      6|                let input_len = input.len() + CHECKSUM_LEN + version.map_or(0, |_| 1);
-  410|      6|                output.encode_with(max_encoded_len(input_len), |output| {
+  408|      5|            Check::Enabled(version) => {
+  409|      5|                let input_len = input.len() + CHECKSUM_LEN + version.map_or(0, |_| 1);
+  410|      5|                output.encode_with(max_encoded_len(input_len), |output| {
   411|       |                    encode_check_into(self.input.as_ref(), output, self.alpha, version)
   412|       |                })
   413|       |            }
@@ -3222,72 +3222,72 @@ _RINvMs3_NtCsjyycqNoLf64_4bs586encodeINtB6_13EncodeBuilderRINtNtCshDtJu3Ru83O_5a
   419|       |                })
   420|       |            }
   421|       |        }
-  422|      6|    }
+  422|      5|    }
 _RNCINvMs3_NtCsjyycqNoLf64_4bs586encodeINtB8_13EncodeBuilderRINtNtCshDtJu3Ru83O_5alloc3vec3VechEE4ontoQNtNtB11_6string6StringEs0_0Csc4HhLwrPL7g_11zebra_chain:
-  410|      6|                output.encode_with(max_encoded_len(input_len), |output| {
-  411|      6|                    encode_check_into(self.input.as_ref(), output, self.alpha, version)
-  412|      6|                })
+  410|      5|                output.encode_with(max_encoded_len(input_len), |output| {
+  411|      5|                    encode_check_into(self.input.as_ref(), output, self.alpha, version)
+  412|      5|                })
 _RNvMs3_NtCsjyycqNoLf64_4bs586encodeINtB5_13EncodeBuilderRINtNtCshDtJu3Ru83O_5alloc3vec3VechEE10from_inputCsc4HhLwrPL7g_11zebra_chain:
-  219|      6|    pub(crate) fn from_input(input: I) -> EncodeBuilder<'static, I> {
-  220|      6|        EncodeBuilder {
-  221|      6|            input,
-  222|      6|            alpha: Alphabet::DEFAULT,
-  223|      6|            check: Check::Disabled,
-  224|      6|        }
-  225|      6|    }
+  219|      5|    pub(crate) fn from_input(input: I) -> EncodeBuilder<'static, I> {
+  220|      5|        EncodeBuilder {
+  221|      5|            input,
+  222|      5|            alpha: Alphabet::DEFAULT,
+  223|      5|            check: Check::Disabled,
+  224|      5|        }
+  225|      5|    }
 _RNvMs3_NtCsjyycqNoLf64_4bs586encodeINtB5_13EncodeBuilderRINtNtCshDtJu3Ru83O_5alloc3vec3VechEE10with_checkCsc4HhLwrPL7g_11zebra_chain:
-  259|      6|    pub fn with_check(self) -> EncodeBuilder<'a, I> {
-  260|      6|        let check = Check::Enabled(None);
-  261|      6|        EncodeBuilder { check, ..self }
-  262|      6|    }
+  259|      5|    pub fn with_check(self) -> EncodeBuilder<'a, I> {
+  260|      5|        let check = Check::Enabled(None);
+  261|      5|        EncodeBuilder { check, ..self }
+  262|      5|    }
 _RNvMs3_NtCsjyycqNoLf64_4bs586encodeINtB5_13EncodeBuilderRINtNtCshDtJu3Ru83O_5alloc3vec3VechEE11into_stringCsc4HhLwrPL7g_11zebra_chain:
-  315|      6|    pub fn into_string(self) -> String {
-  316|      6|        let mut output = String::new();
-  317|      6|        self.onto(&mut output).unwrap();
-  318|      6|        output
-  319|      6|    }
+  315|      5|    pub fn into_string(self) -> String {
+  316|      5|        let mut output = String::new();
+  317|      5|        self.onto(&mut output).unwrap();
+  318|      5|        output
+  319|      5|    }
 _RINvXs_NtCsjyycqNoLf64_4bs586encodeINtNtCshDtJu3Ru83O_5alloc3vec3VechENtB5_12EncodeTarget11encode_withNCINvMs3_B5_INtB5_13EncodeBuilderRBx_E4ontoQNtNtBC_6string6StringEs0_0ECsc4HhLwrPL7g_11zebra_chain:
-   58|      6|    fn encode_with(
-   59|      6|        &mut self,
-   60|      6|        max_len: usize,
-   61|      6|        f: impl for<'a> FnOnce(&'a mut [u8]) -> Result<usize>,
-   62|      6|    ) -> Result<usize> {
-   63|      6|        let original = self.len();
-   64|      6|        self.resize(original + max_len, 0);
-   65|      6|        let len = f(&mut self[original..])?;
-   66|      6|        self.truncate(original + len);
-   67|      6|        Ok(len)
-   68|      6|    }
+   58|      5|    fn encode_with(
+   59|      5|        &mut self,
+   60|      5|        max_len: usize,
+   61|      5|        f: impl for<'a> FnOnce(&'a mut [u8]) -> Result<usize>,
+   62|      5|    ) -> Result<usize> {
+   63|      5|        let original = self.len();
+   64|      5|        self.resize(original + max_len, 0);
+   65|      5|        let len = f(&mut self[original..])?;
+   66|      5|        self.truncate(original + len);
+   67|      5|        Ok(len)
+   68|      5|    }
 _RINvXNtCsjyycqNoLf64_4bs586encodeQNtNtCshDtJu3Ru83O_5alloc6string6StringNtB3_12EncodeTarget11encode_withNCINvMs3_B3_INtB3_13EncodeBuilderRINtNtBA_3vec3VechEE4ontoBv_Es0_0ECsc4HhLwrPL7g_11zebra_chain:
-   47|      6|    fn encode_with(
-   48|      6|        &mut self,
-   49|      6|        max_len: usize,
-   50|      6|        f: impl for<'a> FnOnce(&'a mut [u8]) -> Result<usize>,
-   51|      6|    ) -> Result<usize> {
-   52|      6|        T::encode_with(self, max_len, f)
-   53|      6|    }
+   47|      5|    fn encode_with(
+   48|      5|        &mut self,
+   49|      5|        max_len: usize,
+   50|      5|        f: impl for<'a> FnOnce(&'a mut [u8]) -> Result<usize>,
+   51|      5|    ) -> Result<usize> {
+   52|      5|        T::encode_with(self, max_len, f)
+   53|      5|    }
 _RINvXs0_NtCsjyycqNoLf64_4bs586encodeNtNtCshDtJu3Ru83O_5alloc6string6StringNtB6_12EncodeTarget11encode_withNCINvMs3_B6_INtB6_13EncodeBuilderRINtNtBC_3vec3VechEE4ontoQBy_Es0_0ECsc4HhLwrPL7g_11zebra_chain:
-  140|      6|    fn encode_with(
-  141|      6|        &mut self,
-  142|      6|        max_len: usize,
-  143|      6|        f: impl for<'a> FnOnce(&'a mut [u8]) -> Result<usize>,
-  144|      6|    ) -> Result<usize> {
-  145|      6|        let mut output = core::mem::take(self).into_bytes();
-  146|      6|        let len = output.encode_with(max_len, f)?;
-  147|      6|        *self = String::from_utf8(output).unwrap();
-  148|      6|        Ok(len)
-  149|      6|    }
+  140|      5|    fn encode_with(
+  141|      5|        &mut self,
+  142|      5|        max_len: usize,
+  143|      5|        f: impl for<'a> FnOnce(&'a mut [u8]) -> Result<usize>,
+  144|      5|    ) -> Result<usize> {
+  145|      5|        let mut output = core::mem::take(self).into_bytes();
+  146|      5|        let len = output.encode_with(max_len, f)?;
+  147|      5|        *self = String::from_utf8(output).unwrap();
+  148|      5|        Ok(len)
+  149|      5|    }
 _RINvMs3_NtCsjyycqNoLf64_4bs586encodeINtB6_13EncodeBuilderINtNtCshDtJu3Ru83O_5alloc3vec3VechEE4ontoQNtNtBY_6string6StringECs5FnQp8us7pk_13zcash_address:
-  401|     10|    pub fn onto(self, mut output: impl EncodeTarget) -> Result<usize> {
-  402|     10|        let input = self.input.as_ref();
-  403|     10|        match self.check {
+  401|      9|    pub fn onto(self, mut output: impl EncodeTarget) -> Result<usize> {
+  402|      9|        let input = self.input.as_ref();
+  403|      9|        match self.check {
   404|      0|            Check::Disabled => output.encode_with(max_encoded_len(input.len()), |output| {
   405|       |                encode_into(input, output, self.alpha)
   406|       |            }),
   407|       |            #[cfg(feature = "check")]
-  408|     10|            Check::Enabled(version) => {
-  409|     10|                let input_len = input.len() + CHECKSUM_LEN + version.map_or(0, |_| 1);
-  410|     10|                output.encode_with(max_encoded_len(input_len), |output| {
+  408|      9|            Check::Enabled(version) => {
+  409|      9|                let input_len = input.len() + CHECKSUM_LEN + version.map_or(0, |_| 1);
+  410|      9|                output.encode_with(max_encoded_len(input_len), |output| {
   411|       |                    encode_check_into(self.input.as_ref(), output, self.alpha, version)
   412|       |                })
   413|       |            }
@@ -3299,85 +3299,85 @@ _RINvMs3_NtCsjyycqNoLf64_4bs586encodeINtB6_13EncodeBuilderINtNtCshDtJu3Ru83O_5al
   419|       |                })
   420|       |            }
   421|       |        }
-  422|     10|    }
+  422|      9|    }
 _RINvXs_NtCsjyycqNoLf64_4bs586encodeINtNtCshDtJu3Ru83O_5alloc3vec3VechENtB5_12EncodeTarget11encode_withNCINvMs3_B5_INtB5_13EncodeBuilderBx_E4ontoQNtNtBC_6string6StringEs0_0ECs5FnQp8us7pk_13zcash_address:
-   58|     10|    fn encode_with(
-   59|     10|        &mut self,
-   60|     10|        max_len: usize,
-   61|     10|        f: impl for<'a> FnOnce(&'a mut [u8]) -> Result<usize>,
-   62|     10|    ) -> Result<usize> {
-   63|     10|        let original = self.len();
-   64|     10|        self.resize(original + max_len, 0);
-   65|     10|        let len = f(&mut self[original..])?;
-   66|     10|        self.truncate(original + len);
-   67|     10|        Ok(len)
-   68|     10|    }
+   58|      9|    fn encode_with(
+   59|      9|        &mut self,
+   60|      9|        max_len: usize,
+   61|      9|        f: impl for<'a> FnOnce(&'a mut [u8]) -> Result<usize>,
+   62|      9|    ) -> Result<usize> {
+   63|      9|        let original = self.len();
+   64|      9|        self.resize(original + max_len, 0);
+   65|      9|        let len = f(&mut self[original..])?;
+   66|      9|        self.truncate(original + len);
+   67|      9|        Ok(len)
+   68|      9|    }
 _RNCINvMs3_NtCsjyycqNoLf64_4bs586encodeINtB8_13EncodeBuilderINtNtCshDtJu3Ru83O_5alloc3vec3VechEE4ontoQNtNtB10_6string6StringEs0_0Cs5FnQp8us7pk_13zcash_address:
-  410|     10|                output.encode_with(max_encoded_len(input_len), |output| {
-  411|     10|                    encode_check_into(self.input.as_ref(), output, self.alpha, version)
-  412|     10|                })
+  410|      9|                output.encode_with(max_encoded_len(input_len), |output| {
+  411|      9|                    encode_check_into(self.input.as_ref(), output, self.alpha, version)
+  412|      9|                })
 _RNvMs3_NtCsjyycqNoLf64_4bs586encodeINtB5_13EncodeBuilderINtNtCshDtJu3Ru83O_5alloc3vec3VechEE10from_inputCs5FnQp8us7pk_13zcash_address:
-  219|     10|    pub(crate) fn from_input(input: I) -> EncodeBuilder<'static, I> {
-  220|     10|        EncodeBuilder {
-  221|     10|            input,
-  222|     10|            alpha: Alphabet::DEFAULT,
-  223|     10|            check: Check::Disabled,
-  224|     10|        }
-  225|     10|    }
+  219|      9|    pub(crate) fn from_input(input: I) -> EncodeBuilder<'static, I> {
+  220|      9|        EncodeBuilder {
+  221|      9|            input,
+  222|      9|            alpha: Alphabet::DEFAULT,
+  223|      9|            check: Check::Disabled,
+  224|      9|        }
+  225|      9|    }
 _RNvMs3_NtCsjyycqNoLf64_4bs586encodeINtB5_13EncodeBuilderINtNtCshDtJu3Ru83O_5alloc3vec3VechEE10with_checkCs5FnQp8us7pk_13zcash_address:
-  259|     10|    pub fn with_check(self) -> EncodeBuilder<'a, I> {
-  260|     10|        let check = Check::Enabled(None);
-  261|     10|        EncodeBuilder { check, ..self }
-  262|     10|    }
+  259|      9|    pub fn with_check(self) -> EncodeBuilder<'a, I> {
+  260|      9|        let check = Check::Enabled(None);
+  261|      9|        EncodeBuilder { check, ..self }
+  262|      9|    }
 _RNvMs3_NtCsjyycqNoLf64_4bs586encodeINtB5_13EncodeBuilderINtNtCshDtJu3Ru83O_5alloc3vec3VechEE11into_stringCs5FnQp8us7pk_13zcash_address:
-  315|     10|    pub fn into_string(self) -> String {
-  316|     10|        let mut output = String::new();
-  317|     10|        self.onto(&mut output).unwrap();
-  318|     10|        output
-  319|     10|    }
+  315|      9|    pub fn into_string(self) -> String {
+  316|      9|        let mut output = String::new();
+  317|      9|        self.onto(&mut output).unwrap();
+  318|      9|        output
+  319|      9|    }
 _RINvXNtCsjyycqNoLf64_4bs586encodeQNtNtCshDtJu3Ru83O_5alloc6string6StringNtB3_12EncodeTarget11encode_withNCINvMs3_B3_INtB3_13EncodeBuilderINtNtBA_3vec3VechEE4ontoBv_Es0_0ECs5FnQp8us7pk_13zcash_address:
-   47|     10|    fn encode_with(
-   48|     10|        &mut self,
-   49|     10|        max_len: usize,
-   50|     10|        f: impl for<'a> FnOnce(&'a mut [u8]) -> Result<usize>,
-   51|     10|    ) -> Result<usize> {
-   52|     10|        T::encode_with(self, max_len, f)
-   53|     10|    }
+   47|      9|    fn encode_with(
+   48|      9|        &mut self,
+   49|      9|        max_len: usize,
+   50|      9|        f: impl for<'a> FnOnce(&'a mut [u8]) -> Result<usize>,
+   51|      9|    ) -> Result<usize> {
+   52|      9|        T::encode_with(self, max_len, f)
+   53|      9|    }
 _RINvXs0_NtCsjyycqNoLf64_4bs586encodeNtNtCshDtJu3Ru83O_5alloc6string6StringNtB6_12EncodeTarget11encode_withNCINvMs3_B6_INtB6_13EncodeBuilderINtNtBC_3vec3VechEE4ontoQBy_Es0_0ECs5FnQp8us7pk_13zcash_address:
-  140|     10|    fn encode_with(
-  141|     10|        &mut self,
-  142|     10|        max_len: usize,
-  143|     10|        f: impl for<'a> FnOnce(&'a mut [u8]) -> Result<usize>,
-  144|     10|    ) -> Result<usize> {
-  145|     10|        let mut output = core::mem::take(self).into_bytes();
-  146|     10|        let len = output.encode_with(max_len, f)?;
-  147|     10|        *self = String::from_utf8(output).unwrap();
-  148|     10|        Ok(len)
-  149|     10|    }
+  140|      9|    fn encode_with(
+  141|      9|        &mut self,
+  142|      9|        max_len: usize,
+  143|      9|        f: impl for<'a> FnOnce(&'a mut [u8]) -> Result<usize>,
+  144|      9|    ) -> Result<usize> {
+  145|      9|        let mut output = core::mem::take(self).into_bytes();
+  146|      9|        let len = output.encode_with(max_len, f)?;
+  147|      9|        *self = String::from_utf8(output).unwrap();
+  148|      9|        Ok(len)
+  149|      9|    }
 _RINvNtCsjyycqNoLf64_4bs586encode11encode_intoINtNtNtNtCs6SNw0SRvItZ_4core4iter8adapters5chain5ChainIBI_INtNtBQ_6option4IterhEINtNtNtBQ_5slice4iter4IterhEEB1Z_EEB4_:
-  434|     16|fn encode_into<'a, I>(input: I, output: &mut [u8], alpha: &Alphabet) -> Result<usize>
-  435|     16|where
-  436|     16|    I: Clone + IntoIterator<Item = &'a u8>,
+  434|     14|fn encode_into<'a, I>(input: I, output: &mut [u8], alpha: &Alphabet) -> Result<usize>
+  435|     14|where
+  436|     14|    I: Clone + IntoIterator<Item = &'a u8>,
   437|       |{
-  438|     16|    let mut index = 0;
-  439|    416|    for &val in input.clone() {
-  440|    416|        let mut carry = val as usize;
-  441|  7.08k|        for byte in &mut output[..index] {
-  442|  7.08k|            carry += (*byte as usize) << 8;
-  443|  7.08k|            *byte = (carry % 58) as u8;
-  444|  7.08k|            carry /= 58;
-  445|  7.08k|        }
-  446|    976|        while carry > 0 {
-  447|    560|            if index == output.len() {
+  438|     14|    let mut index = 0;
+  439|    364|    for &val in input.clone() {
+  440|    364|        let mut carry = val as usize;
+  441|  6.20k|        for byte in &mut output[..index] {
+  442|  6.20k|            carry += (*byte as usize) << 8;
+  443|  6.20k|            *byte = (carry % 58) as u8;
+  444|  6.20k|            carry /= 58;
+  445|  6.20k|        }
+  446|    854|        while carry > 0 {
+  447|    490|            if index == output.len() {
   448|      0|                return Err(Error::BufferTooSmall);
-  449|    560|            }
-  450|    560|            output[index] = (carry % 58) as u8;
-  451|    560|            index += 1;
-  452|    560|            carry /= 58;
+  449|    490|            }
+  450|    490|            output[index] = (carry % 58) as u8;
+  451|    490|            index += 1;
+  452|    490|            carry /= 58;
   453|       |        }
   454|       |    }
   455|       |
-  456|     16|    for _ in input.into_iter().take_while(|v| **v == 0) {
+  456|     14|    for _ in input.into_iter().take_while(|v| **v == 0) {
   457|      0|        if index == output.len() {
   458|      0|            return Err(Error::BufferTooSmall);
   459|      0|        }
@@ -3385,69 +3385,69 @@ _RINvNtCsjyycqNoLf64_4bs586encode11encode_intoINtNtNtNtCs6SNw0SRvItZ_4core4iter8
   461|      0|        index += 1;
   462|       |    }
   463|       |
-  464|    560|    for val in &mut output[..index] {
-  465|    560|        *val = alpha.encode[*val as usize];
-  466|    560|    }
+  464|    490|    for val in &mut output[..index] {
+  465|    490|        *val = alpha.encode[*val as usize];
+  466|    490|    }
   467|       |
-  468|     16|    output[..index].reverse();
-  469|     16|    Ok(index)
-  470|     16|}
+  468|     14|    output[..index].reverse();
+  469|     14|    Ok(index)
+  470|     14|}
 _RNCINvNtCsjyycqNoLf64_4bs586encode11encode_intoINtNtNtNtCs6SNw0SRvItZ_4core4iter8adapters5chain5ChainIBK_INtNtBS_6option4IterhEINtNtNtBS_5slice4iter4IterhEEB21_EE0B6_:
-  456|     16|    for _ in input.into_iter().take_while(|v| **v == 0) {
+  456|     14|    for _ in input.into_iter().take_while(|v| **v == 0) {
 _RNvNtCsjyycqNoLf64_4bs586encode15max_encoded_len:
-  429|     16|fn max_encoded_len(len: usize) -> usize {
+  429|     14|fn max_encoded_len(len: usize) -> usize {
   430|       |    // log_2(256) / log_2(58) ≈ 1.37.  Assume 1.5 for easier calculation.
-  431|     16|    len + (len + 1) / 2
-  432|     16|}
+  431|     14|    len + (len + 1) / 2
+  432|     14|}
 _RNvNtCsjyycqNoLf64_4bs586encode17encode_check_into:
-  473|     16|fn encode_check_into(
-  474|     16|    input: &[u8],
-  475|     16|    output: &mut [u8],
-  476|     16|    alpha: &Alphabet,
-  477|     16|    version: Option<u8>,
-  478|     16|) -> Result<usize> {
+  473|     14|fn encode_check_into(
+  474|     14|    input: &[u8],
+  475|     14|    output: &mut [u8],
+  476|     14|    alpha: &Alphabet,
+  477|     14|    version: Option<u8>,
+  478|     14|) -> Result<usize> {
   479|       |    use sha2::{Digest, Sha256};
   480|       |
-  481|     16|    let mut first_hash = Sha256::new();
-  482|     16|    if let Some(version) = version {
+  481|     14|    let mut first_hash = Sha256::new();
+  482|     14|    if let Some(version) = version {
   483|      0|        first_hash.update([version; 1]);
-  484|     16|    }
-  485|     16|    let first_hash = first_hash.chain_update(input).finalize();
-  486|     16|    let second_hash = Sha256::digest(first_hash);
+  484|     14|    }
+  485|     14|    let first_hash = first_hash.chain_update(input).finalize();
+  486|     14|    let second_hash = Sha256::digest(first_hash);
   487|       |
-  488|     16|    let checksum = &second_hash[0..CHECKSUM_LEN];
+  488|     14|    let checksum = &second_hash[0..CHECKSUM_LEN];
   489|       |
-  490|     16|    encode_into(
-  491|     16|        version.iter().chain(input.iter()).chain(checksum.iter()),
-  492|     16|        output,
-  493|     16|        alpha,
+  490|     14|    encode_into(
+  491|     14|        version.iter().chain(input.iter()).chain(checksum.iter()),
+  492|     14|        output,
+  493|     14|        alpha,
   494|       |    )
-  495|     16|}
+  495|     14|}
 
 _RINvCsjyycqNoLf64_4bs586encodeRINtNtCshDtJu3Ru83O_5alloc3vec3VechEECsc4HhLwrPL7g_11zebra_chain:
-  219|      6|pub fn encode<I: AsRef<[u8]>>(input: I) -> encode::EncodeBuilder<'static, I> {
-  220|      6|    encode::EncodeBuilder::from_input(input)
-  221|      6|}
+  219|      5|pub fn encode<I: AsRef<[u8]>>(input: I) -> encode::EncodeBuilder<'static, I> {
+  220|      5|    encode::EncodeBuilder::from_input(input)
+  221|      5|}
 _RINvCsjyycqNoLf64_4bs586decodeReECs4LqIAExT8vq_5bip32:
-  170|    666|pub const fn decode<I: AsRef<[u8]>>(input: I) -> decode::DecodeBuilder<'static, I> {
-  171|    666|    decode::DecodeBuilder::from_input(input)
-  172|    666|}
+  170|    717|pub const fn decode<I: AsRef<[u8]>>(input: I) -> decode::DecodeBuilder<'static, I> {
+  171|    717|    decode::DecodeBuilder::from_input(input)
+  172|    717|}
 _RINvCsjyycqNoLf64_4bs586decodeReECs5FnQp8us7pk_13zcash_address:
-  170|    967|pub const fn decode<I: AsRef<[u8]>>(input: I) -> decode::DecodeBuilder<'static, I> {
-  171|    967|    decode::DecodeBuilder::from_input(input)
-  172|    967|}
+  170|  1.04k|pub const fn decode<I: AsRef<[u8]>>(input: I) -> decode::DecodeBuilder<'static, I> {
+  171|  1.04k|    decode::DecodeBuilder::from_input(input)
+  172|  1.04k|}
 _RINvCsjyycqNoLf64_4bs586encodeINtNtCshDtJu3Ru83O_5alloc3vec3VechEECs5FnQp8us7pk_13zcash_address:
-  219|     10|pub fn encode<I: AsRef<[u8]>>(input: I) -> encode::EncodeBuilder<'static, I> {
-  220|     10|    encode::EncodeBuilder::from_input(input)
-  221|     10|}
+  219|      9|pub fn encode<I: AsRef<[u8]>>(input: I) -> encode::EncodeBuilder<'static, I> {
+  220|      9|    encode::EncodeBuilder::from_input(input)
+  221|      9|}
 
 _RNvNtNtNtCsTIDoG4KXfJ_4sha26sha2563x8611shani_cpuid3getB7_:
-  215|  1.18k|            pub fn get() -> bool {
-  216|  1.18k|                init_get().1
-  217|  1.18k|            }
+  215|  1.09k|            pub fn get() -> bool {
+  216|  1.09k|                init_get().1
+  217|  1.09k|            }
 _RNvNtNtNtCsTIDoG4KXfJ_4sha26sha2563x8611shani_cpuid8init_getB7_:
-  183|  1.18k|            pub fn init_get() -> (InitToken, bool) {
-  184|  1.18k|                let res = $crate::__unless_target_features! {
+  183|  1.09k|            pub fn init_get() -> (InitToken, bool) {
+  184|  1.09k|                let res = $crate::__unless_target_features! {
   185|       |                    $($tf),+ => {
   186|       |                        #[cold]
   187|       |                        fn init_inner() -> bool {
@@ -3457,18 +3457,18 @@ _RNvNtNtNtCsTIDoG4KXfJ_4sha26sha2563x8611shani_cpuid8init_getB7_:
   191|       |                        }
   192|       |
   193|       |                        // Relaxed ordering is fine, as we only have a single atomic variable.
-  194|  1.18k|                        let val = STORAGE.load(Relaxed);
+  194|  1.09k|                        let val = STORAGE.load(Relaxed);
   195|       |
-  196|  1.18k|                        if val == UNINIT {
+  196|  1.09k|                        if val == UNINIT {
   197|      1|                            init_inner()
   198|       |                        } else {
-  199|  1.17k|                            val == 1
+  199|  1.09k|                            val == 1
   200|       |                        }
   201|       |                    }
   202|       |                };
   203|       |
-  204|  1.18k|                (InitToken(()), res)
-  205|  1.18k|            }
+  204|  1.09k|                (InitToken(()), res)
+  205|  1.09k|            }
 _RNvNvNtNtNtCsTIDoG4KXfJ_4sha26sha2563x8611shani_cpuid8init_get10init_inner:
   187|      1|                        fn init_inner() -> bool {
   188|      1|                            let res = $crate::__detect_target_features!($($tf),+);
@@ -3486,77 +3486,77 @@ _RNvNvNvNtNtNtCsTIDoG4KXfJ_4sha26sha2563x8611shani_cpuid8init_get10init_inner5cp
    49|      1|        }
 
 _RNvXs0_NtNtCslYFrylcTFUJ_6digest8core_api11ct_variableINtB5_21CtVariableCoreWrapperNtNtCsTIDoG4KXfJ_4sha28core_api13Sha256VarCoreINtNtCs6K91jTNoEt_7typenum4uint4UIntIB24_IB24_IB24_IB24_IB24_NtB26_5UTermNtNtB28_3bit2B1ENtB3g_2B0EB3u_EB3u_EB3u_EB3u_ENtB1n_9OidSha256ENtB7_10UpdateCore13update_blocksCsjyycqNoLf64_4bs58:
-   78|    126|    fn update_blocks(&mut self, blocks: &[Block<Self>]) {
-   79|    126|        self.inner.update_blocks(blocks);
-   80|    126|    }
+   78|    120|    fn update_blocks(&mut self, blocks: &[Block<Self>]) {
+   79|    120|        self.inner.update_blocks(blocks);
+   80|    120|    }
 _RNvXs3_NtNtCslYFrylcTFUJ_6digest8core_api11ct_variableINtB5_21CtVariableCoreWrapperNtNtCsTIDoG4KXfJ_4sha28core_api13Sha256VarCoreINtNtCs6K91jTNoEt_7typenum4uint4UIntIB24_IB24_IB24_IB24_IB24_NtB26_5UTermNtNtB28_3bit2B1ENtB3g_2B0EB3u_EB3u_EB3u_EB3u_ENtB1n_9OidSha256ENtB7_15FixedOutputCore19finalize_fixed_coreCsjyycqNoLf64_4bs58:
-  114|  1.03k|    fn finalize_fixed_core(
-  115|  1.03k|        &mut self,
-  116|  1.03k|        buffer: &mut Buffer<Self>,
-  117|  1.03k|        out: &mut GenericArray<u8, Self::OutputSize>,
-  118|  1.03k|    ) {
-  119|  1.03k|        let mut full_res = Default::default();
-  120|  1.03k|        self.inner.finalize_variable_core(buffer, &mut full_res);
-  121|  1.03k|        let n = out.len();
-  122|  1.03k|        let m = full_res.len() - n;
-  123|  1.03k|        match T::TRUNC_SIDE {
-  124|  1.03k|            TruncSide::Left => out.copy_from_slice(&full_res[..n]),
+  114|    950|    fn finalize_fixed_core(
+  115|    950|        &mut self,
+  116|    950|        buffer: &mut Buffer<Self>,
+  117|    950|        out: &mut GenericArray<u8, Self::OutputSize>,
+  118|    950|    ) {
+  119|    950|        let mut full_res = Default::default();
+  120|    950|        self.inner.finalize_variable_core(buffer, &mut full_res);
+  121|    950|        let n = out.len();
+  122|    950|        let m = full_res.len() - n;
+  123|    950|        match T::TRUNC_SIDE {
+  124|    950|            TruncSide::Left => out.copy_from_slice(&full_res[..n]),
   125|      0|            TruncSide::Right => out.copy_from_slice(&full_res[m..]),
   126|       |        }
-  127|  1.03k|    }
+  127|    950|    }
 _RNvXs4_NtNtCslYFrylcTFUJ_6digest8core_api11ct_variableINtB5_21CtVariableCoreWrapperNtNtCsTIDoG4KXfJ_4sha28core_api13Sha256VarCoreINtNtCs6K91jTNoEt_7typenum4uint4UIntIB24_IB24_IB24_IB24_IB24_NtB26_5UTermNtNtB28_3bit2B1ENtB3g_2B0EB3u_EB3u_EB3u_EB3u_ENtB1n_9OidSha256ENtNtCs6SNw0SRvItZ_4core7default7Default7defaultCsjyycqNoLf64_4bs58:
-  139|  1.03k|    fn default() -> Self {
-  140|  1.03k|        Self {
-  141|  1.03k|            inner: T::new(OutSize::USIZE).unwrap(),
-  142|  1.03k|            _out: PhantomData,
-  143|  1.03k|        }
-  144|  1.03k|    }
+  139|    950|    fn default() -> Self {
+  140|    950|        Self {
+  141|    950|            inner: T::new(OutSize::USIZE).unwrap(),
+  142|    950|            _out: PhantomData,
+  143|    950|        }
+  144|    950|    }
 
 _RNCNvXs5_NtNtCslYFrylcTFUJ_6digest8core_api7wrapperINtB7_11CoreWrapperINtNtB9_11ct_variable21CtVariableCoreWrapperNtNtCsTIDoG4KXfJ_4sha28core_api13Sha256VarCoreINtNtCs6K91jTNoEt_7typenum4uint4UIntIB2z_IB2z_IB2z_IB2z_IB2z_NtB2B_5UTermNtNtB2D_3bit2B1ENtB3L_2B0EB3Z_EB3Z_EB3Z_EB3Z_ENtB1S_9OidSha256EENtBb_6Update6update0CsjyycqNoLf64_4bs58:
-  150|    126|        buffer.digest_blocks(input, |blocks| core.update_blocks(blocks));
+  150|    120|        buffer.digest_blocks(input, |blocks| core.update_blocks(blocks));
 _RNvXs5_NtNtCslYFrylcTFUJ_6digest8core_api7wrapperINtB5_11CoreWrapperINtNtB7_11ct_variable21CtVariableCoreWrapperNtNtCsTIDoG4KXfJ_4sha28core_api13Sha256VarCoreINtNtCs6K91jTNoEt_7typenum4uint4UIntIB2x_IB2x_IB2x_IB2x_IB2x_NtB2z_5UTermNtNtB2B_3bit2B1ENtB3J_2B0EB3X_EB3X_EB3X_EB3X_ENtB1Q_9OidSha256EENtB9_6Update6updateCsjyycqNoLf64_4bs58:
-  148|  1.03k|    fn update(&mut self, input: &[u8]) {
-  149|  1.03k|        let Self { core, buffer } = self;
-  150|  1.03k|        buffer.digest_blocks(input, |blocks| core.update_blocks(blocks));
-  151|  1.03k|    }
+  148|    950|    fn update(&mut self, input: &[u8]) {
+  149|    950|        let Self { core, buffer } = self;
+  150|    950|        buffer.digest_blocks(input, |blocks| core.update_blocks(blocks));
+  151|    950|    }
 _RNvXs7_NtNtCslYFrylcTFUJ_6digest8core_api7wrapperINtB5_11CoreWrapperINtNtB7_11ct_variable21CtVariableCoreWrapperNtNtCsTIDoG4KXfJ_4sha28core_api13Sha256VarCoreINtNtCs6K91jTNoEt_7typenum4uint4UIntIB2x_IB2x_IB2x_IB2x_IB2x_NtB2z_5UTermNtNtB2B_3bit2B1ENtB3J_2B0EB3X_EB3X_EB3X_EB3X_ENtB1Q_9OidSha256EENtB9_11FixedOutput13finalize_intoCsjyycqNoLf64_4bs58:
-  170|  1.03k|    fn finalize_into(mut self, out: &mut Output<Self>) {
-  171|  1.03k|        let Self { core, buffer } = &mut self;
-  172|  1.03k|        core.finalize_fixed_core(buffer, out);
-  173|  1.03k|    }
+  170|    950|    fn finalize_into(mut self, out: &mut Output<Self>) {
+  171|    950|        let Self { core, buffer } = &mut self;
+  172|    950|        core.finalize_fixed_core(buffer, out);
+  173|    950|    }
 
 _RINvXNtCslYFrylcTFUJ_6digest6digestINtNtNtB5_8core_api7wrapper11CoreWrapperINtNtBC_11ct_variable21CtVariableCoreWrapperNtNtCsTIDoG4KXfJ_4sha28core_api13Sha256VarCoreINtNtCs6K91jTNoEt_7typenum4uint4UIntIB2E_IB2E_IB2E_IB2E_IB2E_NtB2G_5UTermNtNtB2I_3bit2B1ENtB3Q_2B0EB44_EB44_EB44_EB44_ENtB1X_9OidSha256EENtB3_6Digest12chain_updateRShECsjyycqNoLf64_4bs58:
-   79|     16|    fn chain_update(mut self, data: impl AsRef<[u8]>) -> Self {
-   80|     16|        Update::update(&mut self, data.as_ref());
-   81|     16|        self
-   82|     16|    }
+   79|     14|    fn chain_update(mut self, data: impl AsRef<[u8]>) -> Self {
+   80|     14|        Update::update(&mut self, data.as_ref());
+   81|     14|        self
+   82|     14|    }
 _RINvXNtCslYFrylcTFUJ_6digest6digestINtNtNtB5_8core_api7wrapper11CoreWrapperINtNtBC_11ct_variable21CtVariableCoreWrapperNtNtCsTIDoG4KXfJ_4sha28core_api13Sha256VarCoreINtNtCs6K91jTNoEt_7typenum4uint4UIntIB2E_IB2E_IB2E_IB2E_IB2E_NtB2G_5UTermNtNtB2I_3bit2B1ENtB3Q_2B0EB44_EB44_EB44_EB44_ENtB1X_9OidSha256EENtB3_6Digest6digestINtCs33qMOHxiLVq_13generic_array12GenericArrayhB2D_EECsjyycqNoLf64_4bs58:
-  124|    515|    fn digest(data: impl AsRef<[u8]>) -> Output<Self> {
-  125|    515|        let mut hasher = Self::default();
-  126|    515|        hasher.update(data.as_ref());
-  127|    515|        hasher.finalize()
-  128|    515|    }
+  124|    475|    fn digest(data: impl AsRef<[u8]>) -> Output<Self> {
+  125|    475|        let mut hasher = Self::default();
+  126|    475|        hasher.update(data.as_ref());
+  127|    475|        hasher.finalize()
+  128|    475|    }
 _RINvXNtCslYFrylcTFUJ_6digest6digestINtNtNtB5_8core_api7wrapper11CoreWrapperINtNtBC_11ct_variable21CtVariableCoreWrapperNtNtCsTIDoG4KXfJ_4sha28core_api13Sha256VarCoreINtNtCs6K91jTNoEt_7typenum4uint4UIntIB2E_IB2E_IB2E_IB2E_IB2E_NtB2G_5UTermNtNtB2I_3bit2B1ENtB3Q_2B0EB44_EB44_EB44_EB44_ENtB1X_9OidSha256EENtB3_6Digest6digestRShECsjyycqNoLf64_4bs58:
-  124|    499|    fn digest(data: impl AsRef<[u8]>) -> Output<Self> {
-  125|    499|        let mut hasher = Self::default();
-  126|    499|        hasher.update(data.as_ref());
-  127|    499|        hasher.finalize()
-  128|    499|    }
+  124|    461|    fn digest(data: impl AsRef<[u8]>) -> Output<Self> {
+  125|    461|        let mut hasher = Self::default();
+  126|    461|        hasher.update(data.as_ref());
+  127|    461|        hasher.finalize()
+  128|    461|    }
 _RNvXNtCslYFrylcTFUJ_6digest6digestINtNtNtB4_8core_api7wrapper11CoreWrapperINtNtBB_11ct_variable21CtVariableCoreWrapperNtNtCsTIDoG4KXfJ_4sha28core_api13Sha256VarCoreINtNtCs6K91jTNoEt_7typenum4uint4UIntIB2D_IB2D_IB2D_IB2D_IB2D_NtB2F_5UTermNtNtB2H_3bit2B1ENtB3P_2B0EB43_EB43_EB43_EB43_ENtB1W_9OidSha256EENtB2_6Digest3newCsjyycqNoLf64_4bs58:
-   59|     16|    fn new() -> Self {
-   60|     16|        Self::default()
-   61|     16|    }
+   59|     14|    fn new() -> Self {
+   60|     14|        Self::default()
+   61|     14|    }
 _RNvXNtCslYFrylcTFUJ_6digest6digestINtNtNtB4_8core_api7wrapper11CoreWrapperINtNtBB_11ct_variable21CtVariableCoreWrapperNtNtCsTIDoG4KXfJ_4sha28core_api13Sha256VarCoreINtNtCs6K91jTNoEt_7typenum4uint4UIntIB2D_IB2D_IB2D_IB2D_IB2D_NtB2F_5UTermNtNtB2H_3bit2B1ENtB3P_2B0EB43_EB43_EB43_EB43_ENtB1W_9OidSha256EENtB2_6Digest8finalizeCsjyycqNoLf64_4bs58:
-   85|  1.03k|    fn finalize(self) -> Output<Self> {
-   86|  1.03k|        FixedOutput::finalize_fixed(self)
-   87|  1.03k|    }
+   85|    950|    fn finalize(self) -> Output<Self> {
+   86|    950|        FixedOutput::finalize_fixed(self)
+   87|    950|    }
 
 _RNvYINtNtNtCslYFrylcTFUJ_6digest8core_api7wrapper11CoreWrapperINtNtB7_11ct_variable21CtVariableCoreWrapperNtNtCsTIDoG4KXfJ_4sha28core_api13Sha256VarCoreINtNtCs6K91jTNoEt_7typenum4uint4UIntIB2r_IB2r_IB2r_IB2r_IB2r_NtB2t_5UTermNtNtB2v_3bit2B1ENtB3D_2B0EB3R_EB3R_EB3R_EB3R_ENtB1K_9OidSha256EENtB9_11FixedOutput14finalize_fixedCsjyycqNoLf64_4bs58:
-   99|  1.03k|    fn finalize_fixed(self) -> Output<Self> {
-  100|  1.03k|        let mut out = Default::default();
-  101|  1.03k|        self.finalize_into(&mut out);
-  102|  1.03k|        out
-  103|  1.03k|    }
+   99|    950|    fn finalize_fixed(self) -> Output<Self> {
+  100|    950|        let mut out = Default::default();
+  101|    950|        self.finalize_into(&mut out);
+  102|    950|        out
+  103|    950|    }
 
 _RNvCs1IikUZIhZws_8f4jumble12f4jumble_mut:
   211|      8|pub fn f4jumble_mut(message: &mut [u8]) -> Result<(), Error> {
@@ -3700,126 +3700,126 @@ _RNvYNtNtNtCs5xmS2putXSG_12pasta_curves6fields2fp2FpNtCs9QlSKl3ZH92_2ff5Field7is
    83|     49|    }
 
 _RNCNvXNtCs33qMOHxiLVq_13generic_array5implsINtB6_12GenericArrayhINtNtCs6K91jTNoEt_7typenum4uint4UIntIB11_IB11_IB11_IB11_IB11_IB11_NtB13_5UTermNtNtB15_3bit2B1ENtB2i_2B0EB2w_EB2w_EB2w_EB2w_EB2w_EENtNtCs6SNw0SRvItZ_4core7default7Default7default0CsjyycqNoLf64_4bs58:
-   17|  67.4k|        Self::generate(|_| T::default())
+   17|  62.3k|        Self::generate(|_| T::default())
 _RNCNvXNtCs33qMOHxiLVq_13generic_array5implsINtB6_12GenericArrayhINtNtCs6K91jTNoEt_7typenum4uint4UIntIB11_IB11_IB11_IB11_IB11_NtB13_5UTermNtNtB15_3bit2B1ENtB2d_2B0EB2r_EB2r_EB2r_EB2r_EENtNtCs6SNw0SRvItZ_4core7default7Default7default0CsjyycqNoLf64_4bs58:
-   17|  65.9k|        Self::generate(|_| T::default())
+   17|  60.8k|        Self::generate(|_| T::default())
 _RNvXNtCs33qMOHxiLVq_13generic_array5implsINtB4_12GenericArrayhINtNtCs6K91jTNoEt_7typenum4uint4UIntIBZ_IBZ_IBZ_IBZ_IBZ_IBZ_NtB11_5UTermNtNtB13_3bit2B1ENtB2a_2B0EB2o_EB2o_EB2o_EB2o_EB2o_EENtNtCs6SNw0SRvItZ_4core7default7Default7defaultCsjyycqNoLf64_4bs58:
-   16|  1.05k|    fn default() -> Self {
-   17|  1.05k|        Self::generate(|_| T::default())
-   18|  1.05k|    }
+   16|    974|    fn default() -> Self {
+   17|    974|        Self::generate(|_| T::default())
+   18|    974|    }
 _RNvXNtCs33qMOHxiLVq_13generic_array5implsINtB4_12GenericArrayhINtNtCs6K91jTNoEt_7typenum4uint4UIntIBZ_IBZ_IBZ_IBZ_IBZ_NtB11_5UTermNtNtB13_3bit2B1ENtB26_2B0EB2k_EB2k_EB2k_EB2k_EENtNtCs6SNw0SRvItZ_4core7default7Default7defaultCsjyycqNoLf64_4bs58:
-   16|  2.06k|    fn default() -> Self {
-   17|  2.06k|        Self::generate(|_| T::default())
-   18|  2.06k|    }
+   16|  1.90k|    fn default() -> Self {
+   17|  1.90k|        Self::generate(|_| T::default())
+   18|  1.90k|    }
 _RNvXs8_NtCs33qMOHxiLVq_13generic_array5implsINtB7_12GenericArrayhINtNtCs6K91jTNoEt_7typenum4uint4UIntIB12_IB12_IB12_IB12_IB12_NtB14_5UTermNtNtB16_3bit2B1ENtB2e_2B0EB2s_EB2s_EB2s_EB2s_EEINtNtCs6SNw0SRvItZ_4core7convert5AsRefShE6as_refCsjyycqNoLf64_4bs58:
-   99|    515|    fn as_ref(&self) -> &[T] {
-  100|    515|        &self[..]
-  101|    515|    }
+   99|    475|    fn as_ref(&self) -> &[T] {
+  100|    475|        &self[..]
+  101|    475|    }
 
 _RINvXsg_Cs33qMOHxiLVq_13generic_arrayINtB6_12GenericArrayhINtNtCs6K91jTNoEt_7typenum4uint4UIntIBV_IBV_IBV_IBV_IBV_IBV_NtBX_5UTermNtNtBZ_3bit2B1ENtB25_2B0EB2i_EB2i_EB2i_EB2i_EB2i_EEINtNtB6_8sequence15GenericSequencehE8generateNCNvXNtB6_5implsBz_NtNtCs6SNw0SRvItZ_4core7default7Default7default0ECsjyycqNoLf64_4bs58:
-  380|  1.05k|    fn generate<F>(mut f: F) -> GenericArray<T, N>
-  381|  1.05k|    where
-  382|  1.05k|        F: FnMut(usize) -> T,
+  380|    974|    fn generate<F>(mut f: F) -> GenericArray<T, N>
+  381|    974|    where
+  382|    974|        F: FnMut(usize) -> T,
   383|       |    {
   384|       |        unsafe {
-  385|  1.05k|            let mut destination = ArrayBuilder::new();
+  385|    974|            let mut destination = ArrayBuilder::new();
   386|       |
   387|       |            {
-  388|  1.05k|                let (destination_iter, position) = destination.iter_position();
+  388|    974|                let (destination_iter, position) = destination.iter_position();
   389|       |
-  390|  1.05k|                destination_iter.enumerate().for_each(|(i, dst)| {
+  390|    974|                destination_iter.enumerate().for_each(|(i, dst)| {
   391|       |                    ptr::write(dst, f(i));
   392|       |
   393|       |                    *position += 1;
   394|       |                });
   395|       |            }
   396|       |
-  397|  1.05k|            destination.into_inner()
+  397|    974|            destination.into_inner()
   398|       |        }
-  399|  1.05k|    }
+  399|    974|    }
 _RINvXsg_Cs33qMOHxiLVq_13generic_arrayINtB6_12GenericArrayhINtNtCs6K91jTNoEt_7typenum4uint4UIntIBV_IBV_IBV_IBV_IBV_NtBX_5UTermNtNtBZ_3bit2B1ENtB21_2B0EB2e_EB2e_EB2e_EB2e_EEINtNtB6_8sequence15GenericSequencehE8generateNCNvXNtB6_5implsBz_NtNtCs6SNw0SRvItZ_4core7default7Default7default0ECsjyycqNoLf64_4bs58:
-  380|  2.06k|    fn generate<F>(mut f: F) -> GenericArray<T, N>
-  381|  2.06k|    where
-  382|  2.06k|        F: FnMut(usize) -> T,
+  380|  1.90k|    fn generate<F>(mut f: F) -> GenericArray<T, N>
+  381|  1.90k|    where
+  382|  1.90k|        F: FnMut(usize) -> T,
   383|       |    {
   384|       |        unsafe {
-  385|  2.06k|            let mut destination = ArrayBuilder::new();
+  385|  1.90k|            let mut destination = ArrayBuilder::new();
   386|       |
   387|       |            {
-  388|  2.06k|                let (destination_iter, position) = destination.iter_position();
+  388|  1.90k|                let (destination_iter, position) = destination.iter_position();
   389|       |
-  390|  2.06k|                destination_iter.enumerate().for_each(|(i, dst)| {
+  390|  1.90k|                destination_iter.enumerate().for_each(|(i, dst)| {
   391|       |                    ptr::write(dst, f(i));
   392|       |
   393|       |                    *position += 1;
   394|       |                });
   395|       |            }
   396|       |
-  397|  2.06k|            destination.into_inner()
+  397|  1.90k|            destination.into_inner()
   398|       |        }
-  399|  2.06k|    }
+  399|  1.90k|    }
 _RNCINvXsg_Cs33qMOHxiLVq_13generic_arrayINtB8_12GenericArrayhINtNtCs6K91jTNoEt_7typenum4uint4UIntIBX_IBX_IBX_IBX_IBX_IBX_NtBZ_5UTermNtNtB11_3bit2B1ENtB27_2B0EB2l_EB2l_EB2l_EB2l_EB2l_EEINtNtB8_8sequence15GenericSequencehE8generateNCNvXNtB8_5implsBB_NtNtCs6SNw0SRvItZ_4core7default7Default7default0E0CsjyycqNoLf64_4bs58:
-  390|  67.4k|                destination_iter.enumerate().for_each(|(i, dst)| {
-  391|  67.4k|                    ptr::write(dst, f(i));
+  390|  62.3k|                destination_iter.enumerate().for_each(|(i, dst)| {
+  391|  62.3k|                    ptr::write(dst, f(i));
   392|       |
-  393|  67.4k|                    *position += 1;
-  394|  67.4k|                });
+  393|  62.3k|                    *position += 1;
+  394|  62.3k|                });
 _RNCINvXsg_Cs33qMOHxiLVq_13generic_arrayINtB8_12GenericArrayhINtNtCs6K91jTNoEt_7typenum4uint4UIntIBX_IBX_IBX_IBX_IBX_NtBZ_5UTermNtNtB11_3bit2B1ENtB23_2B0EB2h_EB2h_EB2h_EB2h_EEINtNtB8_8sequence15GenericSequencehE8generateNCNvXNtB8_5implsBB_NtNtCs6SNw0SRvItZ_4core7default7Default7default0E0CsjyycqNoLf64_4bs58:
-  390|  65.9k|                destination_iter.enumerate().for_each(|(i, dst)| {
-  391|  65.9k|                    ptr::write(dst, f(i));
+  390|  60.8k|                destination_iter.enumerate().for_each(|(i, dst)| {
+  391|  60.8k|                    ptr::write(dst, f(i));
   392|       |
-  393|  65.9k|                    *position += 1;
-  394|  65.9k|                });
+  393|  60.8k|                    *position += 1;
+  394|  60.8k|                });
 _RNvMs9_Cs33qMOHxiLVq_13generic_arrayINtB5_12ArrayBuilderhINtNtCs6K91jTNoEt_7typenum4uint4UIntIBU_IBU_IBU_IBU_IBU_IBU_NtBW_5UTermNtNtBY_3bit2B1ENtB24_2B0EB2h_EB2h_EB2h_EB2h_EB2h_EE10into_innerCsjyycqNoLf64_4bs58:
-  243|  1.05k|    pub unsafe fn into_inner(self) -> GenericArray<T, N> {
-  244|  1.05k|        let array = ptr::read(&self.array);
+  243|    974|    pub unsafe fn into_inner(self) -> GenericArray<T, N> {
+  244|    974|        let array = ptr::read(&self.array);
   245|       |
-  246|  1.05k|        mem::forget(self);
+  246|    974|        mem::forget(self);
   247|       |
-  248|  1.05k|        array.assume_init()
-  249|  1.05k|    }
+  248|    974|        array.assume_init()
+  249|    974|    }
 _RNvMs9_Cs33qMOHxiLVq_13generic_arrayINtB5_12ArrayBuilderhINtNtCs6K91jTNoEt_7typenum4uint4UIntIBU_IBU_IBU_IBU_IBU_IBU_NtBW_5UTermNtNtBY_3bit2B1ENtB24_2B0EB2h_EB2h_EB2h_EB2h_EB2h_EE13iter_positionCsjyycqNoLf64_4bs58:
-  235|  1.05k|    pub unsafe fn iter_position(&mut self) -> (slice::IterMut<T>, &mut usize) {
-  236|  1.05k|        ((&mut *self.array.as_mut_ptr()).iter_mut(), &mut self.position)
-  237|  1.05k|    }
+  235|    974|    pub unsafe fn iter_position(&mut self) -> (slice::IterMut<T>, &mut usize) {
+  236|    974|        ((&mut *self.array.as_mut_ptr()).iter_mut(), &mut self.position)
+  237|    974|    }
 _RNvMs9_Cs33qMOHxiLVq_13generic_arrayINtB5_12ArrayBuilderhINtNtCs6K91jTNoEt_7typenum4uint4UIntIBU_IBU_IBU_IBU_IBU_IBU_NtBW_5UTermNtNtBY_3bit2B1ENtB24_2B0EB2h_EB2h_EB2h_EB2h_EB2h_EE3newCsjyycqNoLf64_4bs58:
-  222|  1.05k|    pub unsafe fn new() -> ArrayBuilder<T, N> {
-  223|  1.05k|        ArrayBuilder {
-  224|  1.05k|            array: MaybeUninit::uninit(),
-  225|  1.05k|            position: 0,
-  226|  1.05k|        }
-  227|  1.05k|    }
+  222|    974|    pub unsafe fn new() -> ArrayBuilder<T, N> {
+  223|    974|        ArrayBuilder {
+  224|    974|            array: MaybeUninit::uninit(),
+  225|    974|            position: 0,
+  226|    974|        }
+  227|    974|    }
 _RNvMs9_Cs33qMOHxiLVq_13generic_arrayINtB5_12ArrayBuilderhINtNtCs6K91jTNoEt_7typenum4uint4UIntIBU_IBU_IBU_IBU_IBU_NtBW_5UTermNtNtBY_3bit2B1ENtB20_2B0EB2d_EB2d_EB2d_EB2d_EE10into_innerCsjyycqNoLf64_4bs58:
-  243|  2.06k|    pub unsafe fn into_inner(self) -> GenericArray<T, N> {
-  244|  2.06k|        let array = ptr::read(&self.array);
+  243|  1.90k|    pub unsafe fn into_inner(self) -> GenericArray<T, N> {
+  244|  1.90k|        let array = ptr::read(&self.array);
   245|       |
-  246|  2.06k|        mem::forget(self);
+  246|  1.90k|        mem::forget(self);
   247|       |
-  248|  2.06k|        array.assume_init()
-  249|  2.06k|    }
+  248|  1.90k|        array.assume_init()
+  249|  1.90k|    }
 _RNvMs9_Cs33qMOHxiLVq_13generic_arrayINtB5_12ArrayBuilderhINtNtCs6K91jTNoEt_7typenum4uint4UIntIBU_IBU_IBU_IBU_IBU_NtBW_5UTermNtNtBY_3bit2B1ENtB20_2B0EB2d_EB2d_EB2d_EB2d_EE13iter_positionCsjyycqNoLf64_4bs58:
-  235|  2.06k|    pub unsafe fn iter_position(&mut self) -> (slice::IterMut<T>, &mut usize) {
-  236|  2.06k|        ((&mut *self.array.as_mut_ptr()).iter_mut(), &mut self.position)
-  237|  2.06k|    }
+  235|  1.90k|    pub unsafe fn iter_position(&mut self) -> (slice::IterMut<T>, &mut usize) {
+  236|  1.90k|        ((&mut *self.array.as_mut_ptr()).iter_mut(), &mut self.position)
+  237|  1.90k|    }
 _RNvMs9_Cs33qMOHxiLVq_13generic_arrayINtB5_12ArrayBuilderhINtNtCs6K91jTNoEt_7typenum4uint4UIntIBU_IBU_IBU_IBU_IBU_NtBW_5UTermNtNtBY_3bit2B1ENtB20_2B0EB2d_EB2d_EB2d_EB2d_EE3newCsjyycqNoLf64_4bs58:
-  222|  2.06k|    pub unsafe fn new() -> ArrayBuilder<T, N> {
-  223|  2.06k|        ArrayBuilder {
-  224|  2.06k|            array: MaybeUninit::uninit(),
-  225|  2.06k|            position: 0,
-  226|  2.06k|        }
-  227|  2.06k|    }
+  222|  1.90k|    pub unsafe fn new() -> ArrayBuilder<T, N> {
+  223|  1.90k|        ArrayBuilder {
+  224|  1.90k|            array: MaybeUninit::uninit(),
+  225|  1.90k|            position: 0,
+  226|  1.90k|        }
+  227|  1.90k|    }
 _RNvXs7_Cs33qMOHxiLVq_13generic_arrayINtB5_12GenericArrayhINtNtCs6K91jTNoEt_7typenum4uint4UIntIBU_IBU_IBU_IBU_IBU_NtBW_5UTermNtNtBY_3bit2B1ENtB20_2B0EB2d_EB2d_EB2d_EB2d_EENtNtNtCs6SNw0SRvItZ_4core3ops5deref5Deref5derefCsjyycqNoLf64_4bs58:
-  193|  4.12k|    fn deref(&self) -> &[T] {
-  194|  4.12k|        unsafe { slice::from_raw_parts(self as *const Self as *const T, N::USIZE) }
-  195|  4.12k|    }
+  193|  3.80k|    fn deref(&self) -> &[T] {
+  194|  3.80k|        unsafe { slice::from_raw_parts(self as *const Self as *const T, N::USIZE) }
+  195|  3.80k|    }
 _RNvXs8_Cs33qMOHxiLVq_13generic_arrayINtB5_12GenericArrayhINtNtCs6K91jTNoEt_7typenum4uint4UIntIBU_IBU_IBU_IBU_IBU_IBU_NtBW_5UTermNtNtBY_3bit2B1ENtB24_2B0EB2h_EB2h_EB2h_EB2h_EB2h_EENtNtNtCs6SNw0SRvItZ_4core3ops5deref8DerefMut9deref_mutCsjyycqNoLf64_4bs58:
-  203|  5.17k|    fn deref_mut(&mut self) -> &mut [T] {
-  204|  5.17k|        unsafe { slice::from_raw_parts_mut(self as *mut Self as *mut T, N::USIZE) }
-  205|  5.17k|    }
+  203|  4.77k|    fn deref_mut(&mut self) -> &mut [T] {
+  204|  4.77k|        unsafe { slice::from_raw_parts_mut(self as *mut Self as *mut T, N::USIZE) }
+  205|  4.77k|    }
 _RNvXs8_Cs33qMOHxiLVq_13generic_arrayINtB5_12GenericArrayhINtNtCs6K91jTNoEt_7typenum4uint4UIntIBU_IBU_IBU_IBU_IBU_NtBW_5UTermNtNtBY_3bit2B1ENtB20_2B0EB2d_EB2d_EB2d_EB2d_EENtNtNtCs6SNw0SRvItZ_4core3ops5deref8DerefMut9deref_mutCsjyycqNoLf64_4bs58:
-  203|  4.12k|    fn deref_mut(&mut self) -> &mut [T] {
-  204|  4.12k|        unsafe { slice::from_raw_parts_mut(self as *mut Self as *mut T, N::USIZE) }
-  205|  4.12k|    }
+  203|  3.80k|    fn deref_mut(&mut self) -> &mut [T] {
+  204|  3.80k|        unsafe { slice::from_raw_parts_mut(self as *mut Self as *mut T, N::USIZE) }
+  205|  3.80k|    }
 
 _RNCNCNvMsg_CsbPbog0fUSZG_6jubjubNtB9_18ExtendedNielsPoint8multiply00B9_:
   371|  1.79k|            .flat_map(|byte| (0..8).rev().map(move |i| Choice::from((byte >> i) & 1u8)))
@@ -4252,49 +4252,49 @@ LLVMFuzzerInitialize:
   257|      2|                0
   258|      2|            }
 _RNvNvCskjmnGakOn2j_12address_fuzz1__19___libfuzzer_sys_run:
-  293|    331|            fn __libfuzzer_sys_run($bytes: &[u8]) -> $rty {
+  293|    357|            fn __libfuzzer_sys_run($bytes: &[u8]) -> $rty {
   294|       |                $body
-  295|    331|            }
+  295|    357|            }
 rust_fuzzer_test_input:
-  261|    331|            pub extern "C" fn rust_fuzzer_test_input(bytes: &[u8]) -> i32 {
+  261|    357|            pub extern "C" fn rust_fuzzer_test_input(bytes: &[u8]) -> i32 {
   262|       |                // When `RUST_LIBFUZZER_DEBUG_PATH` is set, write the debug
   263|       |                // formatting of the input to that file. This is only intended for
   264|       |                // `cargo fuzz`'s use!
   265|       |
   266|       |                // `RUST_LIBFUZZER_DEBUG_PATH` is set in initialization.
-  267|    331|                if let Some(path) = $crate::rust_libfuzzer_debug_path() {
+  267|    357|                if let Some(path) = $crate::rust_libfuzzer_debug_path() {
   268|       |                    use std::io::Write;
   269|      0|                    let mut file = std::fs::File::create(path)
   270|      0|                        .expect("failed to create `RUST_LIBFUZZER_DEBUG_PATH` file");
   271|      0|                    writeln!(&mut file, "{:?}", bytes)
   272|      0|                        .expect("failed to write to `RUST_LIBFUZZER_DEBUG_PATH` file");
   273|      0|                    return 0;
-  274|    331|                }
+  274|    357|                }
   275|       |
-  276|    331|                let result = ::libfuzzer_sys::Corpus::from(__libfuzzer_sys_run(bytes));
-  277|    331|                result.to_libfuzzer_code()
-  278|    331|            }
+  276|    357|                let result = ::libfuzzer_sys::Corpus::from(__libfuzzer_sys_run(bytes));
+  277|    357|                result.to_libfuzzer_code()
+  278|    357|            }
 LLVMFuzzerTestOneInput:
-   59|    331|pub unsafe fn test_input_wrap(data: *const u8, size: usize) -> i32 {
-   60|    331|    let test_input = ::std::panic::catch_unwind(|| {
+   59|    357|pub unsafe fn test_input_wrap(data: *const u8, size: usize) -> i32 {
+   60|    357|    let test_input = ::std::panic::catch_unwind(|| {
    61|       |        let data_slice = ::std::slice::from_raw_parts(data, size);
    62|       |        rust_fuzzer_test_input(data_slice)
    63|       |    });
    64|       |
-   65|    331|    match test_input {
-   66|    331|        Ok(i) => i,
+   65|    357|    match test_input {
+   66|    357|        Ok(i) => i,
    67|       |        Err(_) => {
    68|       |            // hopefully the custom panic hook will be called before and abort the
    69|       |            // process before the stack frames are unwinded.
    70|      0|            ::std::process::abort();
    71|       |        }
    72|       |    }
-   73|    331|}
+   73|    357|}
 _RNCNvCs9JsA7ProTTk_13libfuzzer_sys15test_input_wrap0B3_:
-   60|    331|    let test_input = ::std::panic::catch_unwind(|| {
-   61|    331|        let data_slice = ::std::slice::from_raw_parts(data, size);
-   62|    331|        rust_fuzzer_test_input(data_slice)
-   63|    331|    });
+   60|    357|    let test_input = ::std::panic::catch_unwind(|| {
+   61|    357|        let data_slice = ::std::slice::from_raw_parts(data, size);
+   62|    357|        rust_fuzzer_test_input(data_slice)
+   63|    357|    });
 _RNCNvCs9JsA7ProTTk_13libfuzzer_sys25rust_libfuzzer_debug_path0B3_:
    78|      1|    RUST_LIBFUZZER_DEBUG_PATH.get_or_init(|| std::env::var("RUST_LIBFUZZER_DEBUG_PATH").ok())
 _RNvCs9JsA7ProTTk_13libfuzzer_sys10initialize:
@@ -4315,21 +4315,21 @@ _RNvCs9JsA7ProTTk_13libfuzzer_sys10initialize:
    96|      2|    0
    97|      2|}
 _RNvCs9JsA7ProTTk_13libfuzzer_sys25rust_libfuzzer_debug_path:
-   76|    331|pub fn rust_libfuzzer_debug_path() -> &'static Option<String> {
+   76|    357|pub fn rust_libfuzzer_debug_path() -> &'static Option<String> {
    77|       |    static RUST_LIBFUZZER_DEBUG_PATH: OnceLock<Option<String>> = OnceLock::new();
-   78|    331|    RUST_LIBFUZZER_DEBUG_PATH.get_or_init(|| std::env::var("RUST_LIBFUZZER_DEBUG_PATH").ok())
-   79|    331|}
+   78|    357|    RUST_LIBFUZZER_DEBUG_PATH.get_or_init(|| std::env::var("RUST_LIBFUZZER_DEBUG_PATH").ok())
+   79|    357|}
 _RNvMs_Cs9JsA7ProTTk_13libfuzzer_sysNtB4_6Corpus17to_libfuzzer_code:
-   40|    331|    pub fn to_libfuzzer_code(self) -> i32 {
-   41|    331|        match self {
-   42|    331|            Corpus::Keep => 0,
+   40|    357|    pub fn to_libfuzzer_code(self) -> i32 {
+   41|    357|        match self {
+   42|    357|            Corpus::Keep => 0,
    43|      0|            Corpus::Reject => -1,
    44|       |        }
-   45|    331|    }
+   45|    357|    }
 _RNvXCs9JsA7ProTTk_13libfuzzer_sysNtB2_6CorpusINtNtCs6SNw0SRvItZ_4core7convert4FromuE4from:
-   30|    331|    fn from(_: ()) -> Self {
-   31|    331|        Self::Keep
-   32|    331|    }
+   30|    357|    fn from(_: ()) -> Self {
+   31|    357|        Self::Keep
+   32|    357|    }
 
 _RNCNvMNtCs5VoRcuYc2aE_7orchard7addressNtB4_7Address22from_raw_address_bytes0B6_:
    64|      7|        DiversifiedTransmissionKey::from_bytes(bytes[11..].try_into().unwrap()).map(|pk_d| {
@@ -5100,119 +5100,119 @@ _RNvNtCs3eyRT31BNC2_14sapling_crypto4spec14diversify_hash:
    48|      7|}
 
 _RNCNvXs3_NtCsTIDoG4KXfJ_4sha28core_apiNtB7_13Sha256VarCoreNtNtCslYFrylcTFUJ_6digest8core_api18VariableOutputCore22finalize_variable_core0CsjyycqNoLf64_4bs58:
-   63|  1.05k|        buffer.len64_padding_be(bit_len, |b| compress256(&mut self.state, from_ref(b)));
+   63|    974|        buffer.len64_padding_be(bit_len, |b| compress256(&mut self.state, from_ref(b)));
 _RNvXs1_NtCsTIDoG4KXfJ_4sha28core_apiNtB5_13Sha256VarCoreNtNtCslYFrylcTFUJ_6digest8core_api10UpdateCore13update_blocksCsjyycqNoLf64_4bs58:
-   35|    126|    fn update_blocks(&mut self, blocks: &[Block<Self>]) {
-   36|    126|        self.block_len += blocks.len() as u64;
-   37|    126|        compress256(&mut self.state, blocks);
-   38|    126|    }
+   35|    120|    fn update_blocks(&mut self, blocks: &[Block<Self>]) {
+   36|    120|        self.block_len += blocks.len() as u64;
+   37|    120|        compress256(&mut self.state, blocks);
+   38|    120|    }
 _RNvXs3_NtCsTIDoG4KXfJ_4sha28core_apiNtB5_13Sha256VarCoreNtNtCslYFrylcTFUJ_6digest8core_api18VariableOutputCore22finalize_variable_coreCsjyycqNoLf64_4bs58:
-   60|  1.03k|    fn finalize_variable_core(&mut self, buffer: &mut Buffer<Self>, out: &mut Output<Self>) {
-   61|  1.03k|        let bs = Self::BlockSize::U64;
-   62|  1.03k|        let bit_len = 8 * (buffer.get_pos() as u64 + bs * self.block_len);
-   63|  1.03k|        buffer.len64_padding_be(bit_len, |b| compress256(&mut self.state, from_ref(b)));
+   60|    950|    fn finalize_variable_core(&mut self, buffer: &mut Buffer<Self>, out: &mut Output<Self>) {
+   61|    950|        let bs = Self::BlockSize::U64;
+   62|    950|        let bit_len = 8 * (buffer.get_pos() as u64 + bs * self.block_len);
+   63|    950|        buffer.len64_padding_be(bit_len, |b| compress256(&mut self.state, from_ref(b)));
    64|       |
-   65|  8.24k|        for (chunk, v) in out.chunks_exact_mut(4).zip(self.state.iter()) {
-   66|  8.24k|            chunk.copy_from_slice(&v.to_be_bytes());
-   67|  8.24k|        }
-   68|  1.03k|    }
+   65|  7.60k|        for (chunk, v) in out.chunks_exact_mut(4).zip(self.state.iter()) {
+   66|  7.60k|            chunk.copy_from_slice(&v.to_be_bytes());
+   67|  7.60k|        }
+   68|    950|    }
 _RNvXs3_NtCsTIDoG4KXfJ_4sha28core_apiNtB5_13Sha256VarCoreNtNtCslYFrylcTFUJ_6digest8core_api18VariableOutputCore3newCsjyycqNoLf64_4bs58:
-   49|  1.03k|    fn new(output_size: usize) -> Result<Self, InvalidOutputSize> {
-   50|  1.03k|        let state = match output_size {
+   49|    950|    fn new(output_size: usize) -> Result<Self, InvalidOutputSize> {
+   50|    950|        let state = match output_size {
    51|      0|            28 => consts::H256_224,
-   52|  1.03k|            32 => consts::H256_256,
+   52|    950|            32 => consts::H256_256,
    53|      0|            _ => return Err(InvalidOutputSize),
    54|       |        };
-   55|  1.03k|        let block_len = 0;
-   56|  1.03k|        Ok(Self { state, block_len })
-   57|  1.03k|    }
+   55|    950|        let block_len = 0;
+   56|    950|        Ok(Self { state, block_len })
+   57|    950|    }
 
 _RNvNtCsTIDoG4KXfJ_4sha26sha25611compress256:
-   37|  1.18k|pub fn compress256(state: &mut [u32; 8], blocks: &[GenericArray<u8, U64>]) {
+   37|  1.09k|pub fn compress256(state: &mut [u32; 8], blocks: &[GenericArray<u8, U64>]) {
    38|       |    // SAFETY: GenericArray<u8, U64> and [u8; 64] have
    39|       |    // exactly the same memory layout
-   40|  1.18k|    let p = blocks.as_ptr() as *const [u8; 64];
-   41|  1.18k|    let blocks = unsafe { core::slice::from_raw_parts(p, blocks.len()) };
-   42|  1.18k|    compress(state, blocks)
-   43|  1.18k|}
+   40|  1.09k|    let p = blocks.as_ptr() as *const [u8; 64];
+   41|  1.09k|    let blocks = unsafe { core::slice::from_raw_parts(p, blocks.len()) };
+   42|  1.09k|    compress(state, blocks)
+   43|  1.09k|}
 
 _RNvNtNtCsTIDoG4KXfJ_4sha26sha2563x8613digest_blocks:
-   42|  1.18k|unsafe fn digest_blocks(state: &mut [u32; 8], blocks: &[[u8; 64]]) {
+   42|  1.09k|unsafe fn digest_blocks(state: &mut [u32; 8], blocks: &[[u8; 64]]) {
    43|       |    #[allow(non_snake_case)]
-   44|  1.18k|    let MASK: __m128i = _mm_set_epi64x(
-   45|  1.18k|        0x0C0D_0E0F_0809_0A0Bu64 as i64,
-   46|  1.18k|        0x0405_0607_0001_0203u64 as i64,
+   44|  1.09k|    let MASK: __m128i = _mm_set_epi64x(
+   45|  1.09k|        0x0C0D_0E0F_0809_0A0Bu64 as i64,
+   46|  1.09k|        0x0405_0607_0001_0203u64 as i64,
    47|       |    );
    48|       |
-   49|  1.18k|    let state_ptr = state.as_ptr() as *const __m128i;
-   50|  1.18k|    let dcba = _mm_loadu_si128(state_ptr.add(0));
-   51|  1.18k|    let efgh = _mm_loadu_si128(state_ptr.add(1));
+   49|  1.09k|    let state_ptr = state.as_ptr() as *const __m128i;
+   50|  1.09k|    let dcba = _mm_loadu_si128(state_ptr.add(0));
+   51|  1.09k|    let efgh = _mm_loadu_si128(state_ptr.add(1));
    52|       |
-   53|  1.18k|    let cdab = _mm_shuffle_epi32(dcba, 0xB1);
-   54|  1.18k|    let efgh = _mm_shuffle_epi32(efgh, 0x1B);
-   55|  1.18k|    let mut abef = _mm_alignr_epi8(cdab, efgh, 8);
-   56|  1.18k|    let mut cdgh = _mm_blend_epi16(efgh, cdab, 0xF0);
+   53|  1.09k|    let cdab = _mm_shuffle_epi32(dcba, 0xB1);
+   54|  1.09k|    let efgh = _mm_shuffle_epi32(efgh, 0x1B);
+   55|  1.09k|    let mut abef = _mm_alignr_epi8(cdab, efgh, 8);
+   56|  1.09k|    let mut cdgh = _mm_blend_epi16(efgh, cdab, 0xF0);
    57|       |
-   58|  2.99k|    for block in blocks {
-   59|  1.81k|        let abef_save = abef;
-   60|  1.81k|        let cdgh_save = cdgh;
-   61|  1.81k|
-   62|  1.81k|        let data_ptr = block.as_ptr() as *const __m128i;
-   63|  1.81k|        let mut w0 = _mm_shuffle_epi8(_mm_loadu_si128(data_ptr.add(0)), MASK);
-   64|  1.81k|        let mut w1 = _mm_shuffle_epi8(_mm_loadu_si128(data_ptr.add(1)), MASK);
-   65|  1.81k|        let mut w2 = _mm_shuffle_epi8(_mm_loadu_si128(data_ptr.add(2)), MASK);
-   66|  1.81k|        let mut w3 = _mm_shuffle_epi8(_mm_loadu_si128(data_ptr.add(3)), MASK);
-   67|  1.81k|        let mut w4;
-   68|  1.81k|
-   69|  1.81k|        rounds4!(abef, cdgh, w0, 0);
-   70|  1.81k|        rounds4!(abef, cdgh, w1, 1);
-   71|  1.81k|        rounds4!(abef, cdgh, w2, 2);
-   72|  1.81k|        rounds4!(abef, cdgh, w3, 3);
-   73|  1.81k|        schedule_rounds4!(abef, cdgh, w0, w1, w2, w3, w4, 4);
-   74|  1.81k|        schedule_rounds4!(abef, cdgh, w1, w2, w3, w4, w0, 5);
-   75|  1.81k|        schedule_rounds4!(abef, cdgh, w2, w3, w4, w0, w1, 6);
-   76|  1.81k|        schedule_rounds4!(abef, cdgh, w3, w4, w0, w1, w2, 7);
-   77|  1.81k|        schedule_rounds4!(abef, cdgh, w4, w0, w1, w2, w3, 8);
-   78|  1.81k|        schedule_rounds4!(abef, cdgh, w0, w1, w2, w3, w4, 9);
-   79|  1.81k|        schedule_rounds4!(abef, cdgh, w1, w2, w3, w4, w0, 10);
-   80|  1.81k|        schedule_rounds4!(abef, cdgh, w2, w3, w4, w0, w1, 11);
-   81|  1.81k|        schedule_rounds4!(abef, cdgh, w3, w4, w0, w1, w2, 12);
-   82|  1.81k|        schedule_rounds4!(abef, cdgh, w4, w0, w1, w2, w3, 13);
-   83|  1.81k|        schedule_rounds4!(abef, cdgh, w0, w1, w2, w3, w4, 14);
-   84|  1.81k|        schedule_rounds4!(abef, cdgh, w1, w2, w3, w4, w0, 15);
-   85|  1.81k|
-   86|  1.81k|        abef = _mm_add_epi32(abef, abef_save);
-   87|  1.81k|        cdgh = _mm_add_epi32(cdgh, cdgh_save);
-   88|  1.81k|    }
+   58|  2.81k|    for block in blocks {
+   59|  1.72k|        let abef_save = abef;
+   60|  1.72k|        let cdgh_save = cdgh;
+   61|  1.72k|
+   62|  1.72k|        let data_ptr = block.as_ptr() as *const __m128i;
+   63|  1.72k|        let mut w0 = _mm_shuffle_epi8(_mm_loadu_si128(data_ptr.add(0)), MASK);
+   64|  1.72k|        let mut w1 = _mm_shuffle_epi8(_mm_loadu_si128(data_ptr.add(1)), MASK);
+   65|  1.72k|        let mut w2 = _mm_shuffle_epi8(_mm_loadu_si128(data_ptr.add(2)), MASK);
+   66|  1.72k|        let mut w3 = _mm_shuffle_epi8(_mm_loadu_si128(data_ptr.add(3)), MASK);
+   67|  1.72k|        let mut w4;
+   68|  1.72k|
+   69|  1.72k|        rounds4!(abef, cdgh, w0, 0);
+   70|  1.72k|        rounds4!(abef, cdgh, w1, 1);
+   71|  1.72k|        rounds4!(abef, cdgh, w2, 2);
+   72|  1.72k|        rounds4!(abef, cdgh, w3, 3);
+   73|  1.72k|        schedule_rounds4!(abef, cdgh, w0, w1, w2, w3, w4, 4);
+   74|  1.72k|        schedule_rounds4!(abef, cdgh, w1, w2, w3, w4, w0, 5);
+   75|  1.72k|        schedule_rounds4!(abef, cdgh, w2, w3, w4, w0, w1, 6);
+   76|  1.72k|        schedule_rounds4!(abef, cdgh, w3, w4, w0, w1, w2, 7);
+   77|  1.72k|        schedule_rounds4!(abef, cdgh, w4, w0, w1, w2, w3, 8);
+   78|  1.72k|        schedule_rounds4!(abef, cdgh, w0, w1, w2, w3, w4, 9);
+   79|  1.72k|        schedule_rounds4!(abef, cdgh, w1, w2, w3, w4, w0, 10);
+   80|  1.72k|        schedule_rounds4!(abef, cdgh, w2, w3, w4, w0, w1, 11);
+   81|  1.72k|        schedule_rounds4!(abef, cdgh, w3, w4, w0, w1, w2, 12);
+   82|  1.72k|        schedule_rounds4!(abef, cdgh, w4, w0, w1, w2, w3, 13);
+   83|  1.72k|        schedule_rounds4!(abef, cdgh, w0, w1, w2, w3, w4, 14);
+   84|  1.72k|        schedule_rounds4!(abef, cdgh, w1, w2, w3, w4, w0, 15);
+   85|  1.72k|
+   86|  1.72k|        abef = _mm_add_epi32(abef, abef_save);
+   87|  1.72k|        cdgh = _mm_add_epi32(cdgh, cdgh_save);
+   88|  1.72k|    }
    89|       |
-   90|  1.18k|    let feba = _mm_shuffle_epi32(abef, 0x1B);
-   91|  1.18k|    let dchg = _mm_shuffle_epi32(cdgh, 0xB1);
-   92|  1.18k|    let dcba = _mm_blend_epi16(feba, dchg, 0xF0);
-   93|  1.18k|    let hgef = _mm_alignr_epi8(dchg, feba, 8);
+   90|  1.09k|    let feba = _mm_shuffle_epi32(abef, 0x1B);
+   91|  1.09k|    let dchg = _mm_shuffle_epi32(cdgh, 0xB1);
+   92|  1.09k|    let dcba = _mm_blend_epi16(feba, dchg, 0xF0);
+   93|  1.09k|    let hgef = _mm_alignr_epi8(dchg, feba, 8);
    94|       |
-   95|  1.18k|    let state_ptr_mut = state.as_mut_ptr() as *mut __m128i;
-   96|  1.18k|    _mm_storeu_si128(state_ptr_mut.add(0), dcba);
-   97|  1.18k|    _mm_storeu_si128(state_ptr_mut.add(1), hgef);
-   98|  1.18k|}
+   95|  1.09k|    let state_ptr_mut = state.as_mut_ptr() as *mut __m128i;
+   96|  1.09k|    _mm_storeu_si128(state_ptr_mut.add(0), dcba);
+   97|  1.09k|    _mm_storeu_si128(state_ptr_mut.add(1), hgef);
+   98|  1.09k|}
 _RNvNtNtCsTIDoG4KXfJ_4sha26sha2563x868compress:
-  102|  1.18k|pub fn compress(state: &mut [u32; 8], blocks: &[[u8; 64]]) {
+  102|  1.09k|pub fn compress(state: &mut [u32; 8], blocks: &[[u8; 64]]) {
   103|       |    // TODO: Replace with https://github.com/rust-lang/rfcs/pull/2725
   104|       |    // after stabilization
-  105|  1.18k|    if shani_cpuid::get() {
-  106|  1.18k|        unsafe {
-  107|  1.18k|            digest_blocks(state, blocks);
-  108|  1.18k|        }
+  105|  1.09k|    if shani_cpuid::get() {
+  106|  1.09k|        unsafe {
+  107|  1.09k|            digest_blocks(state, blocks);
+  108|  1.09k|        }
   109|      0|    } else {
   110|      0|        super::soft::compress(state, blocks);
   111|      0|    }
-  112|  1.18k|}
+  112|  1.09k|}
 _RNvNtNtCsTIDoG4KXfJ_4sha26sha2563x868schedule:
-   10|  21.7k|unsafe fn schedule(v0: __m128i, v1: __m128i, v2: __m128i, v3: __m128i) -> __m128i {
-   11|  21.7k|    let t1 = _mm_sha256msg1_epu32(v0, v1);
-   12|  21.7k|    let t2 = _mm_alignr_epi8(v3, v2, 4);
-   13|  21.7k|    let t3 = _mm_add_epi32(t1, t2);
-   14|  21.7k|    _mm_sha256msg2_epu32(t3, v3)
-   15|  21.7k|}
+   10|  20.7k|unsafe fn schedule(v0: __m128i, v1: __m128i, v2: __m128i, v3: __m128i) -> __m128i {
+   11|  20.7k|    let t1 = _mm_sha256msg1_epu32(v0, v1);
+   12|  20.7k|    let t2 = _mm_alignr_epi8(v3, v2, 4);
+   13|  20.7k|    let t3 = _mm_add_epi32(t1, t2);
+   14|  20.7k|    _mm_sha256msg2_epu32(t3, v3)
+   15|  20.7k|}
 
 _RNvMs_NtNtCsjMa4SmpYabJ_4spin4once6statusNtB4_12AtomicStatus16compare_exchange:
   105|      1|        pub fn compare_exchange(
@@ -5889,16 +5889,16 @@ _RNvXs_NtCs5FnQp8us7pk_13zcash_address7convertINtB4_15ConversionErrorINtNtCshDtJ
    36|      1|        ConversionError::User(e)
    37|      1|    }
 _RNvXs4_NtCs5FnQp8us7pk_13zcash_address7convertNtB7_12ZcashAddressNtB5_9ToAddress21from_transparent_p2sh:
-  395|      4|    fn from_transparent_p2sh(net: NetworkType, data: [u8; 20]) -> Self {
+  395|      3|    fn from_transparent_p2sh(net: NetworkType, data: [u8; 20]) -> Self {
   396|       |        ZcashAddress {
-  397|      4|            net: if let NetworkType::Regtest = net {
+  397|      3|            net: if let NetworkType::Regtest = net {
   398|      0|                NetworkType::Test
   399|       |            } else {
-  400|      4|                net
+  400|      3|                net
   401|       |            },
-  402|      4|            kind: AddressKind::P2sh(data),
+  402|      3|            kind: AddressKind::P2sh(data),
   403|       |        }
-  404|      4|    }
+  404|      3|    }
 _RNvXs4_NtCs5FnQp8us7pk_13zcash_address7convertNtB7_12ZcashAddressNtB5_9ToAddress22from_transparent_p2pkh:
   384|      2|    fn from_transparent_p2pkh(net: NetworkType, data: [u8; 20]) -> Self {
   385|       |        ZcashAddress {
@@ -5916,39 +5916,39 @@ _RINvNtCs5FnQp8us7pk_13zcash_address8encoding13encode_bech32NtNtCsaQLrihHycad_6b
   156|      3|    bech32::encode::<Ck>(Hrp::parse_unchecked(hrp), data).expect("encoding is short enough")
   157|      3|}
 _RNCNvXs1_NtCs5FnQp8us7pk_13zcash_address8encodingNtB9_12ZcashAddressNtNtNtCs6SNw0SRvItZ_4core3str6traits7FromStr8from_strs3_0B9_:
-  146|     40|                .map(|kind| ZcashAddress { kind, net });
+  146|     36|                .map(|kind| ZcashAddress { kind, net });
 _RNCNvXs1_NtCs5FnQp8us7pk_13zcash_address8encodingNtB9_12ZcashAddressNtNtNtCs6SNw0SRvItZ_4core3str6traits7FromStr8from_strs_0B9_:
    94|     12|                .map(|kind| ZcashAddress { net, kind });
 _RNvNtCs5FnQp8us7pk_13zcash_address8encoding10encode_b58:
-  159|     10|fn encode_b58(prefix: [u8; 2], data: &[u8]) -> String {
-  160|     10|    let mut bytes = Vec::with_capacity(2 + data.len());
-  161|     10|    bytes.extend_from_slice(&prefix);
-  162|     10|    bytes.extend_from_slice(data);
-  163|     10|    bs58::encode(bytes).with_check().into_string()
-  164|     10|}
+  159|      9|fn encode_b58(prefix: [u8; 2], data: &[u8]) -> String {
+  160|      9|    let mut bytes = Vec::with_capacity(2 + data.len());
+  161|      9|    bytes.extend_from_slice(&prefix);
+  162|      9|    bytes.extend_from_slice(data);
+  163|      9|    bs58::encode(bytes).with_check().into_string()
+  164|      9|}
 _RNvXs1_NtCs5FnQp8us7pk_13zcash_address8encodingNtB7_12ZcashAddressNtNtNtCs6SNw0SRvItZ_4core3str6traits7FromStr8from_str:
-   55|  1.01k|    fn from_str(s: &str) -> Result<Self, Self::Err> {
+   55|  1.08k|    fn from_str(s: &str) -> Result<Self, Self::Err> {
    56|       |        // Remove leading and trailing whitespace, to handle copy-paste errors.
-   57|  1.01k|        let s = s.trim();
+   57|  1.08k|        let s = s.trim();
    58|       |
    59|       |        // Try decoding as a unified address
-   60|  1.01k|        match unified::Address::decode(s) {
+   60|  1.08k|        match unified::Address::decode(s) {
    61|     32|            Ok((net, data)) => {
    62|     32|                return Ok(ZcashAddress {
    63|     32|                    net,
    64|     32|                    kind: AddressKind::Unified(data),
    65|     32|                });
    66|       |            }
-   67|    979|            Err(unified::ParseError::NotUnified | unified::ParseError::UnknownPrefix(_)) => {
-   68|    979|                // allow decoding to fall through to Sapling/TEX/Transparent
-   69|    979|            }
+   67|  1.05k|            Err(unified::ParseError::NotUnified | unified::ParseError::UnknownPrefix(_)) => {
+   68|  1.05k|                // allow decoding to fall through to Sapling/TEX/Transparent
+   69|  1.05k|            }
    70|      0|            Err(e) => {
    71|      0|                return Err(ParseError::from(e));
    72|       |            }
    73|       |        }
    74|       |
    75|       |        // Try decoding as a Sapling address (Bech32)
-   76|    979|        if let Ok(parsed) = CheckedHrpstring::new::<Bech32>(s) {
+   76|  1.05k|        if let Ok(parsed) = CheckedHrpstring::new::<Bech32>(s) {
    77|       |            // If we reached this point, the encoding is found to be valid Bech32.
    78|     12|            let net = match parsed.hrp().as_str() {
    79|     12|                mainnet::HRP_SAPLING_PAYMENT_ADDRESS => NetworkType::Main,
@@ -5967,10 +5967,10 @@ _RNvXs1_NtCs5FnQp8us7pk_13zcash_address8encodingNtB7_12ZcashAddressNtNtNtCs6SNw0
    92|     12|                .map(AddressKind::Sapling)
    93|     12|                .map_err(|_| ParseError::InvalidEncoding)
    94|     12|                .map(|kind| ZcashAddress { net, kind });
-   95|    967|        }
+   95|  1.04k|        }
    96|       |
    97|       |        // Try decoding as a TEX address (Bech32m)
-   98|    967|        if let Ok(parsed) = CheckedHrpstring::new::<Bech32m>(s) {
+   98|  1.04k|        if let Ok(parsed) = CheckedHrpstring::new::<Bech32m>(s) {
    99|       |            // If we reached this point, the encoding is found to be valid Bech32m.
   100|      0|            let net = match parsed.hrp().as_str() {
   101|      0|                mainnet::HRP_TEX_ADDRESS => NetworkType::Main,
@@ -5989,23 +5989,23 @@ _RNvXs1_NtCs5FnQp8us7pk_13zcash_address8encodingNtB7_12ZcashAddressNtNtNtCs6SNw0
   114|      0|                .map(AddressKind::Tex)
   115|      0|                .map_err(|_| ParseError::InvalidEncoding)
   116|      0|                .map(|kind| ZcashAddress { net, kind });
-  117|    967|        }
+  117|  1.04k|        }
   118|       |
   119|       |        // The rest use Base58Check.
-  120|    967|        if let Ok(decoded) = bs58::decode(s).with_check(None).into_vec() {
-  121|     40|            if decoded.len() >= 2 {
-  122|     40|                let (prefix, net) = match decoded[..2].try_into().unwrap() {
+  120|  1.04k|        if let Ok(decoded) = bs58::decode(s).with_check(None).into_vec() {
+  121|     36|            if decoded.len() >= 2 {
+  122|     36|                let (prefix, net) = match decoded[..2].try_into().unwrap() {
   123|     24|                    prefix @ (mainnet::B58_PUBKEY_ADDRESS_PREFIX
   124|       |                    | mainnet::B58_SCRIPT_ADDRESS_PREFIX
   125|     24|                    | mainnet::B58_SPROUT_ADDRESS_PREFIX) => (prefix, NetworkType::Main),
-  126|     16|                    prefix @ (testnet::B58_PUBKEY_ADDRESS_PREFIX
+  126|     12|                    prefix @ (testnet::B58_PUBKEY_ADDRESS_PREFIX
   127|       |                    | testnet::B58_SCRIPT_ADDRESS_PREFIX
-  128|     16|                    | testnet::B58_SPROUT_ADDRESS_PREFIX) => (prefix, NetworkType::Test),
+  128|     12|                    | testnet::B58_SPROUT_ADDRESS_PREFIX) => (prefix, NetworkType::Test),
   129|       |                    // We will not define new Base58Check address encodings.
   130|      0|                    _ => return Err(ParseError::NotZcash),
   131|       |                };
   132|       |
-  133|     40|                return match prefix {
+  133|     36|                return match prefix {
   134|       |                    mainnet::B58_SPROUT_ADDRESS_PREFIX | testnet::B58_SPROUT_ADDRESS_PREFIX => {
   135|      0|                        decoded[2..].try_into().map(AddressKind::Sprout)
   136|       |                    }
@@ -6013,32 +6013,32 @@ _RNvXs1_NtCs5FnQp8us7pk_13zcash_address8encodingNtB7_12ZcashAddressNtNtNtCs6SNw0
   138|      8|                        decoded[2..].try_into().map(AddressKind::P2pkh)
   139|       |                    }
   140|       |                    mainnet::B58_SCRIPT_ADDRESS_PREFIX | testnet::B58_SCRIPT_ADDRESS_PREFIX => {
-  141|     32|                        decoded[2..].try_into().map(AddressKind::P2sh)
+  141|     28|                        decoded[2..].try_into().map(AddressKind::P2sh)
   142|       |                    }
   143|      0|                    _ => unreachable!(),
   144|       |                }
-  145|     40|                .map_err(|_| ParseError::InvalidEncoding)
-  146|     40|                .map(|kind| ZcashAddress { kind, net });
+  145|     36|                .map_err(|_| ParseError::InvalidEncoding)
+  146|     36|                .map(|kind| ZcashAddress { kind, net });
   147|      0|            }
-  148|    927|        };
+  148|  1.00k|        };
   149|       |
   150|       |        // If it's not valid Bech32, Bech32m, or Base58Check, it's not a Zcash address.
-  151|    927|        Err(ParseError::NotZcash)
-  152|  1.01k|    }
+  151|  1.00k|        Err(ParseError::NotZcash)
+  152|  1.08k|    }
 _RNvXs2_NtCs5FnQp8us7pk_13zcash_address8encodingNtB7_12ZcashAddressNtNtCs6SNw0SRvItZ_4core3fmt7Display3fmt:
-  167|     21|    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-  168|     21|        let encoded = match &self.kind {
+  167|     20|    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+  168|     20|        let encoded = match &self.kind {
   169|      0|            AddressKind::Sprout(data) => encode_b58(self.net.b58_sprout_address_prefix(), data),
   170|      3|            AddressKind::Sapling(data) => {
   171|      3|                encode_bech32::<Bech32>(self.net.hrp_sapling_payment_address(), data)
   172|       |            }
   173|      8|            AddressKind::Unified(addr) => addr.encode(&self.net),
   174|      2|            AddressKind::P2pkh(data) => encode_b58(self.net.b58_pubkey_address_prefix(), data),
-  175|      8|            AddressKind::P2sh(data) => encode_b58(self.net.b58_script_address_prefix(), data),
+  175|      7|            AddressKind::P2sh(data) => encode_b58(self.net.b58_script_address_prefix(), data),
   176|      0|            AddressKind::Tex(data) => encode_bech32::<Bech32m>(self.net.hrp_tex_address(), data),
   177|       |        };
-  178|     21|        write!(f, "{}", encoded)
-  179|     21|    }
+  178|     20|        write!(f, "{}", encoded)
+  179|     20|    }
 
 _RNvYNtNtNtNtCs5FnQp8us7pk_13zcash_address4kind7unified7address7AddressNtB6_9Container5itemsCsc4HhLwrPL7g_11zebra_chain:
   440|      8|    fn items(&self) -> Vec<Self::Item> {
@@ -6187,8 +6187,8 @@ _RINvYNtNtNtNtCs5FnQp8us7pk_13zcash_address4kind7unified7address8ReceiverNtNtB7_
 _RNCINvNvNtNtNtNtCs5FnQp8us7pk_13zcash_address4kind7unified7private15SealedContainer11parse_items13read_receiverNtNtBa_7address8ReceiverE0Be_:
   266|     72|                    .map(|v| u32::try_from(v).expect("CompactSize::read enforces MAX_SIZE limit"))
 _RNvYNtNtNtNtCs5FnQp8us7pk_13zcash_address4kind7unified7address7AddressNtB6_8Encoding6decodeBa_:
-  407|  1.01k|    fn decode(s: &str) -> Result<(NetworkType, Self), ParseError> {
-  408|  1.01k|        if let Ok(parsed) = CheckedHrpstring::new::<Bech32mZip316>(s) {
+  407|  1.08k|    fn decode(s: &str) -> Result<(NetworkType, Self), ParseError> {
+  408|  1.08k|        if let Ok(parsed) = CheckedHrpstring::new::<Bech32mZip316>(s) {
   409|     32|            let hrp = parsed.hrp();
   410|     32|            let hrp = hrp.as_str();
   411|       |            // validate that the HRP corresponds to a known network.
@@ -6199,9 +6199,9 @@ _RNvYNtNtNtNtCs5FnQp8us7pk_13zcash_address4kind7unified7address7AddressNtB6_8Enc
   416|       |
   417|     32|            Self::parse_internal(hrp, data).map(|value| (net, value))
   418|       |        } else {
-  419|    979|            Err(ParseError::NotUnified)
+  419|  1.05k|            Err(ParseError::NotUnified)
   420|       |        }
-  421|  1.01k|    }
+  421|  1.08k|    }
 _RNvYNtNtNtNtCs5FnQp8us7pk_13zcash_address4kind7unified7address7AddressNtB6_8Encoding6encodeBa_:
   427|      8|    fn encode(&self, network: &NetworkType) -> String {
   428|      8|        let hrp = Self::network_hrp(network);
@@ -6379,24 +6379,24 @@ _RNvXs_NtNtNtCs5FnQp8us7pk_13zcash_address4kind7unified7addressNtB4_8ReceiverNtN
    50|    116|    }
 
 _RINvMCs5FnQp8us7pk_13zcash_addressNtB3_12ZcashAddress7convertNtNtNtCsc4HhLwrPL7g_11zebra_chain10primitives7address7AddressECskjmnGakOn2j_12address_fuzz:
-  230|     21|    pub fn convert<T: TryFromAddress>(self) -> Result<T, ConversionError<T::Error>> {
-  231|     21|        match self.kind {
+  230|     20|    pub fn convert<T: TryFromAddress>(self) -> Result<T, ConversionError<T::Error>> {
+  231|     20|        match self.kind {
   232|      0|            AddressKind::Sprout(data) => T::try_from_sprout(self.net, data),
   233|      3|            AddressKind::Sapling(data) => T::try_from_sapling(self.net, data),
   234|      8|            AddressKind::Unified(data) => T::try_from_unified(self.net, data),
   235|      2|            AddressKind::P2pkh(data) => T::try_from_transparent_p2pkh(self.net, data),
-  236|      8|            AddressKind::P2sh(data) => T::try_from_transparent_p2sh(self.net, data),
+  236|      7|            AddressKind::P2sh(data) => T::try_from_transparent_p2sh(self.net, data),
   237|      0|            AddressKind::Tex(data) => T::try_from_tex(self.net, data),
   238|       |        }
-  239|     21|    }
+  239|     20|    }
 _RNvMCs5FnQp8us7pk_13zcash_addressNtB2_12ZcashAddress16try_from_encoded:
-  213|  1.01k|    pub fn try_from_encoded(s: &str) -> Result<Self, ParseError> {
-  214|  1.01k|        s.parse()
-  215|  1.01k|    }
+  213|  1.08k|    pub fn try_from_encoded(s: &str) -> Result<Self, ParseError> {
+  214|  1.08k|        s.parse()
+  215|  1.08k|    }
 _RNvMCs5FnQp8us7pk_13zcash_addressNtB2_12ZcashAddress6encode:
-  185|     21|    pub fn encode(&self) -> String {
-  186|     21|        format!("{}", self)
-  187|     21|    }
+  185|     20|    pub fn encode(&self) -> String {
+  186|     20|        format!("{}", self)
+  187|     20|    }
 
 _RINvMCs3Vu7iKItRDd_14zcash_encodingNtB3_11CompactSize4readQQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorRShEECs5FnQp8us7pk_13zcash_address:
    33|    144|    pub fn read<R: Read>(mut reader: R) -> io::Result<u64> {
@@ -6474,13 +6474,13 @@ _RNvXsk_NtCsbZOVTQwBCv_14zcash_protocol9consensusNtB5_11NetworkTypeNtB5_16Networ
   340|       |        }
   341|      2|    }
 _RNvXsk_NtCsbZOVTQwBCv_14zcash_protocol9consensusNtB5_11NetworkTypeNtB5_16NetworkConstants25b58_script_address_prefix:
-  351|      8|    fn b58_script_address_prefix(&self) -> [u8; 2] {
-  352|      8|        match self {
+  351|      7|    fn b58_script_address_prefix(&self) -> [u8; 2] {
+  352|      7|        match self {
   353|      5|            NetworkType::Main => mainnet::B58_SCRIPT_ADDRESS_PREFIX,
-  354|      3|            NetworkType::Test => testnet::B58_SCRIPT_ADDRESS_PREFIX,
+  354|      2|            NetworkType::Test => testnet::B58_SCRIPT_ADDRESS_PREFIX,
   355|      0|            NetworkType::Regtest => regtest::B58_SCRIPT_ADDRESS_PREFIX,
   356|       |        }
-  357|      8|    }
+  357|      7|    }
 _RNvXsk_NtCsbZOVTQwBCv_14zcash_protocol9consensusNtB5_11NetworkTypeNtB5_16NetworkConstants27hrp_sapling_payment_address:
   319|      3|    fn hrp_sapling_payment_address(&self) -> &'static str {
   320|      3|        match self {
@@ -6491,31 +6491,31 @@ _RNvXsk_NtCsbZOVTQwBCv_14zcash_protocol9consensusNtB5_11NetworkTypeNtB5_16Networ
   325|      3|    }
 
 _RNCNvNvCskjmnGakOn2j_12address_fuzz1__19___libfuzzer_sys_run0B5_:
-   59|    330|    let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
-   60|    330|        let _ = TransparentAddress::from_str(s);
-   61|    330|    }));
+   59|    356|    let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+   60|    356|        let _ = TransparentAddress::from_str(s);
+   61|    356|    }));
 _RNCNvNvCskjmnGakOn2j_12address_fuzz1__19___libfuzzer_sys_runs0_0B5_:
-  100|    330|    let convert_outcome = panic::catch_unwind(panic::AssertUnwindSafe(|| {
-  101|    330|        match ZcashAddress::try_from_encoded(s) {
-  102|     21|            Ok(addr) => Some(addr.convert::<ZebraAddress>().is_ok()),
-  103|    309|            Err(_) => None,
+  100|    356|    let convert_outcome = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  101|    356|        match ZcashAddress::try_from_encoded(s) {
+  102|     20|            Ok(addr) => Some(addr.convert::<ZebraAddress>().is_ok()),
+  103|    336|            Err(_) => None,
   104|       |        }
-  105|    330|    }));
+  105|    356|    }));
 _RNCNvNvCskjmnGakOn2j_12address_fuzz1__19___libfuzzer_sys_runs1_0B5_:
-  132|    330|    let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
-  133|    330|        if let Ok(t) = TransparentAddress::from_str(s) {
-  134|      6|            let canon = format!("{}", t);
-  135|      6|            if let Ok(t2) = TransparentAddress::from_str(&canon) {
+  132|    356|    let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  133|    356|        if let Ok(t) = TransparentAddress::from_str(s) {
+  134|      5|            let canon = format!("{}", t);
+  135|      5|            if let Ok(t2) = TransparentAddress::from_str(&canon) {
   136|       |                // Filter known prefix-ambiguity finding: same hash bytes
   137|       |                // legitimately decode under multiple version-byte
   138|       |                // contexts; we record it once and skip asserting for
   139|       |                // long-campaign exploration efficiency.
-  140|      6|                if t != t2 {
+  140|      5|                if t != t2 {
   141|      0|                    eprintln!(
   142|      0|                        "FINDING-CANDIDATE: TransparentAddress round-trip diverges (input_len={})",
   143|      0|                        s.len()
   144|      0|                    );
-  145|      6|                }
+  145|      5|                }
   146|      0|            }
   147|       |
   148|       |            // Once a string parses to a transparent address, drive the
@@ -6531,37 +6531,37 @@ _RNCNvNvCskjmnGakOn2j_12address_fuzz1__19___libfuzzer_sys_runs1_0B5_:
   158|       |            //     serialize/deserialize asymmetry is a finding, not silent.
   159|       |            // All are infallible on a valid address; a panic here is a
   160|       |            // reachable-from-input crash.
-  161|      6|            let _ = t.script();
-  162|      6|            let _ = t.hash_bytes();
-  163|      6|            let _ = t.is_script_hash();
-  164|      6|            let _ = t.network_kind();
-  165|      6|            let _ = ZcashAddress::from(t);
-  166|      6|            if let Ok(bytes) = t.zcash_serialize_to_vec() {
-  167|      6|                if let Ok(t_rt) = TransparentAddress::zcash_deserialize(&bytes[..]) {
-  168|      6|                    assert_eq!(
+  161|      5|            let _ = t.script();
+  162|      5|            let _ = t.hash_bytes();
+  163|      5|            let _ = t.is_script_hash();
+  164|      5|            let _ = t.network_kind();
+  165|      5|            let _ = ZcashAddress::from(t);
+  166|      5|            if let Ok(bytes) = t.zcash_serialize_to_vec() {
+  167|      5|                if let Ok(t_rt) = TransparentAddress::zcash_deserialize(&bytes[..]) {
+  168|      5|                    assert_eq!(
   169|       |                        t, t_rt,
   170|      0|                        "transparent Address serialize→deserialize asymmetry",
   171|       |                    );
   172|      0|                }
   173|      0|            }
-  174|    324|        }
-  175|    330|    }));
+  174|    351|        }
+  175|    356|    }));
 _RNCNvNvCskjmnGakOn2j_12address_fuzz1__19___libfuzzer_sys_runs2_0B5_:
-  184|    330|    let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
-  185|    330|        if let Ok(za) = ZcashAddress::try_from_encoded(s) {
-  186|     21|            let canon = za.encode();
-  187|     21|            if let Ok(za2) = ZcashAddress::try_from_encoded(&canon) {
-  188|     21|                assert_eq!(
+  184|    356|    let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  185|    356|        if let Ok(za) = ZcashAddress::try_from_encoded(s) {
+  186|     20|            let canon = za.encode();
+  187|     20|            if let Ok(za2) = ZcashAddress::try_from_encoded(&canon) {
+  188|     20|                assert_eq!(
   189|       |                    za, za2,
   190|      0|                    "Parser-5 round-trip: encode→try_from_encoded != orig"
   191|       |                );
   192|      0|            }
-  193|    309|        }
-  194|    330|    }));
+  193|    336|        }
+  194|    356|    }));
 _RNCNvNvCskjmnGakOn2j_12address_fuzz1__19___libfuzzer_sys_runs_0B5_:
-   75|    330|        panic::catch_unwind(panic::AssertUnwindSafe(|| {
-   76|    330|            ZcashAddress::try_from_encoded(s)
-   77|    330|        }));
+   75|    356|        panic::catch_unwind(panic::AssertUnwindSafe(|| {
+   76|    356|            ZcashAddress::try_from_encoded(s)
+   77|    356|        }));
 
 _RNvMs0_NtNtCsc4HhLwrPL7g_11zebra_chain10parameters7networkNtB5_11NetworkKind25b58_pubkey_address_prefix:
    78|      4|    pub fn b58_pubkey_address_prefix(self) -> [u8; 2] {
@@ -6573,31 +6573,31 @@ _RNvMs0_NtNtCsc4HhLwrPL7g_11zebra_chain10parameters7networkNtB5_11NetworkKind25b
    84|       |        }
    85|      4|    }
 _RNvMs0_NtNtCsc4HhLwrPL7g_11zebra_chain10parameters7networkNtB5_11NetworkKind25b58_script_address_prefix:
-   89|      8|    pub fn b58_script_address_prefix(self) -> [u8; 2] {
-   90|      8|        match self {
+   89|      6|    pub fn b58_script_address_prefix(self) -> [u8; 2] {
+   90|      6|        match self {
    91|      2|            Self::Mainnet => zcash_protocol::constants::mainnet::B58_SCRIPT_ADDRESS_PREFIX,
    92|       |            Self::Testnet | Self::Regtest => {
-   93|      6|                zcash_protocol::constants::testnet::B58_SCRIPT_ADDRESS_PREFIX
+   93|      4|                zcash_protocol::constants::testnet::B58_SCRIPT_ADDRESS_PREFIX
    94|       |            }
    95|       |        }
-   96|      8|    }
+   96|      6|    }
 
 _RNvXs0_NtNtCsc4HhLwrPL7g_11zebra_chain10primitives7addressNtNtNtB9_10parameters7network11NetworkKindINtNtCs6SNw0SRvItZ_4core7convert4FromNtNtCsbZOVTQwBCv_14zcash_protocol9consensus11NetworkTypeE4from:
-  185|     21|    fn from(network: NetworkType) -> Self {
-  186|     21|        match network {
+  185|     20|    fn from(network: NetworkType) -> Self {
+  186|     20|        match network {
   187|     16|            NetworkType::Main => NetworkKind::Mainnet,
-  188|      4|            NetworkType::Test => NetworkKind::Testnet,
+  188|      3|            NetworkType::Test => NetworkKind::Testnet,
   189|      1|            NetworkType::Regtest => NetworkKind::Regtest,
   190|       |        }
-  191|     21|    }
+  191|     20|    }
 _RNvXs1_NtNtCsc4HhLwrPL7g_11zebra_chain10primitives7addressNtNtCsbZOVTQwBCv_14zcash_protocol9consensus11NetworkTypeINtNtCs6SNw0SRvItZ_4core7convert4FromNtNtNtB9_10parameters7network11NetworkKindE4from:
-  195|      6|    fn from(network: NetworkKind) -> Self {
-  196|      6|        match network {
+  195|      5|    fn from(network: NetworkKind) -> Self {
+  196|      5|        match network {
   197|      2|            NetworkKind::Mainnet => NetworkType::Main,
-  198|      4|            NetworkKind::Testnet => NetworkType::Test,
+  198|      3|            NetworkKind::Testnet => NetworkType::Test,
   199|      0|            NetworkKind::Regtest => NetworkType::Regtest,
   200|       |        }
-  201|      6|    }
+  201|      5|    }
 _RNvXNtNtCsc4HhLwrPL7g_11zebra_chain10primitives7addressNtB2_7AddressNtNtCs5FnQp8us7pk_13zcash_address7convert14TryFromAddress16try_from_sapling:
    67|      3|    fn try_from_sapling(
    68|      3|        network: NetworkType,
@@ -6665,15 +6665,15 @@ _RNvXNtNtCsc4HhLwrPL7g_11zebra_chain10primitives7addressNtB2_7AddressNtNtCs5FnQp
   130|      7|        })
   131|      8|    }
 _RNvXNtNtCsc4HhLwrPL7g_11zebra_chain10primitives7addressNtB2_7AddressNtNtCs5FnQp8us7pk_13zcash_address7convert14TryFromAddress25try_from_transparent_p2sh:
-   57|      8|    fn try_from_transparent_p2sh(
-   58|      8|        network: NetworkType,
-   59|      8|        data: [u8; 20],
-   60|      8|    ) -> Result<Self, zcash_address::ConversionError<Self::Error>> {
-   61|      8|        Ok(Self::Transparent(transparent::Address::from_script_hash(
-   62|      8|            network.into(),
-   63|      8|            data,
-   64|      8|        )))
-   65|      8|    }
+   57|      7|    fn try_from_transparent_p2sh(
+   58|      7|        network: NetworkType,
+   59|      7|        data: [u8; 20],
+   60|      7|    ) -> Result<Self, zcash_address::ConversionError<Self::Error>> {
+   61|      7|        Ok(Self::Transparent(transparent::Address::from_script_hash(
+   62|      7|            network.into(),
+   63|      7|            data,
+   64|      7|        )))
+   65|      7|    }
 _RNvXNtNtCsc4HhLwrPL7g_11zebra_chain10primitives7addressNtB2_7AddressNtNtCs5FnQp8us7pk_13zcash_address7convert14TryFromAddress26try_from_transparent_p2pkh:
    47|      2|    fn try_from_transparent_p2pkh(
    48|      2|        network: NetworkType,
@@ -6688,21 +6688,21 @@ _RNCNvXNtNtCsc4HhLwrPL7g_11zebra_chain10primitives7addressNtB4_7AddressNtNtCs5Fn
    73|      3|            .map(|address| Self::Sapling { address, network })
 
 _RNvYNtNtNtCsc4HhLwrPL7g_11zebra_chain11transparent7address7AddressNtNtNtB8_13serialization15zcash_serialize14ZcashSerialize22zcash_serialize_to_vecCskjmnGakOn2j_12address_fuzz:
-   39|      6|    fn zcash_serialize_to_vec(&self) -> Result<Vec<u8>, io::Error> {
-   40|      6|        let mut data = Vec::new();
-   41|      6|        self.zcash_serialize(&mut data)?;
-   42|      6|        Ok(data)
-   43|      6|    }
+   39|      5|    fn zcash_serialize_to_vec(&self) -> Result<Vec<u8>, io::Error> {
+   40|      5|        let mut data = Vec::new();
+   41|      5|        self.zcash_serialize(&mut data)?;
+   42|      5|        Ok(data)
+   43|      5|    }
 
 _RINvXs3_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB6_7AddressNtNtNtBa_13serialization15zcash_serialize14ZcashSerialize15zcash_serializeQINtNtCshDtJu3Ru83O_5alloc3vec3VechEECskjmnGakOn2j_12address_fuzz:
-  176|      6|    fn zcash_serialize<W: io::Write>(&self, mut writer: W) -> Result<(), io::Error> {
-  177|      6|        match self {
+  176|      5|    fn zcash_serialize<W: io::Write>(&self, mut writer: W) -> Result<(), io::Error> {
+  177|      5|        match self {
   178|       |            Address::PayToScriptHash {
-  179|      4|                network_kind,
-  180|      4|                script_hash,
+  179|      3|                network_kind,
+  180|      3|                script_hash,
   181|       |            } => {
-  182|      4|                writer.write_all(&network_kind.b58_script_address_prefix())?;
-  183|      4|                writer.write_all(script_hash)?
+  182|      3|                writer.write_all(&network_kind.b58_script_address_prefix())?;
+  183|      3|                writer.write_all(script_hash)?
   184|       |            }
   185|       |            Address::PayToPublicKeyHash {
   186|      2|                network_kind,
@@ -6720,38 +6720,38 @@ _RINvXs3_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB6_7AddressNtNtNt
   198|       |            }
   199|       |        }
   200|       |
-  201|      6|        Ok(())
-  202|      6|    }
+  201|      5|        Ok(())
+  202|      5|    }
 _RNvMs5_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB5_7Address10hash_bytes:
-  279|     12|    pub fn hash_bytes(&self) -> [u8; 20] {
-  280|     12|        match *self {
-  281|      8|            Address::PayToScriptHash { script_hash, .. } => script_hash,
+  279|     10|    pub fn hash_bytes(&self) -> [u8; 20] {
+  280|     10|        match *self {
+  281|      6|            Address::PayToScriptHash { script_hash, .. } => script_hash,
   282|      4|            Address::PayToPublicKeyHash { pub_key_hash, .. } => pub_key_hash,
   283|       |            Address::Tex {
   284|      0|                validating_key_hash,
   285|       |                ..
   286|      0|            } => validating_key_hash,
   287|       |        }
-  288|     12|    }
+  288|     10|    }
 _RNvMs5_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB5_7Address12network_kind:
-  261|      6|    pub fn network_kind(&self) -> NetworkKind {
-  262|      6|        match self {
-  263|      4|            Address::PayToScriptHash { network_kind, .. } => *network_kind,
+  261|      5|    pub fn network_kind(&self) -> NetworkKind {
+  262|      5|        match self {
+  263|      3|            Address::PayToScriptHash { network_kind, .. } => *network_kind,
   264|      2|            Address::PayToPublicKeyHash { network_kind, .. } => *network_kind,
   265|      0|            Address::Tex { network_kind, .. } => *network_kind,
   266|       |        }
-  267|      6|    }
+  267|      5|    }
 _RNvMs5_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB5_7Address14is_script_hash:
-  270|      6|    pub fn is_script_hash(&self) -> bool {
-  271|      6|        matches!(self, Address::PayToScriptHash { .. })
-  272|      6|    }
+  270|      5|    pub fn is_script_hash(&self) -> bool {
+  271|      5|        matches!(self, Address::PayToScriptHash { .. })
+  272|      5|    }
 _RNvMs5_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB5_7Address16from_script_hash:
-  253|      9|    pub fn from_script_hash(network_kind: NetworkKind, script_hash: [u8; 20]) -> Self {
-  254|      9|        Self::PayToScriptHash {
-  255|      9|            network_kind,
-  256|      9|            script_hash,
-  257|      9|        }
-  258|      9|    }
+  253|      8|    pub fn from_script_hash(network_kind: NetworkKind, script_hash: [u8; 20]) -> Self {
+  254|      8|        Self::PayToScriptHash {
+  255|      8|            network_kind,
+  256|      8|            script_hash,
+  257|      8|        }
+  258|      8|    }
 _RNvMs5_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB5_7Address17from_pub_key_hash:
   245|      7|    pub fn from_pub_key_hash(network_kind: NetworkKind, pub_key_hash: [u8; 20]) -> Self {
   246|      7|        Self::PayToPublicKeyHash {
@@ -6760,17 +6760,17 @@ _RNvMs5_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB5_7Address17from_
   249|      7|        }
   250|      7|    }
 _RNvMs5_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB5_7Address6script:
-  293|      6|    pub fn script(&self) -> Script {
-  294|      6|        let mut script_bytes = Vec::new();
+  293|      5|    pub fn script(&self) -> Script {
+  294|      5|        let mut script_bytes = Vec::new();
   295|       |
-  296|      6|        match self {
+  296|      5|        match self {
   297|       |            // https://developer.bitcoin.org/devguide/transactions.html#pay-to-script-hash-p2sh
-  298|      4|            Address::PayToScriptHash { .. } => {
-  299|      4|                script_bytes.push(OpCode::Hash160 as u8);
-  300|      4|                script_bytes.push(OpCode::Push20Bytes as u8);
-  301|      4|                script_bytes.extend(self.hash_bytes());
-  302|      4|                script_bytes.push(OpCode::Equal as u8);
-  303|      4|            }
+  298|      3|            Address::PayToScriptHash { .. } => {
+  299|      3|                script_bytes.push(OpCode::Hash160 as u8);
+  300|      3|                script_bytes.push(OpCode::Push20Bytes as u8);
+  301|      3|                script_bytes.extend(self.hash_bytes());
+  302|      3|                script_bytes.push(OpCode::Equal as u8);
+  303|      3|            }
   304|       |            // https://developer.bitcoin.org/devguide/transactions.html#pay-to-public-key-hash-p2pkh
   305|      2|            Address::PayToPublicKeyHash { .. } => {
   306|      2|                script_bytes.push(OpCode::Dup as u8);
@@ -6783,25 +6783,25 @@ _RNvMs5_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB5_7Address6script
   313|      0|            Address::Tex { .. } => {}
   314|       |        };
   315|       |
-  316|      6|        Script::new(&script_bytes)
-  317|      6|    }
+  316|      5|        Script::new(&script_bytes)
+  317|      5|    }
 _RNvXs1_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB5_7AddressNtNtCs6SNw0SRvItZ_4core3fmt7Display3fmt:
-  124|      6|    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-  125|      6|        let mut bytes = io::Cursor::new(Vec::new());
-  126|      6|        let _ = self.zcash_serialize(&mut bytes);
+  124|      5|    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+  125|      5|        let mut bytes = io::Cursor::new(Vec::new());
+  126|      5|        let _ = self.zcash_serialize(&mut bytes);
   127|       |
-  128|      6|        f.write_str(&bs58::encode(bytes.get_ref()).with_check().into_string())
-  129|      6|    }
+  128|      5|        f.write_str(&bs58::encode(bytes.get_ref()).with_check().into_string())
+  129|      5|    }
 _RNvXs2_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB5_7AddressNtNtNtCs6SNw0SRvItZ_4core3str6traits7FromStr8from_str:
-  135|    666|    fn from_str(s: &str) -> Result<Self, Self::Err> {
+  135|    717|    fn from_str(s: &str) -> Result<Self, Self::Err> {
   136|       |        // Try Base58Check (prefixes: t1, t3, tm, t2)
-  137|    666|        if let Ok(data) = bs58::decode(s).with_check(None).into_vec() {
-  138|     18|            return Address::zcash_deserialize(&data[..]);
-  139|    648|        }
+  137|    717|        if let Ok(data) = bs58::decode(s).with_check(None).into_vec() {
+  138|     15|            return Address::zcash_deserialize(&data[..]);
+  139|    702|        }
   140|       |
   141|       |        // Try Bech32 (prefixes: tex, textest)
   142|     16|        let (hrp, payload) =
-  143|    648|            bech32::decode(s).map_err(|_| SerializationError::Parse("invalid Bech32 encoding"))?;
+  143|    702|            bech32::decode(s).map_err(|_| SerializationError::Parse("invalid Bech32 encoding"))?;
   144|       |
   145|       |        // We can’t meaningfully call `Address::zcash_deserialize` for Bech32 addresses, because
   146|       |        // that method is explicitly reading two binary prefix bytes (the Base58Check version) + 20 hash bytes.
@@ -6830,14 +6830,14 @@ _RNvXs2_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB5_7AddressNtNtNtC
   169|       |
   170|      0|            _ => Err(SerializationError::Parse("unknown Bech32 HRP")),
   171|       |        }
-  172|    666|    }
+  172|    717|    }
 _RNvXNtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtCs5FnQp8us7pk_13zcash_address12ZcashAddressINtNtCs6SNw0SRvItZ_4core7convert4FromNtB2_7AddressE4from:
-   61|      6|    fn from(taddr: Address) -> Self {
-   62|      6|        match taddr {
+   61|      5|    fn from(taddr: Address) -> Self {
+   62|      5|        match taddr {
    63|       |            Address::PayToScriptHash {
-   64|      4|                network_kind,
-   65|      4|                script_hash,
-   66|      4|            } => ZcashAddress::from_transparent_p2sh(network_kind.into(), script_hash),
+   64|      3|                network_kind,
+   65|      3|                script_hash,
+   66|      3|            } => ZcashAddress::from_transparent_p2sh(network_kind.into(), script_hash),
    67|       |            Address::PayToPublicKeyHash {
    68|      2|                network_kind,
    69|      2|                pub_key_hash,
@@ -6847,16 +6847,16 @@ _RNvXNtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtCs5FnQp8us7pk_13zcash
    73|      0|                validating_key_hash,
    74|      0|            } => ZcashAddress::from_tex(network_kind.into(), validating_key_hash),
    75|       |        }
-   76|      6|    }
+   76|      5|    }
 _RINvXs3_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB6_7AddressNtNtNtBa_13serialization15zcash_serialize14ZcashSerialize15zcash_serializeQINtNtNtCsjS9ICikYiHq_3std2io6cursor6CursorINtNtCshDtJu3Ru83O_5alloc3vec3VechEEEBa_:
-  176|      6|    fn zcash_serialize<W: io::Write>(&self, mut writer: W) -> Result<(), io::Error> {
-  177|      6|        match self {
+  176|      5|    fn zcash_serialize<W: io::Write>(&self, mut writer: W) -> Result<(), io::Error> {
+  177|      5|        match self {
   178|       |            Address::PayToScriptHash {
-  179|      4|                network_kind,
-  180|      4|                script_hash,
+  179|      3|                network_kind,
+  180|      3|                script_hash,
   181|       |            } => {
-  182|      4|                writer.write_all(&network_kind.b58_script_address_prefix())?;
-  183|      4|                writer.write_all(script_hash)?
+  182|      3|                writer.write_all(&network_kind.b58_script_address_prefix())?;
+  183|      3|                writer.write_all(script_hash)?
   184|       |            }
   185|       |            Address::PayToPublicKeyHash {
   186|      2|                network_kind,
@@ -6874,17 +6874,17 @@ _RINvXs3_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB6_7AddressNtNtNt
   198|       |            }
   199|       |        }
   200|       |
-  201|      6|        Ok(())
-  202|      6|    }
+  201|      5|        Ok(())
+  202|      5|    }
 _RINvXs4_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB6_7AddressNtNtNtBa_13serialization17zcash_deserialize16ZcashDeserialize17zcash_deserializeRShEBa_:
-  206|     24|    fn zcash_deserialize<R: io::Read>(mut reader: R) -> Result<Self, SerializationError> {
-  207|     24|        let mut version_bytes = [0; 2];
-  208|     24|        reader.read_exact(&mut version_bytes)?;
+  206|     20|    fn zcash_deserialize<R: io::Read>(mut reader: R) -> Result<Self, SerializationError> {
+  207|     20|        let mut version_bytes = [0; 2];
+  208|     20|        reader.read_exact(&mut version_bytes)?;
   209|       |
-  210|     24|        let mut hash_bytes = [0; 20];
-  211|     24|        reader.read_exact(&mut hash_bytes)?;
+  210|     20|        let mut hash_bytes = [0; 20];
+  211|     20|        reader.read_exact(&mut hash_bytes)?;
   212|       |
-  213|     24|        match version_bytes {
+  213|     20|        match version_bytes {
   214|       |            zcash_protocol::constants::mainnet::B58_SCRIPT_ADDRESS_PREFIX => {
   215|      4|                Ok(Address::PayToScriptHash {
   216|      4|                    network_kind: NetworkKind::Mainnet,
@@ -6892,10 +6892,10 @@ _RINvXs4_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB6_7AddressNtNtNt
   218|      4|                })
   219|       |            }
   220|       |            zcash_protocol::constants::testnet::B58_SCRIPT_ADDRESS_PREFIX => {
-  221|     12|                Ok(Address::PayToScriptHash {
-  222|     12|                    network_kind: NetworkKind::Testnet,
-  223|     12|                    script_hash: hash_bytes,
-  224|     12|                })
+  221|      8|                Ok(Address::PayToScriptHash {
+  222|      8|                    network_kind: NetworkKind::Testnet,
+  223|      8|                    script_hash: hash_bytes,
+  224|      8|                })
   225|       |            }
   226|       |            zcash_protocol::constants::mainnet::B58_PUBKEY_ADDRESS_PREFIX => {
   227|      4|                Ok(Address::PayToPublicKeyHash {
@@ -6911,10 +6911,10 @@ _RINvXs4_NtNtCsc4HhLwrPL7g_11zebra_chain11transparent7addressNtB6_7AddressNtNtNt
   237|       |            }
   238|      0|            _ => Err(SerializationError::Parse("bad t-addr version/type")),
   239|       |        }
-  240|     24|    }
+  240|     20|    }
 
 _RNvMNtNtCsc4HhLwrPL7g_11zebra_chain11transparent6scriptNtB2_6Script3new:
-   29|      6|    pub fn new(raw_bytes: &[u8]) -> Self {
-   30|      6|        Script(raw_bytes.to_vec())
-   31|      6|    }
+   29|      5|    pub fn new(raw_bytes: &[u8]) -> Self {
+   30|      5|        Script(raw_bytes.to_vec())
+   31|      5|    }
 
