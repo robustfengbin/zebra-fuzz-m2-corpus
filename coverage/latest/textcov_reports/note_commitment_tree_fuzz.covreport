@@ -47,11 +47,11 @@ _RNvXs1_NtNtNtCsgmhcQnxvmCV_9arbitrary7foreign4core3numhNtBb_9Arbitrary9arbitrar
    19|   129k|                    Ok(Self::from_le_bytes(buf))
    20|   129k|                }
 _RNvXs3_NtNtNtCsgmhcQnxvmCV_9arbitrary7foreign4core3nummNtBb_9Arbitrary9arbitrary:
-   16|  9.70k|                fn arbitrary(u: &mut Unstructured<'a>) -> Result<Self> {
-   17|  9.70k|                    let mut buf = [0; mem::size_of::<$ty>()];
-   18|  9.70k|                    u.fill_buffer(&mut buf)?;
-   19|  9.70k|                    Ok(Self::from_le_bytes(buf))
-   20|  9.70k|                }
+   16|  9.69k|                fn arbitrary(u: &mut Unstructured<'a>) -> Result<Self> {
+   17|  9.69k|                    let mut buf = [0; mem::size_of::<$ty>()];
+   18|  9.69k|                    u.fill_buffer(&mut buf)?;
+   19|  9.69k|                    Ok(Self::from_le_bytes(buf))
+   20|  9.69k|                }
 
 _RNvYINtNtCshDtJu3Ru83O_5alloc3vec3VecNtCskfyCAsgvzwY_25note_commitment_tree_fuzz6TreeOpENtCsgmhcQnxvmCV_9arbitrary9Arbitrary13try_size_hintBB_:
   423|    313|    fn try_size_hint(depth: usize) -> Result<(usize, Option<usize>), MaxRecursionReached> {
@@ -85,13 +85,13 @@ _RINvNtCsgmhcQnxvmCV_9arbitrary7details20with_recursive_countNtNtB4_12unstructur
   606|    313|        result
   607|    313|    }
 _RINvNtCsgmhcQnxvmCV_9arbitrary7details20with_recursive_countQNtNtB4_12unstructured12UnstructuredNtCskfyCAsgvzwY_25note_commitment_tree_fuzz6TreeOpNCNvXNvB1y_1__B1w_NtB4_9Arbitrary9arbitrary0EB1y_:
-  582|  9.70k|    pub fn with_recursive_count<U: IsEmpty, R>(
-  583|  9.70k|        u: U,
-  584|  9.70k|        recursive_count: &'static std::thread::LocalKey<std::cell::Cell<u32>>,
-  585|  9.70k|        f: impl FnOnce(U) -> Result<R>,
-  586|  9.70k|    ) -> Result<R> {
-  587|  9.70k|        let guard_against_recursion = u.is_empty();
-  588|  9.70k|        if guard_against_recursion {
+  582|  9.69k|    pub fn with_recursive_count<U: IsEmpty, R>(
+  583|  9.69k|        u: U,
+  584|  9.69k|        recursive_count: &'static std::thread::LocalKey<std::cell::Cell<u32>>,
+  585|  9.69k|        f: impl FnOnce(U) -> Result<R>,
+  586|  9.69k|    ) -> Result<R> {
+  587|  9.69k|        let guard_against_recursion = u.is_empty();
+  588|  9.69k|        if guard_against_recursion {
   589|     33|            recursive_count.with(|count| {
   590|       |                if count.get() > 0 {
   591|       |                    return Err(Error::NotEnoughData);
@@ -99,18 +99,18 @@ _RINvNtCsgmhcQnxvmCV_9arbitrary7details20with_recursive_countQNtNtB4_12unstructu
   593|       |                count.set(count.get() + 1);
   594|       |                Ok(())
   595|      0|            })?;
-  596|  9.67k|        }
+  596|  9.66k|        }
   597|       |
-  598|  9.70k|        let result = f(u);
+  598|  9.69k|        let result = f(u);
   599|       |
-  600|  9.70k|        if guard_against_recursion {
+  600|  9.69k|        if guard_against_recursion {
   601|     33|            recursive_count.with(|count| {
   602|       |                count.set(count.get() - 1);
   603|       |            });
-  604|  9.67k|        }
+  604|  9.66k|        }
   605|       |
-  606|  9.70k|        result
-  607|  9.70k|    }
+  606|  9.69k|        result
+  607|  9.69k|    }
 _RNCINvNtCsgmhcQnxvmCV_9arbitrary7details20with_recursive_countQNtNtB6_12unstructured12UnstructuredNtCskfyCAsgvzwY_25note_commitment_tree_fuzz6TreeOpNCNvXNvB1A_1__B1y_NtB6_9Arbitrary9arbitrary0E0B1A_:
   589|     33|            recursive_count.with(|count| {
   590|     33|                if count.get() > 0 {
@@ -128,9 +128,9 @@ _RNvXNtCsgmhcQnxvmCV_9arbitrary7detailsNtNtB4_12unstructured12UnstructuredNtB2_7
   570|    313|            Unstructured::is_empty(self)
   571|    313|        }
 _RNvXs_NtCsgmhcQnxvmCV_9arbitrary7detailsQNtNtB6_12unstructured12UnstructuredNtB4_7IsEmpty8is_empty:
-  575|  9.70k|        fn is_empty(&self) -> bool {
-  576|  9.70k|            Unstructured::is_empty(self)
-  577|  9.70k|        }
+  575|  9.69k|        fn is_empty(&self) -> bool {
+  576|  9.69k|            Unstructured::is_empty(self)
+  577|  9.69k|        }
 
 _RNvNtCsgmhcQnxvmCV_9arbitrary9size_hint3andCskfyCAsgvzwY_25note_commitment_tree_fuzz:
    51|    313|pub fn and(lhs: (usize, Option<usize>), rhs: (usize, Option<usize>)) -> (usize, Option<usize>) {
@@ -169,7 +169,7 @@ _RNvXs0_NtCsgmhcQnxvmCV_9arbitrary12unstructuredINtB5_21ArbitraryTakeRestIterNtC
   794|  10.0k|    fn next(&mut self) -> Option<Result<ElementType>> {
   795|  10.0k|        let keep_going = self.u.arbitrary().unwrap_or(false);
   796|  10.0k|        if keep_going {
-  797|  9.70k|            Some(Arbitrary::arbitrary(&mut self.u))
+  797|  9.69k|            Some(Arbitrary::arbitrary(&mut self.u))
   798|       |        } else {
   799|    313|            None
   800|       |        }
@@ -3506,21 +3506,21 @@ _RINvCs33qMOHxiLVq_13generic_array9transmuteAhj40_INtB2_12GenericArrayhINtNtCs6K
   656|   134k|}
 
 _RNCNCNvMs5_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB9_14CommitmentTreeNtNtCs3eyRT31BNC2_14sapling_crypto4tree4NodeKh20_E13from_frontier00Csc4HhLwrPL7g_11zebra_chain:
-  565|  59.7k|                    .map(|i| {
-  566|  59.7k|                        if u64::from(f.position()) & (1 << i) == 0 {
-  567|  58.2k|                            None
+  565|  59.6k|                    .map(|i| {
+  566|  59.6k|                        if u64::from(f.position()) & (1 << i) == 0 {
+  567|  58.1k|                            None
   568|       |                        } else {
   569|  1.52k|                            ommers_iter.next()
   570|       |                        }
-  571|  59.7k|                    })
+  571|  59.6k|                    })
 _RNCNCNvMs5_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB9_14CommitmentTreeNtNtNtCsc4HhLwrPL7g_11zebra_chain7orchard4tree4NodeKh20_E13from_frontier00B1n_:
-  565|  57.1k|                    .map(|i| {
-  566|  57.1k|                        if u64::from(f.position()) & (1 << i) == 0 {
-  567|  55.6k|                            None
+  565|  57.0k|                    .map(|i| {
+  566|  57.0k|                        if u64::from(f.position()) & (1 << i) == 0 {
+  567|  55.5k|                            None
   568|       |                        } else {
   569|  1.52k|                            ommers_iter.next()
   570|       |                        }
-  571|  57.1k|                    })
+  571|  57.0k|                    })
 _RNCNvMs2_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB7_8FrontierNtNtCs3eyRT31BNC2_14sapling_crypto4tree4NodeKh20_E4root0Csc4HhLwrPL7g_11zebra_chain:
   355|  4.23k|            .map_or(H::empty_root(DEPTH.into()), |frontier| {
   356|  4.23k|                frontier.root(Some(DEPTH.into()))
@@ -3544,7 +3544,7 @@ _RNCNvMs5_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB7_14CommitmentTree
   555|    906|                    Some(f.leaf().clone()),
   556|    906|                )
   557|       |            } else {
-  558|  1.02k|                (f.leaf().clone(), None)
+  558|  1.01k|                (f.leaf().clone(), None)
   559|       |            };
   560|       |
   561|       |            Self {
@@ -3663,9 +3663,9 @@ _RNvMNtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB2_16NonEmptyFrontierNtN
    84|  1.92k|        &self.ommers
    85|  1.92k|    }
 _RNvMNtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB2_16NonEmptyFrontierNtNtCs3eyRT31BNC2_14sapling_crypto4tree4NodeE8positionCsc4HhLwrPL7g_11zebra_chain:
-   72|  74.7k|    pub fn position(&self) -> Position {
-   73|  74.7k|        self.position
-   74|  74.7k|    }
+   72|  74.6k|    pub fn position(&self) -> Position {
+   73|  74.6k|        self.position
+   74|  74.6k|    }
 _RNvMNtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB2_16NonEmptyFrontierNtNtNtCsc4HhLwrPL7g_11zebra_chain6sprout4tree4NodeE3newB1i_:
    44|    268|    pub fn new(leaf: H) -> Self {
    45|    268|        Self {
@@ -3695,17 +3695,17 @@ _RNvMNtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB2_16NonEmptyFrontierNtN
    84|  1.84k|        &self.ommers
    85|  1.84k|    }
 _RNvMNtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB2_16NonEmptyFrontierNtNtNtCsc4HhLwrPL7g_11zebra_chain7orchard4tree4NodeE8positionB1i_:
-   72|  71.4k|    pub fn position(&self) -> Position {
-   73|  71.4k|        self.position
-   74|  71.4k|    }
+   72|  71.3k|    pub fn position(&self) -> Position {
+   73|  71.3k|        self.position
+   74|  71.3k|    }
 _RNvMs1_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB5_8FrontierNtNtCs3eyRT31BNC2_14sapling_crypto4tree4NodeKh20_E5emptyCsc4HhLwrPL7g_11zebra_chain:
   294|    313|    pub fn empty() -> Self {
   295|    313|        Self { frontier: None }
   296|    313|    }
 _RNvMs1_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB5_8FrontierNtNtCs3eyRT31BNC2_14sapling_crypto4tree4NodeKh20_E5valueCsc4HhLwrPL7g_11zebra_chain:
-  307|  15.4k|    pub fn value(&self) -> Option<&NonEmptyFrontier<H>> {
-  308|  15.4k|        self.frontier.as_ref()
-  309|  15.4k|    }
+  307|  15.3k|    pub fn value(&self) -> Option<&NonEmptyFrontier<H>> {
+  308|  15.3k|        self.frontier.as_ref()
+  309|  15.3k|    }
 _RNvMs1_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB5_8FrontierNtNtNtCsc4HhLwrPL7g_11zebra_chain6sprout4tree4NodeKh1d_E5emptyB1c_:
   294|    313|    pub fn empty() -> Self {
   295|    313|        Self { frontier: None }
@@ -3719,9 +3719,9 @@ _RNvMs1_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB5_8FrontierNtNtNtCsc
   295|    313|        Self { frontier: None }
   296|    313|    }
 _RNvMs1_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB5_8FrontierNtNtNtCsc4HhLwrPL7g_11zebra_chain7orchard4tree4NodeKh20_E5valueB1c_:
-  307|  15.4k|    pub fn value(&self) -> Option<&NonEmptyFrontier<H>> {
-  308|  15.4k|        self.frontier.as_ref()
-  309|  15.4k|    }
+  307|  15.3k|    pub fn value(&self) -> Option<&NonEmptyFrontier<H>> {
+  308|  15.3k|        self.frontier.as_ref()
+  309|  15.3k|    }
 _RNvMs2_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB5_8FrontierNtNtCs3eyRT31BNC2_14sapling_crypto4tree4NodeKh20_E4rootCsc4HhLwrPL7g_11zebra_chain:
   352|  4.41k|    pub fn root(&self) -> H {
   353|  4.41k|        self.frontier
@@ -3789,48 +3789,48 @@ _RNvMs2_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB5_8FrontierNtNtNtCsc
   346|       |        }
   347|  3.02k|    }
 _RNvMs4_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB5_14CommitmentTreeNtNtCs3eyRT31BNC2_14sapling_crypto4tree4NodeKh20_E4leftCsc4HhLwrPL7g_11zebra_chain:
-  484|  2.64k|    pub fn left(&self) -> &Option<H> {
-  485|  2.64k|        &self.left
-  486|  2.64k|    }
+  484|  2.63k|    pub fn left(&self) -> &Option<H> {
+  485|  2.63k|        &self.left
+  486|  2.63k|    }
 _RNvMs4_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB5_14CommitmentTreeNtNtCs3eyRT31BNC2_14sapling_crypto4tree4NodeKh20_E5emptyCsc4HhLwrPL7g_11zebra_chain:
-  455|    716|    pub fn empty() -> Self {
-  456|    716|        CommitmentTree {
-  457|    716|            left: None,
-  458|    716|            right: None,
-  459|    716|            parents: vec![],
-  460|    716|        }
-  461|    716|    }
+  455|    714|    pub fn empty() -> Self {
+  456|    714|        CommitmentTree {
+  457|    714|            left: None,
+  458|    714|            right: None,
+  459|    714|            parents: vec![],
+  460|    714|        }
+  461|    714|    }
 _RNvMs4_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB5_14CommitmentTreeNtNtCs3eyRT31BNC2_14sapling_crypto4tree4NodeKh20_E5rightCsc4HhLwrPL7g_11zebra_chain:
-  488|  2.64k|    pub fn right(&self) -> &Option<H> {
-  489|  2.64k|        &self.right
-  490|  2.64k|    }
+  488|  2.63k|    pub fn right(&self) -> &Option<H> {
+  489|  2.63k|        &self.right
+  490|  2.63k|    }
 _RNvMs4_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB5_14CommitmentTreeNtNtCs3eyRT31BNC2_14sapling_crypto4tree4NodeKh20_E7parentsCsc4HhLwrPL7g_11zebra_chain:
-  492|  2.64k|    pub fn parents(&self) -> &Vec<Option<H>> {
-  493|  2.64k|        &self.parents
-  494|  2.64k|    }
+  492|  2.63k|    pub fn parents(&self) -> &Vec<Option<H>> {
+  493|  2.63k|        &self.parents
+  494|  2.63k|    }
 _RNvMs4_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB5_14CommitmentTreeNtNtNtCsc4HhLwrPL7g_11zebra_chain7orchard4tree4NodeKh20_E4leftB1j_:
-  484|  2.64k|    pub fn left(&self) -> &Option<H> {
-  485|  2.64k|        &self.left
-  486|  2.64k|    }
+  484|  2.63k|    pub fn left(&self) -> &Option<H> {
+  485|  2.63k|        &self.left
+  486|  2.63k|    }
 _RNvMs4_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB5_14CommitmentTreeNtNtNtCsc4HhLwrPL7g_11zebra_chain7orchard4tree4NodeKh20_E5emptyB1j_:
-  455|    799|    pub fn empty() -> Self {
-  456|    799|        CommitmentTree {
-  457|    799|            left: None,
-  458|    799|            right: None,
-  459|    799|            parents: vec![],
-  460|    799|        }
-  461|    799|    }
+  455|    797|    pub fn empty() -> Self {
+  456|    797|        CommitmentTree {
+  457|    797|            left: None,
+  458|    797|            right: None,
+  459|    797|            parents: vec![],
+  460|    797|        }
+  461|    797|    }
 _RNvMs4_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB5_14CommitmentTreeNtNtNtCsc4HhLwrPL7g_11zebra_chain7orchard4tree4NodeKh20_E5rightB1j_:
-  488|  2.64k|    pub fn right(&self) -> &Option<H> {
-  489|  2.64k|        &self.right
-  490|  2.64k|    }
+  488|  2.63k|    pub fn right(&self) -> &Option<H> {
+  489|  2.63k|        &self.right
+  490|  2.63k|    }
 _RNvMs4_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB5_14CommitmentTreeNtNtNtCsc4HhLwrPL7g_11zebra_chain7orchard4tree4NodeKh20_E7parentsB1j_:
-  492|  2.64k|    pub fn parents(&self) -> &Vec<Option<H>> {
-  493|  2.64k|        &self.parents
-  494|  2.64k|    }
+  492|  2.63k|    pub fn parents(&self) -> &Vec<Option<H>> {
+  493|  2.63k|        &self.parents
+  494|  2.63k|    }
 _RNvMs5_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB5_14CommitmentTreeNtNtCs3eyRT31BNC2_14sapling_crypto4tree4NodeKh20_E13from_frontierCsc4HhLwrPL7g_11zebra_chain:
-  547|  2.64k|    pub fn from_frontier(frontier: &Frontier<H, DEPTH>) -> Self {
-  548|  2.64k|        frontier.value().map_or_else(Self::empty, |f| {
+  547|  2.63k|    pub fn from_frontier(frontier: &Frontier<H, DEPTH>) -> Self {
+  548|  2.63k|        frontier.value().map_or_else(Self::empty, |f| {
   549|       |            let mut ommers_iter = f.ommers().iter().cloned();
   550|       |            let (left, right) = if f.position().is_right_child() {
   551|       |                (
@@ -3857,10 +3857,10 @@ _RNvMs5_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB5_14CommitmentTreeNt
   572|       |                    .collect(),
   573|       |            }
   574|       |        })
-  575|  2.64k|    }
+  575|  2.63k|    }
 _RNvMs5_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB5_14CommitmentTreeNtNtNtCsc4HhLwrPL7g_11zebra_chain7orchard4tree4NodeKh20_E13from_frontierB1j_:
-  547|  2.64k|    pub fn from_frontier(frontier: &Frontier<H, DEPTH>) -> Self {
-  548|  2.64k|        frontier.value().map_or_else(Self::empty, |f| {
+  547|  2.63k|    pub fn from_frontier(frontier: &Frontier<H, DEPTH>) -> Self {
+  548|  2.63k|        frontier.value().map_or_else(Self::empty, |f| {
   549|       |            let mut ommers_iter = f.ommers().iter().cloned();
   550|       |            let (left, right) = if f.position().is_right_child() {
   551|       |                (
@@ -3887,7 +3887,7 @@ _RNvMs5_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB5_14CommitmentTreeNt
   572|       |                    .collect(),
   573|       |            }
   574|       |        })
-  575|  2.64k|    }
+  575|  2.63k|    }
 _RNvMs_NtCskDnbzSbNF0e_21incrementalmerkletree8frontierINtB4_16NonEmptyFrontierNtNtCs3eyRT31BNC2_14sapling_crypto4tree4NodeE4rootCsc4HhLwrPL7g_11zebra_chain:
   139|  4.23k|    pub fn root(&self, root_level: Option<Level>) -> H {
   140|  4.23k|        let max_level = root_level.unwrap_or_else(|| self.position.root_level());
@@ -4143,40 +4143,40 @@ _RNvMs0_CskDnbzSbNF0e_21incrementalmerkletreeNtB5_8Position16past_ommer_count:
   210|  4.27k|            .unwrap() // this is safe because we're counting within a `u8` range
   211|  4.27k|    }
 _RNvMs0_CskDnbzSbNF0e_21incrementalmerkletreeNtB5_8Position19is_complete_subtree:
-  216|  16.4k|    pub fn is_complete_subtree(&self, root_level: Level) -> bool {
-  217|  16.4k|        !(0..(root_level.0)).any(|l| self.0 & (1 << l) == 0)
-  218|  16.4k|    }
+  216|  16.3k|    pub fn is_complete_subtree(&self, root_level: Level) -> bool {
+  217|  16.3k|        !(0..(root_level.0)).any(|l| self.0 & (1 << l) == 0)
+  218|  16.3k|    }
 _RNvMs8_CskDnbzSbNF0e_21incrementalmerkletreeNtB5_5Level7iter_to:
   300|   396k|    pub fn iter_to(self, other: Level) -> impl Iterator<Item = Self> {
   301|   396k|        (self.0..other.0).map(Level)
   302|   396k|    }
 _RNvMsh_CskDnbzSbNF0e_21incrementalmerkletreeNtB5_7Address12max_position:
-  480|  3.77k|    pub fn max_position(&self) -> Position {
-  481|  3.77k|        self.position_range_end() - 1
-  482|  3.77k|    }
+  480|  3.76k|    pub fn max_position(&self) -> Position {
+  481|  3.76k|        self.position_range_end() - 1
+  482|  3.76k|    }
 _RNvMsh_CskDnbzSbNF0e_21incrementalmerkletreeNtB5_7Address14above_position:
-  376|  9.05k|    pub fn above_position(level: Level, position: Position) -> Self {
-  377|  9.05k|        Address {
-  378|  9.05k|            level,
-  379|  9.05k|            index: position.0 >> level.0,
-  380|  9.05k|        }
-  381|  9.05k|    }
+  376|  9.04k|    pub fn above_position(level: Level, position: Position) -> Self {
+  377|  9.04k|        Address {
+  378|  9.04k|            level,
+  379|  9.04k|            index: position.0 >> level.0,
+  380|  9.04k|        }
+  381|  9.04k|    }
 _RNvMsh_CskDnbzSbNF0e_21incrementalmerkletreeNtB5_7Address14is_right_child:
   532|   415k|    pub fn is_right_child(&self) -> bool {
   533|   415k|        self.index & 0x1 == 1
   534|   415k|    }
 _RNvMsh_CskDnbzSbNF0e_21incrementalmerkletreeNtB5_7Address18position_range_end:
-  474|  5.28k|    pub fn position_range_end(&self) -> Position {
-  475|  5.28k|        ((self.index + 1) << self.level.0).into()
-  476|  5.28k|    }
+  474|  5.27k|    pub fn position_range_end(&self) -> Position {
+  475|  5.27k|        ((self.index + 1) << self.level.0).into()
+  476|  5.27k|    }
 _RNvMsh_CskDnbzSbNF0e_21incrementalmerkletreeNtB5_7Address20position_range_start:
   468|  1.51k|    pub fn position_range_start(&self) -> Position {
   469|  1.51k|        (self.index << self.level.0).into()
   470|  1.51k|    }
 _RNvMsh_CskDnbzSbNF0e_21incrementalmerkletreeNtB5_7Address5index:
-  393|  3.77k|    pub fn index(&self) -> u64 {
-  394|  3.77k|        self.index
-  395|  3.77k|    }
+  393|  3.76k|    pub fn index(&self) -> u64 {
+  394|  3.76k|        self.index
+  395|  3.76k|    }
 _RNvMsh_CskDnbzSbNF0e_21incrementalmerkletreeNtB5_7Address5level:
   384|  2.01M|    pub fn level(&self) -> Level {
   385|  2.01M|        self.level
@@ -4200,20 +4200,20 @@ _RNvXs1_CskDnbzSbNF0e_21incrementalmerkletreeyINtNtCs6SNw0SRvItZ_4core7convert4F
   235|   146k|        p.0
   236|   146k|    }
 _RNvXs2_CskDnbzSbNF0e_21incrementalmerkletreeNtB5_8PositionINtNtCs6SNw0SRvItZ_4core7convert4FromyE4from:
-  240|  10.6k|    fn from(sz: u64) -> Self {
-  241|  10.6k|        Self(sz)
-  242|  10.6k|    }
+  240|  10.5k|    fn from(sz: u64) -> Self {
+  241|  10.5k|        Self(sz)
+  242|  10.5k|    }
 _RNvXs4_CskDnbzSbNF0e_21incrementalmerkletreeNtB5_8PositionINtNtNtCs6SNw0SRvItZ_4core3ops5arith9AddAssignyE10add_assign:
   253|  8.86k|    fn add_assign(&mut self, other: u64) {
   254|  8.86k|        self.0 += other
   255|  8.86k|    }
 _RNvXs5_CskDnbzSbNF0e_21incrementalmerkletreeNtB5_8PositionINtNtNtCs6SNw0SRvItZ_4core3ops5arith3SubyE3sub:
-  260|  7.54k|    fn sub(self, other: u64) -> Self {
-  261|  7.54k|        if self.0 < other {
+  260|  7.53k|    fn sub(self, other: u64) -> Self {
+  261|  7.53k|        if self.0 < other {
   262|      0|            panic!("position underflow");
-  263|  7.54k|        }
-  264|  7.54k|        Position(self.0 - other)
-  265|  7.54k|    }
+  263|  7.53k|        }
+  264|  7.53k|        Position(self.0 - other)
+  265|  7.53k|    }
 _RNvXs9_CskDnbzSbNF0e_21incrementalmerkletreeNtB5_5LevelINtNtNtCs6SNw0SRvItZ_4core3ops5arith3AddhE3add:
   307|   819k|    fn add(self, value: u8) -> Self {
   308|   819k|        Self(self.0 + value)
@@ -4239,9 +4239,9 @@ _RNvXs_CskDnbzSbNF0e_21incrementalmerkletreeNtB4_16WitnessAddrsIterNtNtNtNtCs6SN
   181|       |        }
   182|   432k|    }
 _RNvXsa_CskDnbzSbNF0e_21incrementalmerkletreeNtB5_5LevelINtNtCs6SNw0SRvItZ_4core7convert4FromhE4from:
-  313|  85.9k|    fn from(value: u8) -> Self {
-  314|  85.9k|        Self(value)
-  315|  85.9k|    }
+  313|  85.8k|    fn from(value: u8) -> Self {
+  314|  85.8k|        Self(value)
+  315|  85.8k|    }
 _RNvXsb_CskDnbzSbNF0e_21incrementalmerkletreehINtNtCs6SNw0SRvItZ_4core7convert4FromNtB5_5LevelE4from:
   319|   131k|    fn from(level: Level) -> u8 {
   320|   131k|        level.0
@@ -5747,9 +5747,9 @@ _RNvXsa_NtNtCs5xmS2putXSG_12pasta_curves6fields2fpRNtB5_2FpNtNtNtCs6SNw0SRvItZ_4
   169|   327M|        self.mul(rhs)
   170|   327M|    }
 _RNvXsf_NtNtCs5xmS2putXSG_12pasta_curves6fields2fpAhj20_INtNtCs6SNw0SRvItZ_4core7convert4FromNtB5_2FpE4from:
-  467|    489|    fn from(value: Fp) -> [u8; 32] {
-  468|    489|        value.to_repr()
-  469|    489|    }
+  467|    484|    fn from(value: Fp) -> [u8; 32] {
+  468|    484|        value.to_repr()
+  469|    484|    }
 _RNvXsh_NtNtCs5xmS2putXSG_12pasta_curves6fields2fpNtB5_2FpNtCs9QlSKl3ZH92_2ff5Field10sqrt_ratio:
   504|   263k|    fn sqrt_ratio(num: &Self, div: &Self) -> (Choice, Self) {
   505|       |        #[cfg(feature = "sqrt-table")]
@@ -8052,129 +8052,129 @@ _RNvMs8_NtCs4rm1P7A9CH1_3wyz4comuINtB5_7AddressNtB5_5ConsthE6offsetCsbPbog0fUSZG
   260|  1.98M|		}
 
 _RINvMs1_Cs3Vu7iKItRDd_14zcash_encodingNtB6_8Optional5writeQQINtNtCshDtJu3Ru83O_5alloc3vec3VechERNtNtCs3eyRT31BNC2_14sapling_crypto4tree4NodeNCINvNtCsh9JkIOtEiIB_16zcash_primitives11merkle_tree21write_commitment_treeB1w_BV_Kh20_E0ECsc4HhLwrPL7g_11zebra_chain:
-  289|  2.64k|    pub fn write<W: Write, T, F>(mut writer: W, val: Option<T>, func: F) -> io::Result<()>
-  290|  2.64k|    where
-  291|  2.64k|        F: Fn(W, T) -> io::Result<()>,
+  289|  2.63k|    pub fn write<W: Write, T, F>(mut writer: W, val: Option<T>, func: F) -> io::Result<()>
+  290|  2.63k|    where
+  291|  2.63k|        F: Fn(W, T) -> io::Result<()>,
   292|       |    {
-  293|  2.64k|        match val {
-  294|    716|            None => writer.write_all(&[0]),
+  293|  2.63k|        match val {
+  294|    714|            None => writer.write_all(&[0]),
   295|  1.92k|            Some(e) => {
   296|  1.92k|                writer.write_all(&[1])?;
   297|  1.92k|                func(writer, e)
   298|       |            }
   299|       |        }
-  300|  2.64k|    }
+  300|  2.63k|    }
 _RINvMs1_Cs3Vu7iKItRDd_14zcash_encodingNtB6_8Optional5writeQQINtNtCshDtJu3Ru83O_5alloc3vec3VechERNtNtCs3eyRT31BNC2_14sapling_crypto4tree4NodeNCINvNtCsh9JkIOtEiIB_16zcash_primitives11merkle_tree21write_commitment_treeB1w_BV_Kh20_Es_0ECsc4HhLwrPL7g_11zebra_chain:
-  289|  2.64k|    pub fn write<W: Write, T, F>(mut writer: W, val: Option<T>, func: F) -> io::Result<()>
-  290|  2.64k|    where
-  291|  2.64k|        F: Fn(W, T) -> io::Result<()>,
+  289|  2.63k|    pub fn write<W: Write, T, F>(mut writer: W, val: Option<T>, func: F) -> io::Result<()>
+  290|  2.63k|    where
+  291|  2.63k|        F: Fn(W, T) -> io::Result<()>,
   292|       |    {
-  293|  2.64k|        match val {
+  293|  2.63k|        match val {
   294|  1.73k|            None => writer.write_all(&[0]),
   295|    906|            Some(e) => {
   296|    906|                writer.write_all(&[1])?;
   297|    906|                func(writer, e)
   298|       |            }
   299|       |        }
-  300|  2.64k|    }
+  300|  2.63k|    }
 _RINvMs1_Cs3Vu7iKItRDd_14zcash_encodingNtB6_8Optional5writeQQINtNtCshDtJu3Ru83O_5alloc3vec3VechERNtNtNtCsc4HhLwrPL7g_11zebra_chain7orchard4tree4NodeNCINvNtCsh9JkIOtEiIB_16zcash_primitives11merkle_tree21write_commitment_treeB1w_BV_Kh20_E0EB1C_:
-  289|  2.64k|    pub fn write<W: Write, T, F>(mut writer: W, val: Option<T>, func: F) -> io::Result<()>
-  290|  2.64k|    where
-  291|  2.64k|        F: Fn(W, T) -> io::Result<()>,
+  289|  2.63k|    pub fn write<W: Write, T, F>(mut writer: W, val: Option<T>, func: F) -> io::Result<()>
+  290|  2.63k|    where
+  291|  2.63k|        F: Fn(W, T) -> io::Result<()>,
   292|       |    {
-  293|  2.64k|        match val {
-  294|    799|            None => writer.write_all(&[0]),
+  293|  2.63k|        match val {
+  294|    797|            None => writer.write_all(&[0]),
   295|  1.84k|            Some(e) => {
   296|  1.84k|                writer.write_all(&[1])?;
   297|  1.84k|                func(writer, e)
   298|       |            }
   299|       |        }
-  300|  2.64k|    }
+  300|  2.63k|    }
 _RINvMs1_Cs3Vu7iKItRDd_14zcash_encodingNtB6_8Optional5writeQQINtNtCshDtJu3Ru83O_5alloc3vec3VechERNtNtNtCsc4HhLwrPL7g_11zebra_chain7orchard4tree4NodeNCINvNtCsh9JkIOtEiIB_16zcash_primitives11merkle_tree21write_commitment_treeB1w_BV_Kh20_Es_0EB1C_:
-  289|  2.64k|    pub fn write<W: Write, T, F>(mut writer: W, val: Option<T>, func: F) -> io::Result<()>
-  290|  2.64k|    where
-  291|  2.64k|        F: Fn(W, T) -> io::Result<()>,
+  289|  2.63k|    pub fn write<W: Write, T, F>(mut writer: W, val: Option<T>, func: F) -> io::Result<()>
+  290|  2.63k|    where
+  291|  2.63k|        F: Fn(W, T) -> io::Result<()>,
   292|       |    {
-  293|  2.64k|        match val {
+  293|  2.63k|        match val {
   294|  1.83k|            None => writer.write_all(&[0]),
   295|    807|            Some(e) => {
   296|    807|                writer.write_all(&[1])?;
   297|    807|                func(writer, e)
   298|       |            }
   299|       |        }
-  300|  2.64k|    }
+  300|  2.63k|    }
 _RINvMs1_Cs3Vu7iKItRDd_14zcash_encodingNtB6_8Optional5writeQQQINtNtCshDtJu3Ru83O_5alloc3vec3VechERNtNtCs3eyRT31BNC2_14sapling_crypto4tree4NodeNCNCINvNtCsh9JkIOtEiIB_16zcash_primitives11merkle_tree21write_commitment_treeB1x_BW_Kh20_Es0_00ECsc4HhLwrPL7g_11zebra_chain:
-  289|  59.7k|    pub fn write<W: Write, T, F>(mut writer: W, val: Option<T>, func: F) -> io::Result<()>
-  290|  59.7k|    where
-  291|  59.7k|        F: Fn(W, T) -> io::Result<()>,
+  289|  59.6k|    pub fn write<W: Write, T, F>(mut writer: W, val: Option<T>, func: F) -> io::Result<()>
+  290|  59.6k|    where
+  291|  59.6k|        F: Fn(W, T) -> io::Result<()>,
   292|       |    {
-  293|  59.7k|        match val {
-  294|  58.2k|            None => writer.write_all(&[0]),
+  293|  59.6k|        match val {
+  294|  58.1k|            None => writer.write_all(&[0]),
   295|  1.52k|            Some(e) => {
   296|  1.52k|                writer.write_all(&[1])?;
   297|  1.52k|                func(writer, e)
   298|       |            }
   299|       |        }
-  300|  59.7k|    }
+  300|  59.6k|    }
 _RINvMs1_Cs3Vu7iKItRDd_14zcash_encodingNtB6_8Optional5writeQQQINtNtCshDtJu3Ru83O_5alloc3vec3VechERNtNtNtCsc4HhLwrPL7g_11zebra_chain7orchard4tree4NodeNCNCINvNtCsh9JkIOtEiIB_16zcash_primitives11merkle_tree21write_commitment_treeB1x_BW_Kh20_Es0_00EB1D_:
-  289|  57.1k|    pub fn write<W: Write, T, F>(mut writer: W, val: Option<T>, func: F) -> io::Result<()>
-  290|  57.1k|    where
-  291|  57.1k|        F: Fn(W, T) -> io::Result<()>,
+  289|  57.0k|    pub fn write<W: Write, T, F>(mut writer: W, val: Option<T>, func: F) -> io::Result<()>
+  290|  57.0k|    where
+  291|  57.0k|        F: Fn(W, T) -> io::Result<()>,
   292|       |    {
-  293|  57.1k|        match val {
-  294|  55.6k|            None => writer.write_all(&[0]),
+  293|  57.0k|        match val {
+  294|  55.5k|            None => writer.write_all(&[0]),
   295|  1.52k|            Some(e) => {
   296|  1.52k|                writer.write_all(&[1])?;
   297|  1.52k|                func(writer, e)
   298|       |            }
   299|       |        }
-  300|  57.1k|    }
+  300|  57.0k|    }
 _RINvMs_Cs3Vu7iKItRDd_14zcash_encodingNtB5_6Vector11write_sizedQQINtNtCshDtJu3Ru83O_5alloc3vec3VechERINtNtCs6SNw0SRvItZ_4core6option6OptionNtNtCs3eyRT31BNC2_14sapling_crypto4tree4NodeENCINvNtCsh9JkIOtEiIB_16zcash_primitives11merkle_tree21write_commitment_treeB2c_BZ_Kh20_Es0_0INtNtNtB1F_5slice4iter4IterB1A_EECsc4HhLwrPL7g_11zebra_chain:
-  188|  2.64k|    pub fn write_sized<W: Write, E, F, I: Iterator<Item = E> + ExactSizeIterator>(
-  189|  2.64k|        mut writer: W,
-  190|  2.64k|        mut items: I,
-  191|  2.64k|        func: F,
-  192|  2.64k|    ) -> io::Result<()>
-  193|  2.64k|    where
-  194|  2.64k|        F: Fn(&mut W, E) -> io::Result<()>,
+  188|  2.63k|    pub fn write_sized<W: Write, E, F, I: Iterator<Item = E> + ExactSizeIterator>(
+  189|  2.63k|        mut writer: W,
+  190|  2.63k|        mut items: I,
+  191|  2.63k|        func: F,
+  192|  2.63k|    ) -> io::Result<()>
+  193|  2.63k|    where
+  194|  2.63k|        F: Fn(&mut W, E) -> io::Result<()>,
   195|       |    {
-  196|  2.64k|        CompactSize::write(&mut writer, items.len())?;
-  197|  2.64k|        items.try_for_each(|e| func(&mut writer, e))
-  198|  2.64k|    }
+  196|  2.63k|        CompactSize::write(&mut writer, items.len())?;
+  197|  2.63k|        items.try_for_each(|e| func(&mut writer, e))
+  198|  2.63k|    }
 _RINvMs_Cs3Vu7iKItRDd_14zcash_encodingNtB5_6Vector11write_sizedQQINtNtCshDtJu3Ru83O_5alloc3vec3VechERINtNtCs6SNw0SRvItZ_4core6option6OptionNtNtNtCsc4HhLwrPL7g_11zebra_chain7orchard4tree4NodeENCINvNtCsh9JkIOtEiIB_16zcash_primitives11merkle_tree21write_commitment_treeB2c_BZ_Kh20_Es0_0INtNtNtB1F_5slice4iter4IterB1A_EEB2i_:
-  188|  2.64k|    pub fn write_sized<W: Write, E, F, I: Iterator<Item = E> + ExactSizeIterator>(
-  189|  2.64k|        mut writer: W,
-  190|  2.64k|        mut items: I,
-  191|  2.64k|        func: F,
-  192|  2.64k|    ) -> io::Result<()>
-  193|  2.64k|    where
-  194|  2.64k|        F: Fn(&mut W, E) -> io::Result<()>,
+  188|  2.63k|    pub fn write_sized<W: Write, E, F, I: Iterator<Item = E> + ExactSizeIterator>(
+  189|  2.63k|        mut writer: W,
+  190|  2.63k|        mut items: I,
+  191|  2.63k|        func: F,
+  192|  2.63k|    ) -> io::Result<()>
+  193|  2.63k|    where
+  194|  2.63k|        F: Fn(&mut W, E) -> io::Result<()>,
   195|       |    {
-  196|  2.64k|        CompactSize::write(&mut writer, items.len())?;
-  197|  2.64k|        items.try_for_each(|e| func(&mut writer, e))
-  198|  2.64k|    }
+  196|  2.63k|        CompactSize::write(&mut writer, items.len())?;
+  197|  2.63k|        items.try_for_each(|e| func(&mut writer, e))
+  198|  2.63k|    }
 _RINvMs_Cs3Vu7iKItRDd_14zcash_encodingNtB5_6Vector5writeQQINtNtCshDtJu3Ru83O_5alloc3vec3VechEINtNtCs6SNw0SRvItZ_4core6option6OptionNtNtCs3eyRT31BNC2_14sapling_crypto4tree4NodeENCINvNtCsh9JkIOtEiIB_16zcash_primitives11merkle_tree21write_commitment_treeB24_BS_Kh20_Es0_0ECsc4HhLwrPL7g_11zebra_chain:
-  164|  2.64k|    pub fn write<W: Write, E, F>(writer: W, vec: &[E], func: F) -> io::Result<()>
-  165|  2.64k|    where
-  166|  2.64k|        F: Fn(&mut W, &E) -> io::Result<()>,
+  164|  2.63k|    pub fn write<W: Write, E, F>(writer: W, vec: &[E], func: F) -> io::Result<()>
+  165|  2.63k|    where
+  166|  2.63k|        F: Fn(&mut W, &E) -> io::Result<()>,
   167|       |    {
-  168|  2.64k|        Self::write_sized(writer, vec.iter(), func)
-  169|  2.64k|    }
+  168|  2.63k|        Self::write_sized(writer, vec.iter(), func)
+  169|  2.63k|    }
 _RINvMs_Cs3Vu7iKItRDd_14zcash_encodingNtB5_6Vector5writeQQINtNtCshDtJu3Ru83O_5alloc3vec3VechEINtNtCs6SNw0SRvItZ_4core6option6OptionNtNtNtCsc4HhLwrPL7g_11zebra_chain7orchard4tree4NodeENCINvNtCsh9JkIOtEiIB_16zcash_primitives11merkle_tree21write_commitment_treeB24_BS_Kh20_Es0_0EB2a_:
-  164|  2.64k|    pub fn write<W: Write, E, F>(writer: W, vec: &[E], func: F) -> io::Result<()>
-  165|  2.64k|    where
-  166|  2.64k|        F: Fn(&mut W, &E) -> io::Result<()>,
+  164|  2.63k|    pub fn write<W: Write, E, F>(writer: W, vec: &[E], func: F) -> io::Result<()>
+  165|  2.63k|    where
+  166|  2.63k|        F: Fn(&mut W, &E) -> io::Result<()>,
   167|       |    {
-  168|  2.64k|        Self::write_sized(writer, vec.iter(), func)
-  169|  2.64k|    }
+  168|  2.63k|        Self::write_sized(writer, vec.iter(), func)
+  169|  2.63k|    }
 _RNCINvMs_Cs3Vu7iKItRDd_14zcash_encodingNtB7_6Vector11write_sizedQQINtNtCshDtJu3Ru83O_5alloc3vec3VechERINtNtCs6SNw0SRvItZ_4core6option6OptionNtNtCs3eyRT31BNC2_14sapling_crypto4tree4NodeENCINvNtCsh9JkIOtEiIB_16zcash_primitives11merkle_tree21write_commitment_treeB2e_B11_Kh20_Es0_0INtNtNtB1H_5slice4iter4IterB1C_EE0Csc4HhLwrPL7g_11zebra_chain:
-  197|  59.7k|        items.try_for_each(|e| func(&mut writer, e))
+  197|  59.6k|        items.try_for_each(|e| func(&mut writer, e))
 _RNCINvMs_Cs3Vu7iKItRDd_14zcash_encodingNtB7_6Vector11write_sizedQQINtNtCshDtJu3Ru83O_5alloc3vec3VechERINtNtCs6SNw0SRvItZ_4core6option6OptionNtNtNtCsc4HhLwrPL7g_11zebra_chain7orchard4tree4NodeENCINvNtCsh9JkIOtEiIB_16zcash_primitives11merkle_tree21write_commitment_treeB2e_B11_Kh20_Es0_0INtNtNtB1H_5slice4iter4IterB1C_EE0B2k_:
-  197|  57.1k|        items.try_for_each(|e| func(&mut writer, e))
+  197|  57.0k|        items.try_for_each(|e| func(&mut writer, e))
 _RINvMCs3Vu7iKItRDd_14zcash_encodingNtB3_11CompactSize5writeQQQINtNtCshDtJu3Ru83O_5alloc3vec3VechEECs5FnQp8us7pk_13zcash_address:
-   94|  5.28k|    pub fn write<W: Write>(mut writer: W, size: usize) -> io::Result<()> {
-   95|  5.28k|        match size {
-   96|  5.28k|            s if s < 253 => writer.write_all(&[s as u8]),
+   94|  5.27k|    pub fn write<W: Write>(mut writer: W, size: usize) -> io::Result<()> {
+   95|  5.27k|        match size {
+   96|  5.27k|            s if s < 253 => writer.write_all(&[s as u8]),
    97|      0|            s if s <= 0xFFFF => {
    98|      0|                writer.write_all(&[253])?;
    99|      0|                writer.write_all(&(s as u16).to_le_bytes())
@@ -8188,44 +8188,44 @@ _RINvMCs3Vu7iKItRDd_14zcash_encodingNtB3_11CompactSize5writeQQQINtNtCshDtJu3Ru83
   107|      0|                writer.write_all(&(s as u64).to_le_bytes())
   108|       |            }
   109|       |        }
-  110|  5.28k|    }
+  110|  5.27k|    }
 
 _RINvNtCsh9JkIOtEiIB_16zcash_primitives11merkle_tree21write_commitment_treeNtNtCs3eyRT31BNC2_14sapling_crypto4tree4NodeQINtNtCshDtJu3Ru83O_5alloc3vec3VechEKh20_ECsc4HhLwrPL7g_11zebra_chain:
-  200|  2.64k|pub fn write_commitment_tree<Node: HashSer, W: Write, const DEPTH: u8>(
-  201|  2.64k|    tree: &CommitmentTree<Node, DEPTH>,
-  202|  2.64k|    mut writer: W,
-  203|  2.64k|) -> io::Result<()> {
-  204|  2.64k|    Optional::write(&mut writer, tree.left().as_ref(), |w, n| n.write(w))?;
-  205|  2.64k|    Optional::write(&mut writer, tree.right().as_ref(), |w, n| n.write(w))?;
-  206|  2.64k|    Vector::write(&mut writer, tree.parents(), |w, e| {
+  200|  2.63k|pub fn write_commitment_tree<Node: HashSer, W: Write, const DEPTH: u8>(
+  201|  2.63k|    tree: &CommitmentTree<Node, DEPTH>,
+  202|  2.63k|    mut writer: W,
+  203|  2.63k|) -> io::Result<()> {
+  204|  2.63k|    Optional::write(&mut writer, tree.left().as_ref(), |w, n| n.write(w))?;
+  205|  2.63k|    Optional::write(&mut writer, tree.right().as_ref(), |w, n| n.write(w))?;
+  206|  2.63k|    Vector::write(&mut writer, tree.parents(), |w, e| {
   207|       |        Optional::write(w, e.as_ref(), |w, n| n.write(w))
   208|       |    })
-  209|  2.64k|}
+  209|  2.63k|}
 _RINvNtCsh9JkIOtEiIB_16zcash_primitives11merkle_tree21write_commitment_treeNtNtNtCsc4HhLwrPL7g_11zebra_chain7orchard4tree4NodeQINtNtCshDtJu3Ru83O_5alloc3vec3VechEKh20_EB1g_:
-  200|  2.64k|pub fn write_commitment_tree<Node: HashSer, W: Write, const DEPTH: u8>(
-  201|  2.64k|    tree: &CommitmentTree<Node, DEPTH>,
-  202|  2.64k|    mut writer: W,
-  203|  2.64k|) -> io::Result<()> {
-  204|  2.64k|    Optional::write(&mut writer, tree.left().as_ref(), |w, n| n.write(w))?;
-  205|  2.64k|    Optional::write(&mut writer, tree.right().as_ref(), |w, n| n.write(w))?;
-  206|  2.64k|    Vector::write(&mut writer, tree.parents(), |w, e| {
+  200|  2.63k|pub fn write_commitment_tree<Node: HashSer, W: Write, const DEPTH: u8>(
+  201|  2.63k|    tree: &CommitmentTree<Node, DEPTH>,
+  202|  2.63k|    mut writer: W,
+  203|  2.63k|) -> io::Result<()> {
+  204|  2.63k|    Optional::write(&mut writer, tree.left().as_ref(), |w, n| n.write(w))?;
+  205|  2.63k|    Optional::write(&mut writer, tree.right().as_ref(), |w, n| n.write(w))?;
+  206|  2.63k|    Vector::write(&mut writer, tree.parents(), |w, e| {
   207|       |        Optional::write(w, e.as_ref(), |w, n| n.write(w))
   208|       |    })
-  209|  2.64k|}
+  209|  2.63k|}
 _RNCINvNtCsh9JkIOtEiIB_16zcash_primitives11merkle_tree21write_commitment_treeNtNtCs3eyRT31BNC2_14sapling_crypto4tree4NodeQINtNtCshDtJu3Ru83O_5alloc3vec3VechEKh20_E0Csc4HhLwrPL7g_11zebra_chain:
   204|  1.92k|    Optional::write(&mut writer, tree.left().as_ref(), |w, n| n.write(w))?;
 _RNCINvNtCsh9JkIOtEiIB_16zcash_primitives11merkle_tree21write_commitment_treeNtNtCs3eyRT31BNC2_14sapling_crypto4tree4NodeQINtNtCshDtJu3Ru83O_5alloc3vec3VechEKh20_Es0_0Csc4HhLwrPL7g_11zebra_chain:
-  206|  59.7k|    Vector::write(&mut writer, tree.parents(), |w, e| {
-  207|  59.7k|        Optional::write(w, e.as_ref(), |w, n| n.write(w))
-  208|  59.7k|    })
+  206|  59.6k|    Vector::write(&mut writer, tree.parents(), |w, e| {
+  207|  59.6k|        Optional::write(w, e.as_ref(), |w, n| n.write(w))
+  208|  59.6k|    })
 _RNCINvNtCsh9JkIOtEiIB_16zcash_primitives11merkle_tree21write_commitment_treeNtNtCs3eyRT31BNC2_14sapling_crypto4tree4NodeQINtNtCshDtJu3Ru83O_5alloc3vec3VechEKh20_Es_0Csc4HhLwrPL7g_11zebra_chain:
   205|    906|    Optional::write(&mut writer, tree.right().as_ref(), |w, n| n.write(w))?;
 _RNCINvNtCsh9JkIOtEiIB_16zcash_primitives11merkle_tree21write_commitment_treeNtNtNtCsc4HhLwrPL7g_11zebra_chain7orchard4tree4NodeQINtNtCshDtJu3Ru83O_5alloc3vec3VechEKh20_E0B1i_:
   204|  1.84k|    Optional::write(&mut writer, tree.left().as_ref(), |w, n| n.write(w))?;
 _RNCINvNtCsh9JkIOtEiIB_16zcash_primitives11merkle_tree21write_commitment_treeNtNtNtCsc4HhLwrPL7g_11zebra_chain7orchard4tree4NodeQINtNtCshDtJu3Ru83O_5alloc3vec3VechEKh20_Es0_0B1i_:
-  206|  57.1k|    Vector::write(&mut writer, tree.parents(), |w, e| {
-  207|  57.1k|        Optional::write(w, e.as_ref(), |w, n| n.write(w))
-  208|  57.1k|    })
+  206|  57.0k|    Vector::write(&mut writer, tree.parents(), |w, e| {
+  207|  57.0k|        Optional::write(w, e.as_ref(), |w, n| n.write(w))
+  208|  57.0k|    })
 _RNCINvNtCsh9JkIOtEiIB_16zcash_primitives11merkle_tree21write_commitment_treeNtNtNtCsc4HhLwrPL7g_11zebra_chain7orchard4tree4NodeQINtNtCshDtJu3Ru83O_5alloc3vec3VechEKh20_Es_0B1i_:
   205|    807|    Optional::write(&mut writer, tree.right().as_ref(), |w, n| n.write(w))?;
 _RNCNCINvNtCsh9JkIOtEiIB_16zcash_primitives11merkle_tree21write_commitment_treeNtNtCs3eyRT31BNC2_14sapling_crypto4tree4NodeQINtNtCshDtJu3Ru83O_5alloc3vec3VechEKh20_Es0_00Csc4HhLwrPL7g_11zebra_chain:
@@ -8254,8 +8254,8 @@ _RNvCskfyCAsgvzwY_25note_commitment_tree_fuzz10run_sprout:
   283|       |
   284|    313|    let mut tree = sprout_tree::NoteCommitmentTree::default();
   285|       |
-  286|  9.74k|    for op in ops {
-  287|  9.43k|        match op {
+  286|  9.73k|    for op in ops {
+  287|  9.42k|        match op {
   288|  3.45k|            TreeOp::Append(bytes) => {
   289|       |                // Sprout NoteCommitment is a transparent [u8; 32] so every
   290|       |                // input is valid by construction — no canonicality filter.
@@ -8294,8 +8294,8 @@ _RNvCskfyCAsgvzwY_25note_commitment_tree_fuzz10run_sprout:
   323|  1.09k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.count()));
   324|       |            }
   325|       |            TreeOp::RemoveMark(_) => {
-  326|    489|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.hash()));
-  327|    489|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.cached_root()));
+  326|    484|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.hash()));
+  327|    484|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.cached_root()));
   328|       |            }
   329|       |            TreeOp::WitnessRoot(_) => {
   330|  1.20k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.recalculate_root()));
@@ -8304,7 +8304,7 @@ _RNvCskfyCAsgvzwY_25note_commitment_tree_fuzz10run_sprout:
   333|       |                // No subtree API on Sprout — exercise count() again as a
   334|       |                // cheap no-op so the variant still drives the fuzzer's
   335|       |                // coverage map without dispatching to a missing method.
-  336|  2.64k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.count()));
+  336|  2.63k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.count()));
   337|       |            }
   338|       |        }
   339|       |    }
@@ -8315,8 +8315,8 @@ _RNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_orchard:
   196|       |
   197|    313|    let mut tree = orchard_tree::NoteCommitmentTree::default();
   198|       |
-  199|  9.74k|    for op in ops {
-  200|  9.43k|        match op {
+  199|  9.73k|    for op in ops {
+  200|  9.42k|        match op {
   201|  3.45k|            TreeOp::Append(bytes) => {
   202|       |                // pallas::Base::from_repr is a CtOption — non-canonical
   203|       |                // encodings legitimately return None, skip them.
@@ -8367,22 +8367,22 @@ _RNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_orchard:
   248|  1.09k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.count()));
   249|       |            }
   250|       |            TreeOp::RemoveMark(_) => {
-  251|    489|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.hash()));
-  252|    489|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.cached_root()));
+  251|    484|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.hash()));
+  252|    484|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.cached_root()));
   253|       |            }
   254|       |            TreeOp::WitnessRoot(_) => {
   255|  1.20k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.recalculate_root()));
   256|       |            }
   257|       |            TreeOp::RewindCheckpoint => {
-  258|  2.64k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.is_complete_subtree()));
-  259|  2.64k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.subtree_index()));
-  260|  2.64k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  258|  2.63k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.is_complete_subtree()));
+  259|  2.63k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.subtree_index()));
+  260|  2.63k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
   261|       |                    tree.remaining_subtree_leaf_nodes()
   262|       |                }));
-  263|  2.64k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  263|  2.63k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
   264|       |                    tree.completed_subtree_index_and_root()
   265|       |                }));
-  266|  2.64k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.to_rpc_bytes()));
+  266|  2.63k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.to_rpc_bytes()));
   267|       |            }
   268|       |        }
   269|       |    }
@@ -8391,8 +8391,8 @@ _RNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_sapling:
   114|    313|fn run_sapling(ops: &[TreeOp]) {
   115|    313|    let mut tree = sapling_tree::NoteCommitmentTree::default();
   116|       |
-  117|  9.74k|    for op in ops {
-  118|  9.43k|        match op {
+  117|  9.73k|    for op in ops {
+  118|  9.42k|        match op {
   119|  3.45k|            TreeOp::Append(bytes) => {
   120|       |                // ExtractedNoteCommitment::from_bytes is a CtOption — non-canonical
   121|       |                // encodings legitimately return None, which we skip rather than
@@ -8443,22 +8443,22 @@ _RNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_sapling:
   166|  1.09k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.count()));
   167|       |            }
   168|       |            TreeOp::RemoveMark(_) => {
-  169|    489|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.hash()));
-  170|    489|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.cached_root()));
+  169|    484|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.hash()));
+  170|    484|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.cached_root()));
   171|       |            }
   172|       |            TreeOp::WitnessRoot(_) => {
   173|  1.20k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.recalculate_root()));
   174|       |            }
   175|       |            TreeOp::RewindCheckpoint => {
-  176|  2.64k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.is_complete_subtree()));
-  177|  2.64k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.subtree_index()));
-  178|  2.64k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  176|  2.63k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.is_complete_subtree()));
+  177|  2.63k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.subtree_index()));
+  178|  2.63k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
   179|       |                    tree.remaining_subtree_leaf_nodes()
   180|       |                }));
-  181|  2.64k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  181|  2.63k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
   182|       |                    tree.completed_subtree_index_and_root()
   183|       |                }));
-  184|  2.64k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.to_rpc_bytes()));
+  184|  2.63k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.to_rpc_bytes()));
   185|       |            }
   186|       |        }
   187|       |    }
@@ -8476,13 +8476,13 @@ _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz10run_sprouts3_0B3_:
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz10run_sprouts4_0B3_:
   323|  1.09k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.count()));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz10run_sprouts5_0B3_:
-  326|    489|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.hash()));
+  326|    484|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.hash()));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz10run_sprouts6_0B3_:
-  327|    489|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.cached_root()));
+  327|    484|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.cached_root()));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz10run_sprouts7_0B3_:
   330|  1.20k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.recalculate_root()));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz10run_sprouts8_0B3_:
-  336|  2.64k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.count()));
+  336|  2.63k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.count()));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz10run_sprouts_0B3_:
   301|  3.45k|                let r1 = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.root()));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_orchard0B3_:
@@ -8512,27 +8512,27 @@ _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_orchards6_0B3_:
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_orchards7_0B3_:
   248|  1.09k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.count()));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_orchards8_0B3_:
-  251|    489|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.hash()));
+  251|    484|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.hash()));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_orchards9_0B3_:
-  252|    489|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.cached_root()));
+  252|    484|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.cached_root()));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_orchards_0B3_:
   215|  3.02k|                let r1 = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.root()));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_orchardsa_0B3_:
   255|  1.20k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.recalculate_root()));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_orchardsb_0B3_:
-  258|  2.64k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.is_complete_subtree()));
+  258|  2.63k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.is_complete_subtree()));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_orchardsc_0B3_:
-  259|  2.64k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.subtree_index()));
+  259|  2.63k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.subtree_index()));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_orchardsd_0B3_:
-  260|  2.64k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
-  261|  2.64k|                    tree.remaining_subtree_leaf_nodes()
-  262|  2.64k|                }));
+  260|  2.63k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  261|  2.63k|                    tree.remaining_subtree_leaf_nodes()
+  262|  2.63k|                }));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_orchardse_0B3_:
-  263|  2.64k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
-  264|  2.64k|                    tree.completed_subtree_index_and_root()
-  265|  2.64k|                }));
+  263|  2.63k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  264|  2.63k|                    tree.completed_subtree_index_and_root()
+  265|  2.63k|                }));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_orchardsf_0B3_:
-  266|  2.64k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.to_rpc_bytes()));
+  266|  2.63k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.to_rpc_bytes()));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_sapling0B3_:
   129|  3.16k|                let append_res = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.append(cm)));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_saplings0_0B3_:
@@ -8552,27 +8552,27 @@ _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_saplings4_0B3_:
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_saplings5_0B3_:
   166|  1.09k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.count()));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_saplings6_0B3_:
-  169|    489|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.hash()));
+  169|    484|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.hash()));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_saplings7_0B3_:
-  170|    489|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.cached_root()));
+  170|    484|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.cached_root()));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_saplings8_0B3_:
   173|  1.20k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.recalculate_root()));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_saplings9_0B3_:
-  176|  2.64k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.is_complete_subtree()));
+  176|  2.63k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.is_complete_subtree()));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_saplings_0B3_:
   140|  3.16k|                let r1 = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.root()));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_saplingsa_0B3_:
-  177|  2.64k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.subtree_index()));
+  177|  2.63k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.subtree_index()));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_saplingsb_0B3_:
-  178|  2.64k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
-  179|  2.64k|                    tree.remaining_subtree_leaf_nodes()
-  180|  2.64k|                }));
+  178|  2.63k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  179|  2.63k|                    tree.remaining_subtree_leaf_nodes()
+  180|  2.63k|                }));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_saplingsc_0B3_:
-  181|  2.64k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
-  182|  2.64k|                    tree.completed_subtree_index_and_root()
-  183|  2.64k|                }));
+  181|  2.63k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+  182|  2.63k|                    tree.completed_subtree_index_and_root()
+  183|  2.63k|                }));
 _RNCNvCskfyCAsgvzwY_25note_commitment_tree_fuzz11run_saplingsd_0B3_:
-  184|  2.64k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.to_rpc_bytes()));
+  184|  2.63k|                let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| tree.to_rpc_bytes()));
 
 _RNvXsd_NtCsc4HhLwrPL7g_11zebra_chain3fmtINtB5_8HexDebugAhj20_ENtNtNtCs6SNw0SRvItZ_4core3ops5deref5Deref5derefB7_:
   182|  3.45k|    fn deref(&self) -> &Self::Target {
@@ -8598,9 +8598,9 @@ _RINvXs6_NtNtCsc4HhLwrPL7g_11zebra_chain7orchard4treeNtB6_4RootNtNtNtBa_13serial
   177|    231|        Self::try_from(reader.read_32_bytes()?)
   178|    231|    }
 _RINvXse_NtNtCsc4HhLwrPL7g_11zebra_chain7orchard4treeNtB6_4NodeNtNtCsh9JkIOtEiIB_16zcash_primitives11merkle_tree7HashSer5writeQQINtNtCshDtJu3Ru83O_5alloc3vec3VechEEBa_:
-  276|  2.65k|    fn write<W: io::Write>(&self, mut writer: W) -> io::Result<()> {
-  277|  2.65k|        writer.write_all(&self.0.to_repr())
-  278|  2.65k|    }
+  276|  2.64k|    fn write<W: io::Write>(&self, mut writer: W) -> io::Result<()> {
+  277|  2.64k|        writer.write_all(&self.0.to_repr())
+  278|  2.64k|    }
 _RINvXse_NtNtCsc4HhLwrPL7g_11zebra_chain7orchard4treeNtB6_4NodeNtNtCsh9JkIOtEiIB_16zcash_primitives11merkle_tree7HashSer5writeQQQINtNtCshDtJu3Ru83O_5alloc3vec3VechEEBa_:
   276|  1.52k|    fn write<W: io::Write>(&self, mut writer: W) -> io::Result<()> {
   277|  1.52k|        writer.write_all(&self.0.to_repr())
@@ -8608,32 +8608,32 @@ _RINvXse_NtNtCsc4HhLwrPL7g_11zebra_chain7orchard4treeNtB6_4NodeNtNtCsh9JkIOtEiIB
 _RNCNvMsj_NtNtCsc4HhLwrPL7g_11zebra_chain7orchard4treeNtB7_18NoteCommitmentTree5count0Bb_:
   622|    211|            .map_or(0, |x| u64::from(x.position()) + 1)
 _RNvMsj_NtNtCsc4HhLwrPL7g_11zebra_chain7orchard4treeNtB5_18NoteCommitmentTree11cached_root:
-  589|  7.34k|    pub fn cached_root(&self) -> Option<Root> {
-  590|  7.34k|        *self
-  591|  7.34k|            .cached_root
-  592|  7.34k|            .read()
-  593|  7.34k|            .expect("a thread that previously held exclusive lock access panicked")
-  594|  7.34k|    }
+  589|  7.33k|    pub fn cached_root(&self) -> Option<Root> {
+  590|  7.33k|        *self
+  591|  7.33k|            .cached_root
+  592|  7.33k|            .read()
+  593|  7.33k|            .expect("a thread that previously held exclusive lock access panicked")
+  594|  7.33k|    }
 _RNvMsj_NtNtCsc4HhLwrPL7g_11zebra_chain7orchard4treeNtB5_18NoteCommitmentTree11uncommitted:
   612|      1|    pub fn uncommitted() -> pallas::Base {
   613|      1|        pallas::Base::one().double()
   614|      1|    }
 _RNvMsj_NtNtCsc4HhLwrPL7g_11zebra_chain7orchard4treeNtB5_18NoteCommitmentTree12to_rpc_bytes:
-  647|  2.64k|    pub fn to_rpc_bytes(&self) -> Vec<u8> {
+  647|  2.63k|    pub fn to_rpc_bytes(&self) -> Vec<u8> {
   648|       |        // Convert the tree from [`Frontier`](incrementalmerkletree::frontier::Frontier) to
   649|       |        // [`CommitmentTree`](merkle_tree::CommitmentTree).
-  650|  2.64k|        let tree = incrementalmerkletree::frontier::CommitmentTree::from_frontier(&self.inner);
+  650|  2.63k|        let tree = incrementalmerkletree::frontier::CommitmentTree::from_frontier(&self.inner);
   651|       |
-  652|  2.64k|        let mut rpc_bytes = vec![];
+  652|  2.63k|        let mut rpc_bytes = vec![];
   653|       |
-  654|  2.64k|        zcash_primitives::merkle_tree::write_commitment_tree(&tree, &mut rpc_bytes)
-  655|  2.64k|            .expect("serializable tree");
+  654|  2.63k|        zcash_primitives::merkle_tree::write_commitment_tree(&tree, &mut rpc_bytes)
+  655|  2.63k|            .expect("serializable tree");
   656|       |
-  657|  2.64k|        rpc_bytes
-  658|  2.64k|    }
+  657|  2.63k|        rpc_bytes
+  658|  2.63k|    }
 _RNvMsj_NtNtCsc4HhLwrPL7g_11zebra_chain7orchard4treeNtB5_18NoteCommitmentTree13subtree_index:
-  495|  2.64k|    pub fn subtree_index(&self) -> Option<NoteCommitmentSubtreeIndex> {
-  496|  2.64k|        let tree = self.frontier()?;
+  495|  2.63k|    pub fn subtree_index(&self) -> Option<NoteCommitmentSubtreeIndex> {
+  496|  2.63k|        let tree = self.frontier()?;
   497|       |
   498|  1.84k|        let index = incrementalmerkletree::Address::above_position(
   499|  1.84k|            TRACKED_SUBTREE_HEIGHT.into(),
@@ -8644,24 +8644,24 @@ _RNvMsj_NtNtCsc4HhLwrPL7g_11zebra_chain7orchard4treeNtB5_18NoteCommitmentTree13s
   504|  1.84k|        .expect("fits in u16");
   505|       |
   506|  1.84k|        Some(index)
-  507|  2.64k|    }
+  507|  2.63k|    }
 _RNvMsj_NtNtCsc4HhLwrPL7g_11zebra_chain7orchard4treeNtB5_18NoteCommitmentTree16recalculate_root:
   597|  4.32k|    pub fn recalculate_root(&self) -> Root {
   598|  4.32k|        Root(self.inner.root().0)
   599|  4.32k|    }
 _RNvMsj_NtNtCsc4HhLwrPL7g_11zebra_chain7orchard4treeNtB5_18NoteCommitmentTree19is_complete_subtree:
-  481|  5.28k|    pub fn is_complete_subtree(&self) -> bool {
-  482|  5.28k|        let Some(tree) = self.frontier() else {
+  481|  5.27k|    pub fn is_complete_subtree(&self) -> bool {
+  482|  5.27k|        let Some(tree) = self.frontier() else {
   483|       |            // An empty tree can't be a complete subtree.
   484|  1.59k|            return false;
   485|       |        };
   486|       |
   487|  3.68k|        tree.position()
   488|  3.68k|            .is_complete_subtree(TRACKED_SUBTREE_HEIGHT.into())
-  489|  5.28k|    }
+  489|  5.27k|    }
 _RNvMsj_NtNtCsc4HhLwrPL7g_11zebra_chain7orchard4treeNtB5_18NoteCommitmentTree28remaining_subtree_leaf_nodes:
-  514|  2.64k|    pub fn remaining_subtree_leaf_nodes(&self) -> usize {
-  515|  2.64k|        let remaining = match self.frontier() {
+  514|  2.63k|    pub fn remaining_subtree_leaf_nodes(&self) -> usize {
+  515|  2.63k|        let remaining = match self.frontier() {
   516|       |            // If the subtree has at least one leaf node, the remaining number of nodes can be
   517|       |            // calculated using the maximum subtree position and the current position.
   518|  1.84k|            Some(tree) => {
@@ -8676,39 +8676,39 @@ _RNvMsj_NtNtCsc4HhLwrPL7g_11zebra_chain7orchard4treeNtB5_18NoteCommitmentTree28r
   527|       |            // If the subtree has no nodes, the remaining number of nodes is the number of nodes in
   528|       |            // a subtree.
   529|       |            None => {
-  530|    799|                let subtree_address = incrementalmerkletree::Address::above_position(
-  531|    799|                    TRACKED_SUBTREE_HEIGHT.into(),
+  530|    797|                let subtree_address = incrementalmerkletree::Address::above_position(
+  531|    797|                    TRACKED_SUBTREE_HEIGHT.into(),
   532|       |                    // This position is guaranteed to be in the first subtree.
-  533|    799|                    0.into(),
+  533|    797|                    0.into(),
   534|       |                );
   535|       |
-  536|    799|                assert_eq!(
-  537|    799|                    subtree_address.position_range_start(),
-  538|    799|                    0.into(),
+  536|    797|                assert_eq!(
+  537|    797|                    subtree_address.position_range_start(),
+  538|    797|                    0.into(),
   539|      0|                    "address is not in the first subtree"
   540|       |                );
   541|       |
-  542|    799|                subtree_address.position_range_end()
+  542|    797|                subtree_address.position_range_end()
   543|       |            }
   544|       |        };
   545|       |
-  546|  2.64k|        u64::from(remaining).try_into().expect("fits in usize")
-  547|  2.64k|    }
+  546|  2.63k|        u64::from(remaining).try_into().expect("fits in usize")
+  547|  2.63k|    }
 _RNvMsj_NtNtCsc4HhLwrPL7g_11zebra_chain7orchard4treeNtB5_18NoteCommitmentTree32completed_subtree_index_and_root:
-  550|  2.64k|    pub fn completed_subtree_index_and_root(&self) -> Option<(NoteCommitmentSubtreeIndex, Node)> {
-  551|  2.64k|        if !self.is_complete_subtree() {
-  552|  2.64k|            return None;
+  550|  2.63k|    pub fn completed_subtree_index_and_root(&self) -> Option<(NoteCommitmentSubtreeIndex, Node)> {
+  551|  2.63k|        if !self.is_complete_subtree() {
+  552|  2.63k|            return None;
   553|      0|        }
   554|       |
   555|      0|        let index = self.subtree_index()?;
   556|      0|        let root = self.frontier()?.root(Some(TRACKED_SUBTREE_HEIGHT.into()));
   557|       |
   558|      0|        Some((index, root))
-  559|  2.64k|    }
+  559|  2.63k|    }
 _RNvMsj_NtNtCsc4HhLwrPL7g_11zebra_chain7orchard4treeNtB5_18NoteCommitmentTree4hash:
-  603|    489|    pub fn hash(&self) -> [u8; 32] {
-  604|    489|        self.root().into()
-  605|    489|    }
+  603|    484|    pub fn hash(&self) -> [u8; 32] {
+  604|    484|        self.root().into()
+  605|    484|    }
 _RNvMsj_NtNtCsc4HhLwrPL7g_11zebra_chain7orchard4treeNtB5_18NoteCommitmentTree4root:
   563|  6.85k|    pub fn root(&self) -> Root {
   564|  6.85k|        if let Some(root) = self.cached_root() {
@@ -8784,9 +8784,9 @@ _RNvNtNtCsc4HhLwrPL7g_11zebra_chain7orchard4tree18merkle_crh_orchard:
    73|       |    }
    74|   131k|}
 _RNvXs0_NtNtCsc4HhLwrPL7g_11zebra_chain7orchard4treeAhj20_INtNtCs6SNw0SRvItZ_4core7convert4FromNtB5_4RootE4from:
-  127|    489|    fn from(root: Root) -> Self {
-  128|    489|        root.0.into()
-  129|    489|    }
+  127|    484|    fn from(root: Root) -> Self {
+  128|    484|        root.0.into()
+  129|    484|    }
 _RNvXs3_NtNtCsc4HhLwrPL7g_11zebra_chain7orchard4treeNtB5_4RootNtNtCs6SNw0SRvItZ_4core3cmp9PartialEq2eq:
   145|  3.02k|    fn eq(&self, other: &Self) -> bool {
   146|       |        // TODO: should we compare canonical forms here using `.to_repr()`?
@@ -8843,28 +8843,28 @@ _RINvXs8_NtNtCsc4HhLwrPL7g_11zebra_chain7sapling4treeNtB6_4RootNtNtNtBa_13serial
   139|    231|        Self::try_from(reader.read_32_bytes()?)
   140|    231|    }
 _RNvMs9_NtNtCsc4HhLwrPL7g_11zebra_chain7sapling4treeNtB5_18NoteCommitmentTree11cached_root:
-  407|  7.63k|    pub fn cached_root(&self) -> Option<Root> {
-  408|  7.63k|        *self
-  409|  7.63k|            .cached_root
-  410|  7.63k|            .read()
-  411|  7.63k|            .expect("a thread that previously held exclusive lock access panicked")
-  412|  7.63k|    }
+  407|  7.62k|    pub fn cached_root(&self) -> Option<Root> {
+  408|  7.62k|        *self
+  409|  7.62k|            .cached_root
+  410|  7.62k|            .read()
+  411|  7.62k|            .expect("a thread that previously held exclusive lock access panicked")
+  412|  7.62k|    }
 _RNvMs9_NtNtCsc4HhLwrPL7g_11zebra_chain7sapling4treeNtB5_18NoteCommitmentTree12to_rpc_bytes:
-  465|  2.64k|    pub fn to_rpc_bytes(&self) -> Vec<u8> {
+  465|  2.63k|    pub fn to_rpc_bytes(&self) -> Vec<u8> {
   466|       |        // Convert the tree from [`Frontier`](incrementalmerkletree::frontier::Frontier) to
   467|       |        // [`CommitmentTree`](merkle_tree::CommitmentTree).
-  468|  2.64k|        let tree = incrementalmerkletree::frontier::CommitmentTree::from_frontier(&self.inner);
+  468|  2.63k|        let tree = incrementalmerkletree::frontier::CommitmentTree::from_frontier(&self.inner);
   469|       |
-  470|  2.64k|        let mut rpc_bytes = vec![];
+  470|  2.63k|        let mut rpc_bytes = vec![];
   471|       |
-  472|  2.64k|        zcash_primitives::merkle_tree::write_commitment_tree(&tree, &mut rpc_bytes)
-  473|  2.64k|            .expect("serializable tree");
+  472|  2.63k|        zcash_primitives::merkle_tree::write_commitment_tree(&tree, &mut rpc_bytes)
+  473|  2.63k|            .expect("serializable tree");
   474|       |
-  475|  2.64k|        rpc_bytes
-  476|  2.64k|    }
+  475|  2.63k|        rpc_bytes
+  476|  2.63k|    }
 _RNvMs9_NtNtCsc4HhLwrPL7g_11zebra_chain7sapling4treeNtB5_18NoteCommitmentTree13subtree_index:
-  311|  2.64k|    pub fn subtree_index(&self) -> Option<NoteCommitmentSubtreeIndex> {
-  312|  2.64k|        let tree = self.frontier()?;
+  311|  2.63k|    pub fn subtree_index(&self) -> Option<NoteCommitmentSubtreeIndex> {
+  312|  2.63k|        let tree = self.frontier()?;
   313|       |
   314|  1.92k|        let index = incrementalmerkletree::Address::above_position(
   315|  1.92k|            TRACKED_SUBTREE_HEIGHT.into(),
@@ -8875,24 +8875,24 @@ _RNvMs9_NtNtCsc4HhLwrPL7g_11zebra_chain7sapling4treeNtB5_18NoteCommitmentTree13s
   320|  1.92k|        .expect("fits in u16");
   321|       |
   322|  1.92k|        Some(index)
-  323|  2.64k|    }
+  323|  2.63k|    }
 _RNvMs9_NtNtCsc4HhLwrPL7g_11zebra_chain7sapling4treeNtB5_18NoteCommitmentTree16recalculate_root:
   415|  4.41k|    pub fn recalculate_root(&self) -> Root {
   416|  4.41k|        Root::try_from(self.inner.root().to_bytes()).unwrap()
   417|  4.41k|    }
 _RNvMs9_NtNtCsc4HhLwrPL7g_11zebra_chain7sapling4treeNtB5_18NoteCommitmentTree19is_complete_subtree:
-  297|  5.28k|    pub fn is_complete_subtree(&self) -> bool {
-  298|  5.28k|        let Some(tree) = self.frontier() else {
+  297|  5.27k|    pub fn is_complete_subtree(&self) -> bool {
+  298|  5.27k|        let Some(tree) = self.frontier() else {
   299|       |            // An empty tree can't be a complete subtree.
-  300|  1.43k|            return false;
+  300|  1.42k|            return false;
   301|       |        };
   302|       |
-  303|  3.85k|        tree.position()
-  304|  3.85k|            .is_complete_subtree(TRACKED_SUBTREE_HEIGHT.into())
-  305|  5.28k|    }
+  303|  3.84k|        tree.position()
+  304|  3.84k|            .is_complete_subtree(TRACKED_SUBTREE_HEIGHT.into())
+  305|  5.27k|    }
 _RNvMs9_NtNtCsc4HhLwrPL7g_11zebra_chain7sapling4treeNtB5_18NoteCommitmentTree28remaining_subtree_leaf_nodes:
-  330|  2.64k|    pub fn remaining_subtree_leaf_nodes(&self) -> usize {
-  331|  2.64k|        let remaining = match self.frontier() {
+  330|  2.63k|    pub fn remaining_subtree_leaf_nodes(&self) -> usize {
+  331|  2.63k|        let remaining = match self.frontier() {
   332|       |            // If the subtree has at least one leaf node, the remaining number of nodes can be
   333|       |            // calculated using the maximum subtree position and the current position.
   334|  1.92k|            Some(tree) => {
@@ -8907,44 +8907,44 @@ _RNvMs9_NtNtCsc4HhLwrPL7g_11zebra_chain7sapling4treeNtB5_18NoteCommitmentTree28r
   343|       |            // If the subtree has no nodes, the remaining number of nodes is the number of nodes in
   344|       |            // a subtree.
   345|       |            None => {
-  346|    716|                let subtree_address = incrementalmerkletree::Address::above_position(
-  347|    716|                    TRACKED_SUBTREE_HEIGHT.into(),
+  346|    714|                let subtree_address = incrementalmerkletree::Address::above_position(
+  347|    714|                    TRACKED_SUBTREE_HEIGHT.into(),
   348|       |                    // This position is guaranteed to be in the first subtree.
-  349|    716|                    0.into(),
+  349|    714|                    0.into(),
   350|       |                );
   351|       |
-  352|    716|                assert_eq!(
-  353|    716|                    subtree_address.position_range_start(),
-  354|    716|                    0.into(),
+  352|    714|                assert_eq!(
+  353|    714|                    subtree_address.position_range_start(),
+  354|    714|                    0.into(),
   355|      0|                    "address is not in the first subtree"
   356|       |                );
   357|       |
-  358|    716|                subtree_address.position_range_end()
+  358|    714|                subtree_address.position_range_end()
   359|       |            }
   360|       |        };
   361|       |
-  362|  2.64k|        u64::from(remaining).try_into().expect("fits in usize")
-  363|  2.64k|    }
+  362|  2.63k|        u64::from(remaining).try_into().expect("fits in usize")
+  363|  2.63k|    }
 _RNvMs9_NtNtCsc4HhLwrPL7g_11zebra_chain7sapling4treeNtB5_18NoteCommitmentTree32completed_subtree_index_and_root:
-  366|  2.64k|    pub fn completed_subtree_index_and_root(
-  367|  2.64k|        &self,
-  368|  2.64k|    ) -> Option<(NoteCommitmentSubtreeIndex, sapling_crypto::Node)> {
-  369|  2.64k|        if !self.is_complete_subtree() {
-  370|  2.64k|            return None;
+  366|  2.63k|    pub fn completed_subtree_index_and_root(
+  367|  2.63k|        &self,
+  368|  2.63k|    ) -> Option<(NoteCommitmentSubtreeIndex, sapling_crypto::Node)> {
+  369|  2.63k|        if !self.is_complete_subtree() {
+  370|  2.63k|            return None;
   371|      0|        }
   372|       |
   373|      0|        let index = self.subtree_index()?;
   374|      0|        let root = self.frontier()?.root(Some(TRACKED_SUBTREE_HEIGHT.into()));
   375|       |
   376|      0|        Some((index, root))
-  377|  2.64k|    }
+  377|  2.63k|    }
 _RNvMs9_NtNtCsc4HhLwrPL7g_11zebra_chain7sapling4treeNtB5_18NoteCommitmentTree4hash:
-  421|    489|    pub fn hash(&self) -> [u8; 32] {
-  422|    489|        self.root().into()
-  423|    489|    }
+  421|    484|    pub fn hash(&self) -> [u8; 32] {
+  422|    484|        self.root().into()
+  423|    484|    }
 _RNvMs9_NtNtCsc4HhLwrPL7g_11zebra_chain7sapling4treeNtB5_18NoteCommitmentTree4root:
-  381|  7.14k|    pub fn root(&self) -> Root {
-  382|  7.14k|        if let Some(root) = self.cached_root() {
+  381|  7.13k|    pub fn root(&self) -> Root {
+  382|  7.13k|        if let Some(root) = self.cached_root() {
   383|       |            // Return cached root.
   384|  3.93k|            return root;
   385|  3.20k|        }
@@ -8965,7 +8965,7 @@ _RNvMs9_NtNtCsc4HhLwrPL7g_11zebra_chain7sapling4treeNtB5_18NoteCommitmentTree4ro
   400|  3.20k|                root
   401|       |            }
   402|       |        }
-  403|  7.14k|    }
+  403|  7.13k|    }
 _RNvMs9_NtNtCsc4HhLwrPL7g_11zebra_chain7sapling4treeNtB5_18NoteCommitmentTree5count:
   437|  1.09k|    pub fn count(&self) -> u64 {
   438|  1.09k|        self.inner
@@ -9002,9 +9002,9 @@ _RNvMs9_NtNtCsc4HhLwrPL7g_11zebra_chain7sapling4treeNtB5_18NoteCommitmentTree8po
   234|    271|        Some(tree.position().into())
   235|  1.09k|    }
 _RNvXs0_NtNtCsc4HhLwrPL7g_11zebra_chain7sapling4treeAhj20_INtNtCs6SNw0SRvItZ_4core7convert4FromNtB5_4RootE4from:
-   70|    489|    fn from(root: Root) -> Self {
-   71|    489|        root.0.to_bytes()
-   72|    489|    }
+   70|    484|    fn from(root: Root) -> Self {
+   71|    484|        root.0.to_bytes()
+   72|    484|    }
 _RNvXs2_NtNtCsc4HhLwrPL7g_11zebra_chain7sapling4treeNtB5_4RootNtNtCs6SNw0SRvItZ_4core3cmp9PartialEq2eq:
    82|  3.16k|    fn eq(&self, other: &Self) -> bool {
    83|  3.16k|        self.0 == other.0
@@ -9050,12 +9050,12 @@ _RNvXs2_NtNtCsc4HhLwrPL7g_11zebra_chain6sprout10commitmentAhj20_INtNtCs6SNw0SRvI
 _RNCNvMs9_NtNtCsc4HhLwrPL7g_11zebra_chain6sprout4treeNtB7_18NoteCommitmentTree5count0Bb_:
   340|  2.44k|            .map_or(0, |x| u64::from(x.position()) + 1)
 _RNvMs9_NtNtCsc4HhLwrPL7g_11zebra_chain6sprout4treeNtB5_18NoteCommitmentTree11cached_root:
-  306|  8.42k|    pub fn cached_root(&self) -> Option<Root> {
-  307|  8.42k|        *self
-  308|  8.42k|            .cached_root
-  309|  8.42k|            .read()
-  310|  8.42k|            .expect("a thread that previously held exclusive lock access panicked")
-  311|  8.42k|    }
+  306|  8.41k|    pub fn cached_root(&self) -> Option<Root> {
+  307|  8.41k|        *self
+  308|  8.41k|            .cached_root
+  309|  8.41k|            .read()
+  310|  8.41k|            .expect("a thread that previously held exclusive lock access panicked")
+  311|  8.41k|    }
 _RNvMs9_NtNtCsc4HhLwrPL7g_11zebra_chain6sprout4treeNtB5_18NoteCommitmentTree11uncommitted:
   328|      1|    pub fn uncommitted() -> [u8; 32] {
   329|      1|        [0; 32]
@@ -9065,9 +9065,9 @@ _RNvMs9_NtNtCsc4HhLwrPL7g_11zebra_chain6sprout4treeNtB5_18NoteCommitmentTree16re
   315|  4.70k|        Root(self.inner.root().0)
   316|  4.70k|    }
 _RNvMs9_NtNtCsc4HhLwrPL7g_11zebra_chain6sprout4treeNtB5_18NoteCommitmentTree4hash:
-  319|    720|    pub fn hash(&self) -> [u8; 32] {
-  320|    720|        self.root().into()
-  321|    720|    }
+  319|    715|    pub fn hash(&self) -> [u8; 32] {
+  320|    715|        self.root().into()
+  321|    715|    }
 _RNvMs9_NtNtCsc4HhLwrPL7g_11zebra_chain6sprout4treeNtB5_18NoteCommitmentTree4root:
   280|  7.93k|    pub fn root(&self) -> Root {
   281|  7.93k|        if let Some(root) = self.cached_root() {
@@ -9137,9 +9137,9 @@ _RNvNtNtCsc4HhLwrPL7g_11zebra_chain6sprout4tree17merkle_crh_sprout:
    62|   134k|    derived_bytes
    63|   134k|}
 _RNvXs1_NtNtCsc4HhLwrPL7g_11zebra_chain6sprout4treeAhj20_INtNtCs6SNw0SRvItZ_4core7convert4FromNtB5_4RootE4from:
-  118|    720|    fn from(rt: Root) -> [u8; 32] {
-  119|    720|        rt.0
-  120|    720|    }
+  118|    715|    fn from(rt: Root) -> [u8; 32] {
+  119|    715|        rt.0
+  120|    715|    }
 _RNvXs5_NtNtCsc4HhLwrPL7g_11zebra_chain6sprout4treeNtB5_4NodeNtCskDnbzSbNF0e_21incrementalmerkletree8Hashable10empty_root:
   161|   126k|    fn empty_root(level: incrementalmerkletree::Level) -> Self {
   162|   126k|        let layer_below = usize::from(MERKLE_DEPTH) - usize::from(level);
@@ -9162,7 +9162,7 @@ _RNvXsb_NtNtCsc4HhLwrPL7g_11zebra_chain6sprout4treeNtB5_18NoteCommitmentTreeNtNt
   380|    313|    }
 
 _RNvXs0_NtCsc4HhLwrPL7g_11zebra_chain7subtreeNtB5_26NoteCommitmentSubtreeIndexINtNtCs6SNw0SRvItZ_4core7convert7TryFromyE8try_from:
-   39|  3.77k|    fn try_from(value: u64) -> Result<Self, Self::Error> {
-   40|  3.77k|        u16::try_from(value).map(Self)
-   41|  3.77k|    }
+   39|  3.76k|    fn try_from(value: u64) -> Result<Self, Self::Error> {
+   40|  3.76k|        u16::try_from(value).map(Self)
+   41|  3.76k|    }
 
